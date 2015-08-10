@@ -1,0 +1,11 @@
+{
+	"name": "Unnamed System",
+	"TLS": {
+		"privateKey": "testkey.pem",
+		"cert": "testcert.pem"
+	},
+	"Signaller": {
+		"SockAddr": "localhost:4132",
+		"MOTD": "Authorized use only. Any unauthorised use is strictly prohibited by international law and treaties."
+	}
+}
