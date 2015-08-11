@@ -20,7 +20,7 @@ func readConfig(fpath string)(*Config,error){
 	defer confF.Close()
 
 	dec := json.NewDecoder(confF)
-	
+
 	if err := dec.Decode(&m); err == io.EOF {
 	} else if err != nil {
 		return nil, errors.New("Failed to decode config: "+err.Error())
@@ -42,13 +42,13 @@ func loadTLS(keyPath, certPath string)(*tls.Config, error){
 
 	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
 	if err != nil {
-		logging.Warning("config", "Error loading tls certificate and key files.")
-		logging.Warning("config", err.Error())
+		logging.Error("config", "Error loading tls certificate and key files.")
+		logging.Error("config", err.Error())
 		return nil, err
 	}
-	
+
 	tlsConfig.Certificates = []tls.Certificate{cert}
 	tlsConfig.BuildNameToCertificate()
-	
+
 	return tlsConfig, nil
 }

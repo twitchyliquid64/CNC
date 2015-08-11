@@ -1,5 +1,5 @@
 {
-	"name": "Unnamed System",
+	"name": "TestCNC",
 	"TLS": {
 		"privateKey": "testkey.pem",
 		"cert": "testcert.pem"

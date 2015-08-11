@@ -13,18 +13,18 @@ func Load(fpath string)error{
 	if err == nil{
 		gConfig = conf
 	} else {
-		logging.Warning("config", "config.Load() error:", err)
+		logging.Error("config", "config.Load() error:", err)
 		return err
 	}
-	
+
 	tls, err := loadTLS(gConfig.TLS.PrivateKey, gConfig.TLS.Cert)
 	if err == nil{
 		gTls = tls
 	} else {
-		logging.Warning("config", "config.Load() error:", err)
+		logging.Error("config", "config.Load() error:", err)
 		return err
 	}
-	
+
 	return nil
 }
 
@@ -51,4 +51,3 @@ func checkInitialisedOrPanic(){
 		panic("TLS not initialised")
 	}
 }
-

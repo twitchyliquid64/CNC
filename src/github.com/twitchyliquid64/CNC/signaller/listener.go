@@ -7,11 +7,14 @@ import (
 	"crypto/tls"
   "net"
 	"time"
+	"sync"
 )
 
-const LISTENER_LOOP_TIMEOUT = 400
+const LISTENER_LOOP_TIMEOUT = 400//miliseconds
 
+//global variables
 var gListeners []*Listener = nil
+var gListenerWaitGroup sync.WaitGroup
 
 type Listener struct {
   Addr string
@@ -20,11 +23,17 @@ type Listener struct {
 	baseSocket *net.TCPListener
 }
 
+//Loops around, accepting new connections on the network socket and pumping them to the server.
+//Aborts itself when CloseSignal is sent.
 func (l *Listener)Run() {
+	gListenerWaitGroup.Add(1)
+	defer gListenerWaitGroup.Done()
+
 	for {
 		select {
 			case <- l.CloseSignal:
 				logging.Info("signaller", "Listener shutting down: ", l.Addr)
+				l.tlsSocket.Close()
 				return
 			default:
 				l.baseSocket.SetDeadline(time.Now().Add(time.Millisecond * LISTENER_LOOP_TIMEOUT))
@@ -60,7 +69,7 @@ func StartListener(addr string)error{
 	}
 	listener.SetDeadline(time.Now().Add(time.Millisecond * LISTENER_LOOP_TIMEOUT))
 
-	tlsListener := tls.NewListener(listener, config.TLS())
+	tlsListener := tls.NewListener(listener, config.TLS())//wrap network socket in TLS
 	logging.Info("signaller", "Listening on: ", addr)
 	listObj := &Listener{
 		Addr: addr,
@@ -78,4 +87,5 @@ func stopListeners(){
 	for _, listener := range gListeners{
 		listener.CloseSignal <- true
 	}
+	gListenerWaitGroup.Wait()
 }
