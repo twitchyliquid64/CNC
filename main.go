@@ -13,9 +13,12 @@ func main() {
 		logging.Fatal("main", "Configuration error")
 	}
 	logging.Info("main", "Started server '", config.GetServerName(), "'")
-	
+
 	signaller.Initialise()
-	signaller.StartOnAddr(config.All().Signaller.SockAddr)
-	
-	time.Sleep(time.Second * 99999)
+	for _, a := range config.All().Signaller.SockAddr{
+		signaller.StartListener(a)
+	}
+
+	time.Sleep(time.Second * 9999)
+	signaller.Stop()
 }

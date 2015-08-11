@@ -5,7 +5,10 @@
 		"cert": "testcert.pem"
 	},
 	"Signaller": {
-		"SockAddr": "localhost:4132",
+		"SockAddr": [
+			"localhost:4132",
+			"localhost:4133"
+		],
 		"MOTD": "Authorized use only. Any unauthorised use is strictly prohibited by international law and treaties."
 	}
 }

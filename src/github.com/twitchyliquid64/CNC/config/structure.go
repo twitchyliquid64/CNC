@@ -9,7 +9,7 @@ type Config struct {
 		Address string
 	}
 	Signaller struct {
-		SockAddr string
+		SockAddr []string
 		MOTD string
 	}
 	TLS struct {
