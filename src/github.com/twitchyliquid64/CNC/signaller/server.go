@@ -20,4 +20,6 @@ func Initialise()error{
 
 func Stop(){
 	stopListeners()
+	gRosellaServer.Stop()
+	gRosellaServer = nil
 }

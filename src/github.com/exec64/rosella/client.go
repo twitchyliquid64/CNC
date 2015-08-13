@@ -130,6 +130,7 @@ func (c *Client) partChannel(channelName, reason string) {
 func (c *Client) disconnect() {
 	c.connected = false
 	c.signalChan <- signalStop
+	c.server.eventChan <- Event{client: c, event: disconnected}
 }
 
 //Send a reply to a user with the code specified

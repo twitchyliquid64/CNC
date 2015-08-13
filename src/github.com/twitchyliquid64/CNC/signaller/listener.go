@@ -88,4 +88,5 @@ func stopListeners(){
 		listener.CloseSignal <- true
 	}
 	gListenerWaitGroup.Wait()
+	gListeners = nil //clear the list of listeners now they are all shutdown
 }

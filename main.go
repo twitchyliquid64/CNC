@@ -42,7 +42,7 @@ func main() {
 	chanStop := make(chan bool)
 	shouldRun := true
 
-	go func(){
+	go func(){//goroutine to monitor OS signals
 		for{
 			s := <- processSignal //wait for signal from OS
 			logging.Info("main", "Got OS signal: ", s)

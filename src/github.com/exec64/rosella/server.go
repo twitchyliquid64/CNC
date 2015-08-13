@@ -36,6 +36,15 @@ func (s *Server) Run() {
 	for event := range s.eventChan {
 		s.handleEvent(event)
 	}
+	//now stopping - eventChan closed
+	logging.Info("signaller", "Killing client connections")
+	for _, client := range s.clientMap {
+		client.disconnect()
+	}
+}
+
+func (s *Server) Stop() {//TODO: Send a close signal which the main goroutine processes.
+	close(s.eventChan)//tell main goroutine to kek off
 }
 
 func (s *Server) HandleConnection(conn net.Conn) {
@@ -67,6 +76,7 @@ func (s *Server) handleEvent(e Event) {
 	case disconnected:
 		//Client disconnected
 		logging.Info("signaller", "Client disconnected: ", e)
+		delete(s.clientMap, e.client.key)//test this?
 	case command:
 		//Client send a command
 		fields := strings.Fields(e.input)
