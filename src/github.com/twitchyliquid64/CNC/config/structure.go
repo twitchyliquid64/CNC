@@ -6,6 +6,7 @@ type Config struct {
 	Database struct{
 		Username string
 		Password string
+		Name string
 		Address string
 	}
 	Signaller struct {

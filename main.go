@@ -4,6 +4,7 @@ import (
 	"github.com/twitchyliquid64/CNC/signaller"
 	"github.com/twitchyliquid64/CNC/logging"
 	"github.com/twitchyliquid64/CNC/config"
+	"github.com/twitchyliquid64/CNC/data"
 	"os/signal"
 	"syscall"
 	"time"
@@ -13,10 +14,12 @@ import (
 
 func run(stopSignal chan bool) {
 	logging.Info("main", "Starting server")
-	if config.Load("config.json") != nil {
+	if config.Load(getConfigPath()) != nil {
 		logging.Fatal("main", "Configuration error")
 	}
 	logging.Info("main", "Configuration read, now starting '", config.GetServerName(), "'")
+
+	data.Initialise()
 
 	signaller.Initialise()
 	for _, a := range config.All().Signaller.SockAddr{
@@ -35,6 +38,13 @@ func run(stopSignal chan bool) {
 	}
 }
 
+
+func getConfigPath()string{
+	if len(os.Args) < 2{
+		return "config.json"
+	}
+	return os.Args[1]
+}
 
 func main() {
 	processSignal := make(chan os.Signal, 1)

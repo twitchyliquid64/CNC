@@ -3,6 +3,7 @@
 *.a
 *.so
 main
+testconfig.json
 
 # Folders
 _obj
