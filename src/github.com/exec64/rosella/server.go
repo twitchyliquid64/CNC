@@ -39,8 +39,17 @@ func (s *Server) Run() {
 	//now stopping - eventChan closed
 	logging.Info("signaller", "Killing client connections")
 	for _, client := range s.clientMap {
+		client.sendDisconnectedEvent = false
 		client.disconnect()
+		for _, chanObj := range client.channelMap {
+			chanObj.clientMap = nil
+			chanObj.modeMap = nil
+		}
 	}
+
+	s.clientMap = nil
+	s.operatorMap = nil
+	s.channelMap = nil
 }
 
 func (s *Server) Stop() {//TODO: Send a close signal which the main goroutine processes.
@@ -53,7 +62,9 @@ func (s *Server) HandleConnection(conn net.Conn) {
 		outputChan: make(chan string),
 		signalChan: make(chan signalCode, 3),
 		channelMap: make(map[string]*Channel),
-		connected:  true}
+		connected:  true,
+		sendDisconnectedEvent: true,
+	}
 
 	go client.clientThread()
 }
@@ -72,10 +83,10 @@ func (s *Server) handleEvent(e Event) {
 	case connected:
 		//Client connected
 		e.client.reply(rplMOTD, s.motd)
-		logging.Info("signaller", "Client connected: ", e)
+		logging.Info("signaller", "[EVENT] Client connected: ", e)
 	case disconnected:
 		//Client disconnected
-		logging.Info("signaller", "Client disconnected: ", e)
+		logging.Info("signaller", "[EVENT] Client disconnected: ", e)
 		delete(s.clientMap, e.client.key)//test this?
 	case command:
 		//Client send a command

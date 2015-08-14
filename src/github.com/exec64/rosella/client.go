@@ -1,12 +1,13 @@
 package rosella
 
 import (
+	"github.com/twitchyliquid64/CNC/logging"
 	"bytes"
 	"fmt"
-	"io"
 	"sort"
 	"strings"
 	"time"
+	"net"
 )
 
 func (c *Client) setNick(nick string) {
@@ -128,9 +129,13 @@ func (c *Client) partChannel(channelName, reason string) {
 }
 
 func (c *Client) disconnect() {
+	logging.Warning("signaller", "client.disconnect()")
 	c.connected = false
 	c.signalChan <- signalStop
-	c.server.eventChan <- Event{client: c, event: disconnected}
+	if c.sendDisconnectedEvent{
+		go func(){c.server.eventChan <- Event{client: c, event: disconnected}}()
+		c.sendDisconnectedEvent = false
+	}
 }
 
 //Send a reply to a user with the code specified
@@ -267,7 +272,8 @@ func (c *Client) readThread(signalChan chan signalCode) {
 			buf := make([]byte, 512)
 			ln, err := c.connection.Read(buf)
 			if err != nil {
-				if err == io.EOF {
+				if e, ok := err.(net.Error); ok && (!e.Timeout()) {
+					logging.Warning("signaller", "[CLIENT] Fatal socket error: ", err, e.Temporary())
 					c.disconnect()
 					return
 				}
@@ -295,8 +301,9 @@ func (c *Client) writeThread(signalChan chan signalCode, outputChan chan string)
 		case output := <-outputChan:
 			line := []byte(fmt.Sprintf("%s\r\n", output))
 
-			c.connection.SetWriteDeadline(time.Now().Add(time.Second * 30))
+			c.connection.SetWriteDeadline(time.Now().Add(time.Second * 10))
 			if _, err := c.connection.Write(line); err != nil {
+				logging.Warning("signaller", "[CLIENT] Fatal socket error (write): ", err)
 				c.disconnect()
 				return
 			}

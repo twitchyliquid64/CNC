@@ -46,7 +46,7 @@ func (l *Listener)Run() {
 					logging.Error("signaller", err.Error())
 					continue
 				}
-				logging.Info("signaller", "Got new connection from: ", l.Addr, " for ", conn.RemoteAddr())
+				logging.Info("signaller", "Got new connection from: ", l.Addr, " on address ", conn.RemoteAddr())
 				gRosellaServer.HandleConnection(conn)
 		}
 	}

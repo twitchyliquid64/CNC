@@ -3,7 +3,7 @@ package rosella
 import "net"
 
 const (
-	VERSION = "1.1.1"
+	VERSION = "1.1.3"
 )
 
 type Server struct {
@@ -26,6 +26,7 @@ type Client struct {
 	registered bool
 	connected  bool
 	operator   bool
+	sendDisconnectedEvent bool
 	channelMap map[string]*Channel
 }
 
