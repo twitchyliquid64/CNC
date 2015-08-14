@@ -1,6 +1,7 @@
 package config
 
 
+
 type Config struct {
 	Name string							//canonical name to help identify this server
 	Database struct{
@@ -16,5 +17,11 @@ type Config struct {
 	TLS struct {
 		PrivateKey string
 		Cert string
+	}
+	BaseObjects struct {
+		AdminUsers []struct {
+			Username string
+			Password string
+		}
 	}
 }
