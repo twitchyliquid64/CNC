@@ -162,6 +162,10 @@ func (c *Client) reply(code replyCode, args ...string) {
 	case rplNickChange:
 		c.outputChan <- fmt.Sprintf(":%s NICK %s", args[0], args[1])
 	case rplKill:
+		if len(args) < 2{
+			logging.Warning("signaller", "rplKill requested but second argument not provided")
+			args = append(args, "")
+		}
 		c.outputChan <- fmt.Sprintf(":%s KILL %s A %s", args[0], c.nick, args[1])
 	case rplMsg:
 		c.outputChan <- fmt.Sprintf(":%s PRIVMSG %s %s", args[0], args[1], args[2])
@@ -269,7 +273,7 @@ func (c *Client) readThread(signalChan chan signalCode) {
 			}
 		default:
 			c.connection.SetReadDeadline(time.Now().Add(time.Second * 3))
-			buf := make([]byte, 512)
+			buf := make([]byte, 1024)
 			ln, err := c.connection.Read(buf)
 			if err != nil {
 				if e, ok := err.(net.Error); ok && (!e.Timeout()) {

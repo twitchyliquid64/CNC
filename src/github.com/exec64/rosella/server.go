@@ -2,10 +2,10 @@ package rosella
 
 import (
 	"github.com/twitchyliquid64/CNC/logging"
+	"runtime/debug"
 	"crypto/sha1"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"regexp"
 	"strings"
@@ -73,9 +73,8 @@ func (s *Server) handleEvent(e Event) {
 	defer func(event Event) {
 		err := recover()
 		if err != nil {
-			logging.Error("signaller", "Recovered from error when handling event: ", event)
-			log.Printf("Recovered from error when handling event: %+v", event)
-			log.Println(err)
+			logging.Error("signaller", "Recovered from error when handling event: ", event, "Error: ", err)
+			debug.PrintStack()
 		}
 	}(e)
 
@@ -87,6 +86,9 @@ func (s *Server) handleEvent(e Event) {
 	case disconnected:
 		//Client disconnected
 		logging.Info("signaller", "[EVENT] Client disconnected: ", e)
+		for channel := range e.client.channelMap {
+			e.client.partChannel(channel, "Client disconnected")
+		}
 		delete(s.clientMap, e.client.key)//test this?
 	case command:
 		//Client send a command
