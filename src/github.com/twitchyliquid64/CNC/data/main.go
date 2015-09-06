@@ -31,12 +31,34 @@ func Initialise() {
     logging.Error("data", "Error: ", err)
   }
 
+  checkStructures()
+
   //make sure that objects in the config BaseObjects are
   //existing, creating them if nessesary.
   for _, usr := range config.All().BaseObjects.AdminUsers{
-    var tmp user.User
-    logging.Info("data", usr.Username)
-    DB.FirstOrCreate(&tmp, &user.User{Username: usr.Username})
-    logging.Info("data", tmp)
+
+    tmp := user.User{}
+
+    DB.Where(&user.User{Username:  usr.Username}).First(&tmp)
+
+    if tmp.Username != usr.Username{ //if the user was not found
+      logging.Info("data", "Creating admin user: " + usr.Username)
+      DB.Create(&user.User{Username: usr.Username,
+                        Permissions: []user.Permission{ user.Permission{Name: user.PERM_ADMIN},},
+                      })
+    }
   }
+}
+
+//called during initialisation. Should make sure the schema is intact and up to date.
+func checkStructures() {
+  logging.Info("data", "Checking structure: Users")
+  DB.AutoMigrate(&user.User{})
+  logging.Info("data", "Checking structure: Permissions")
+  DB.AutoMigrate(&user.Permission{})
+  user.Permission{}.Init(DB)
+  logging.Info("data", "Checking structure: Emails")
+  DB.AutoMigrate(&user.Email{})
+  logging.Info("data", "Checking structure: Addresses")
+  DB.AutoMigrate(&user.Address{})
 }

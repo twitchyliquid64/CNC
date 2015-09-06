@@ -2,14 +2,19 @@ package user
 
 import (
   "github.com/jinzhu/gorm"
-  "database/sql"
+  //"database/sql"
   "time"
 )
 
-type User struct {
-    gorm.Model
+const PERM_ADMIN = "ADMIN"
 
-    Username string
+type User struct {
+    ID        uint `gorm:"primary_key"`
+    CreatedAt time.Time
+    UpdatedAt time.Time
+    DeletedAt *time.Time
+
+    Username string `sql:"not null;unique"`
     Birth time.Time
     Firstname string
     Lastname string
@@ -23,17 +28,26 @@ type User struct {
 }
 
 type Permission struct {
-  gorm.Model
-  Name string `sql:"index:idx_name_code"`
+  ID int      `gorm:"primary_key"`
+  UserID  int `sql:"index;unique"`
+  Name string `sql:"index"`
+}
+
+func (m Permission)Init(DB gorm.DB) {
+  //TODO: FIX
+  //DB.Model(&Permission{}).AddForeignKey("user_id", "permissions(id)", "CASCADE", "RESTRICT")
 }
 
 type Email struct {
-  Address string
+  ID int `gorm:"primary_key"`
+  UserID  int `sql:"index"`
+  Address string `sql:"not null;unique"`
 }
 
 type Address struct {
     ID       int
+    UserID  int `sql:"index"`
     Address1 string         `sql:"not null;unique"` // Set field as not nullable and unique
-    Address2 string         `sql:"type:varchar(100);unique"`
-    Post     sql.NullString `sql:"not null"`
+    Address2 string         `sql:"unique"`
+    Postcode int
 }
