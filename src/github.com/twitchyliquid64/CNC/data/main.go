@@ -45,9 +45,15 @@ func Initialise() {
       logging.Info("data", "Creating admin user: " + usr.Username)
       DB.Create(&user.User{Username: usr.Username,
                         Permissions: []user.Permission{ user.Permission{Name: user.PERM_ADMIN},},
+                        AuthMethods: []user.AuthenticationMethod{ user.AuthenticationMethod{
+                            MethodType: user.AUTH_PASSWD,
+                            Value: usr.Password,
+                          }},
                       })
     }
   }
+
+  logging.Info("data", "Initialisation finished.")
 }
 
 //called during initialisation. Should make sure the schema is intact and up to date.
@@ -61,4 +67,6 @@ func checkStructures() {
   DB.AutoMigrate(&user.Email{})
   logging.Info("data", "Checking structure: Addresses")
   DB.AutoMigrate(&user.Address{})
+  logging.Info("data", "Checking structure: AuthenticationMethods")
+  DB.AutoMigrate(&user.AuthenticationMethod{})
 }

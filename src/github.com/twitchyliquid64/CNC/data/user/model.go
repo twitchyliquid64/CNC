@@ -8,6 +8,8 @@ import (
 
 const PERM_ADMIN = "ADMIN"
 
+const AUTH_PASSWD = "PASSWD"
+
 type User struct {
     ID        uint `gorm:"primary_key"`
     CreatedAt time.Time
@@ -25,11 +27,12 @@ type User struct {
     Addresses []Address
     Emails []Email
     Permissions []Permission
+    AuthMethods []AuthenticationMethod
 }
 
 type Permission struct {
   ID int      `gorm:"primary_key"`
-  UserID  int `sql:"index;unique"`
+  UserID  int `sql:"index"`
   Name string `sql:"index"`
 }
 
@@ -39,15 +42,22 @@ func (m Permission)Init(DB gorm.DB) {
 }
 
 type Email struct {
-  ID int `gorm:"primary_key"`
-  UserID  int `sql:"index"`
-  Address string `sql:"not null;unique"`
+    ID int `gorm:"primary_key"`
+    UserID  int `sql:"index"`
+    Address string `sql:"not null;unique"`
 }
 
 type Address struct {
-    ID       int
+    ID       int `gorm:"primary_key"`
     UserID  int `sql:"index"`
     Address1 string         `sql:"not null;unique"` // Set field as not nullable and unique
     Address2 string         `sql:"unique"`
     Postcode int
+}
+
+type AuthenticationMethod struct {
+    ID int      `gorm:"primary_key"`
+    UserID  int `sql:"index"`
+    MethodType string `sql:"not null;index"`
+    Value string
 }
