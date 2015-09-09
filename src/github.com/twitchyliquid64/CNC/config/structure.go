@@ -24,4 +24,8 @@ type Config struct {
 			Password string
 		}
 	}
+	Web struct{
+		Domain string
+		Listener string
+	}
 }

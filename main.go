@@ -5,6 +5,7 @@ import (
 	"github.com/twitchyliquid64/CNC/logging"
 	"github.com/twitchyliquid64/CNC/config"
 	"github.com/twitchyliquid64/CNC/data"
+	"github.com/twitchyliquid64/CNC/web"
 	"os/signal"
 	"syscall"
 	"time"
@@ -25,6 +26,9 @@ func run(stopSignal chan bool) {
 	for _, a := range config.All().Signaller.SockAddr{
 		signaller.StartListener(a)
 	}
+
+	web.RegisterHandlers()
+	go web.Run()
 
 	for {
 		select {
