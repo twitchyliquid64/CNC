@@ -7,10 +7,23 @@ import (
 )
 
 func registerUserHandlers() {
-  logging.Info("web", "Registering page handlers")
   web.Get("/", loginHandler, config.All().Web.Domain)
 }
 
-func RegisterHandlers() {
+func Initialise() {
+  logging.Info("web", "Registering page handlers")
   registerUserHandlers()
+
+  logging.Info("web", "Registering templates")
+  registerUserTemplates()
+}
+
+func registerUserTemplates(){
+  logError(registerTemplate("test.tpl", "test"), "Template load error: ")
+}
+
+func logError(e error, prefix string){
+  if e != nil{
+    logging.Error("web", prefix, e.Error())
+  }
 }

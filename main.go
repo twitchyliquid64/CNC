@@ -27,7 +27,7 @@ func run(stopSignal chan bool) {
 		signaller.StartListener(a)
 	}
 
-	web.RegisterHandlers()
+	web.Initialise()
 	go web.Run()
 
 	for {
