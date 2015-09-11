@@ -1,0 +1,12 @@
+.logContainer {
+	overflow-y:scroll;
+	height: 700px;
+}
+
+.logElement {
+	font-family: monospace;
+}
+
+.logTime {
+	color: #FF6607;
+}
