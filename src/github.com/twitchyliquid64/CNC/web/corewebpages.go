@@ -12,3 +12,7 @@ func loginMainPage(ctx *web.Context) {
 	}
 	t.Execute(ctx.ResponseWriter, nil)
 }
+
+func templateReloadHandler(ctx *web.Context) {
+  templateReInit()
+}

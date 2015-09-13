@@ -18,8 +18,8 @@
 
     <div layout="row" flex>
 
-        <div layout="column" flex="99" id="content">
-            <md-content layout="row" flex="99" class="md-padding" ng-show="mainC.focus == 'logging'">
+        <div layout="column" flex="99" layout-align="center center" id="content">
+            <md-content layout="row" flex="99" class="md-padding">
                 <div layout="column" flex="99">
           			     <h1>System login</h1>
           		  </div>

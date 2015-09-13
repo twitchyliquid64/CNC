@@ -8,6 +8,7 @@ import (
 
 func registerCoreHandlers() {
   web.Get("/login", loginMainPage, config.All().Web.Domain)
+  web.Get("/dev/reload", templateReloadHandler, config.All().Web.Domain)
 }
 
 func registerUserHandlers() {
