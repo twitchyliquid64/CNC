@@ -16,14 +16,40 @@
 <body layout="column" ng-app="baseApp">
   {!{ template "bannertop" . }!}
 
-    <div layout="row" flex>
+    <div layout="row" flex="70">
 
         <div layout="column" flex="99" layout-align="center center" id="content">
-            <md-content layout="row" flex="99" class="md-padding">
-                <div layout="column" flex="99">
-          			     <h1>System login</h1>
-          		  </div>
-            </md-content>
+          <div layout="row" flex="" layout-padding="" layout-fill="" layout-align="center center" class="ng-scope">
+            <div flex="40" flex-lg="50" flex-md="70" flex-sm="100">
+
+              <md-toolbar style="padding: 22px; text-align: center;">
+                <div>
+                  <i class="material-icons" style="font-size:48px;" >person</i>
+                </div>
+                <h1 class="md-headline ng-scope" style="text-align: center;">Login</h1>
+              </md-toolbar>
+
+              <md-content class="md-padding">
+                <form name="login" class="ng-valid-email ng-invalid ng-invalid-required">
+                  <md-input-container>
+                    <label for="username" class="ng-scope">Username</label>
+                    <input id="username" label="username" name="username" type="text" required class="ng-invalid ng-invalid-required">
+                  </md-input-container>
+
+                  <md-input-container>
+                    <label for="password" class="ng-scope">Password</label>
+                    <input id="password" label="password" name="password" type="password" required class="ng-invalid ng-invalid-required">
+                  </md-input-container>
+
+                  <button style="width: 100%;"
+                  class="md-raised md-primary md-button md-scope"
+                  aria-label="Log in" tabindex="0" aria-disabled="true">Log in</button>
+                </form>
+              </md-content>
+
+
+            </div>
+          </div>
         </div>
     </div>
 
