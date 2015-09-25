@@ -3,15 +3,7 @@
 
 <head>
     <title>CNC</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
-
-    <link rel="stylesheet" href="/static/css/r2k9.css">
-    <link rel="stylesheet" href="/static/fonts/roboto.css">
-    <link rel="stylesheet" href="/static/fonts/material-icons/materialicons.css">
-    <link rel="stylesheet" href="/static/css/angular-material.css">
+    {!{template "headcontent"}!}
 </head>
 
 <body layout="row" ng-app="baseApp">
@@ -49,25 +41,6 @@
             </div>
           </div>
     </div>
-
-
-    <!-- Angular Material Dependencies -->
-    <script src="/static/js/angular/angular.min.js"></script>
-    <script src="/static/js/angular/angular-animate.min.js"></script>
-    <script src="/static/js/angular/angular-aria.min.js"></script>
-    <script src="/static/js/angular/angular-messages.min.js"></script>
-    <script src="/static/js/angular/angular-material.min.js"></script>
-    <script src="/static/js/angular/angular-dragdrop.min.js"></script>
-
-    <!-- Base App Dependencies -->
-
-    <!-- Module declaration needs to come first -->
-    <script src="/static/js/app/baseApp.js"></script>
-    <script src="/static/js/app/loggerService.js"></script>
-
-    <!-- Module peripherals can come after in any order -->
-    <script src="/static/js/app/parametricController.js"></script>
-    <script src="/static/js/app/mainController.js"></script>
-
+    {!{template "tailcontent"}!}
   </body>
 </html>
