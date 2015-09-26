@@ -5,12 +5,14 @@ import (
   "github.com/jinzhu/gorm"
 )
 
+//Checks if a usename and password pair are valid, returning true and the user
+//if it is.
 func CheckAuthByPassword(username, password string, db gorm.DB)(bool,User) {
-  tmp := User{}
+  success, tmp := GetByUsername(username, db)
 
-  //TODO: Split db call for user into separate method
-  db.Where(&User{Username:  username}).First(&tmp)
-  db.Model(&tmp).Related(&tmp.AuthMethods)
+  if !success {
+    return false, tmp
+  }
 
   for _, authmethod := range tmp.AuthMethods {
     if authmethod.MethodType == AUTH_PASSWD {

@@ -18,7 +18,7 @@ func loginHandler(ctx *web.Context) {
   if isValidLogin {
     logging.Info("web", "User '", usrname, "' has authenticated.")
     skey := session.CreateSession(int(usr.ID), "web", data.DB)
-    ctx.SetCookie(web.NewCookie("sid", skey, 60*60*24*20))
+    ctx.SetCookie(web.NewCookie(COOKIE_KEY_NAME, skey, 60*60*24*20))
     ctx.ResponseWriter.Write([]byte("GOOD"))
   }else{
     ctx.ResponseWriter.Write([]byte("ERROR"))

@@ -61,15 +61,3 @@ type AuthenticationMethod struct {
     MethodType string `sql:"not null;index"`
     Value string
 }
-
-
-func GetUser(id int, db gorm.DB)*User {
-  var usr User
-  db.First(&usr, uint(id))
-
-  if usr.ID == uint(id){
-    return &usr
-  } else {
-    return nil
-  }
-}
