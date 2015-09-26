@@ -2,6 +2,7 @@ package data
 
 import (
   "github.com/twitchyliquid64/CNC/data/user"
+  "github.com/twitchyliquid64/CNC/data/session"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/config"
   "github.com/jinzhu/gorm"
@@ -69,4 +70,6 @@ func checkStructures() {
   DB.AutoMigrate(&user.Address{})
   logging.Info("data", "Checking structure: AuthenticationMethods")
   DB.AutoMigrate(&user.AuthenticationMethod{})
+  logging.Info("data", "Checking structure: Sessions")
+  DB.AutoMigrate(&session.Session{})
 }
