@@ -13,6 +13,9 @@ func dashboardMainPage(ctx *web.Context) {
     return
   }
 
+  //all code from this point on can assume that
+  //user and session are both populated
+
   t := templates.Lookup("dashboardindex")
 	if t == nil {
 		logging.Error("web", "No template found.")

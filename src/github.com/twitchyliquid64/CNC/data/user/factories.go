@@ -12,7 +12,7 @@ func GetByUsername(username string, db gorm.DB)(success bool, ret User) {
     return false, User{}
   }
 
-  db.Model(&ret).Related(&ret.AuthMethods)
+  loadBasicWeakEntities(&ret, db)
 
   return true, ret
 }
@@ -23,8 +23,15 @@ func GetUser(id int, db gorm.DB)*User {
   db.First(&usr, uint(id))
 
   if usr.ID == uint(id){
+    loadBasicWeakEntities(&usr, db)
     return &usr
-  } else {
+  } else { //DB fetch did not work
     return nil
   }
+}
+
+//loads all AuthMethods and Permissions
+func loadBasicWeakEntities(usr *User, db gorm.DB){
+  db.Model(&usr).Related(&usr.AuthMethods)
+  db.Model(&usr).Related(&usr.Permissions)
 }
