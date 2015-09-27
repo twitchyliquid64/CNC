@@ -12,7 +12,3 @@
     <!-- Module declaration needs to come first -->
     <script src="/static/js/app/baseApp.js"></script>
     <script src="/static/js/app/loggerService.js"></script>
-
-    <!-- Module peripherals can come after in any order -->
-    <script src="/static/js/app/parametricController.js"></script>
-    <script src="/static/js/app/mainController.js"></script>
