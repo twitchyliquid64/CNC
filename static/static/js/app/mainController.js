@@ -9,6 +9,7 @@
         self.focus = 'summary';
 
         self.activate = function (element) {
+          console.log("Now activating section: " + element);
             self.focus = element;
         };
 
