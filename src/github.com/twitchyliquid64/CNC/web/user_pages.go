@@ -24,3 +24,16 @@ func loginHandler(ctx *web.Context) {
     ctx.ResponseWriter.Write([]byte("ERROR"))
   }
 }
+
+
+func logoutHandler(ctx *web.Context) {
+  isLoggedIn, user, s := getSessionByCookie(ctx)
+  if isLoggedIn {
+    logging.Info("web", "Now logging out:", user.Username)
+    session.Delete(s, data.DB)
+    deleteSessionKey(ctx)
+  } else {
+    logging.Warning("web", "/logout called with an invalid session!")
+  }
+  ctx.Redirect(302, "/")
+}
