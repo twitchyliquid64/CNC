@@ -27,6 +27,7 @@ func registerCoreHandlers() {
 
 func registerUserHandlers() {
   web.Post("/login", loginHandler, config.All().Web.Domain)
+  web.Get("/users", getUsersHandlerAPI, config.All().Web.Domain)
   web.Get("/logout", logoutHandler, config.All().Web.Domain)
 }
 

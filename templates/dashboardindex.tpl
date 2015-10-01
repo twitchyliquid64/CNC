@@ -11,7 +11,6 @@
         <h1 flex><md-icon md-font-library="material-icons" style="font-size: 250%;">av_timer</md-icon> CNC</h1>
 
           <div class="md-toolbar-tools" flex layout-align="end center">
-              {!{.User.Username}!}
               <md-button ng-click="main.toggle()" hide-gt-sm class="md-icon-button">
                   <md-icon aria-label="Menu" md-svg-icon="/static/img/menu.svg"></md-icon>
               </md-button>
@@ -81,11 +80,44 @@
           <h2>Summary</h2>
           <p>server uptime, resources, running plugins etc</p>
           <p><b>Is Admin: </b>{!{.IsAdmin}!}</p>
+          <p><b>Username: </b>{!{.User.Username}!}</p>
+          <p><b>First Name: </b>{!{.User.Firstname}!}</p>
+          <p><b>Last Name: </b>{!{.User.Lastname}!}</p>
         </md-content>
-        <md-content flex id="content" ng-show="main.focus == 'users'">
-          <h2>Users</h2>
-          <p>all users, permissions, access methods, details, and attached assets will go here.</p>
+
+
+        <md-content flex id="content" ng-show="main.focus == 'users'" ng-controller="userController as user">
+          <md-data-table-toolbar>
+            <h2 class="md-title">Users</h2>
+          </md-data-table-toolbar>
+
+          <div layout="row" layout-sm="column" layout-align="space-around" ng-show="showLoading">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+          </div>
+
+          <md-data-table-container ng-hide="showLoading">
+            <table md-data-table md-row-select="selected" md-progress="deferred">
+              <thead>
+                <tr>
+                  <th name="Name" order-by="Firstname"></th>
+                  <th name="Username" order-by="Username"></th>
+                  <th name="Permissions"></th>
+                  <th name="Email" order-by="Email"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr md-auto-select ng-repeat="user in users">
+                  <td>{{user.Firstname}} {{user.Lastname}}</td>
+                  <td>{{user.Username}}</td>
+                  <td><md-chips ng-model="user.perms"></md-chips></td>
+                  <td>{{user.MailEmail.Address}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </md-data-table-container>
         </md-content>
+
+
         <md-content flex id="content" ng-show="main.focus == 'data'">
           <h2>Data</h2>
           <p>all custom datasets and active streams will go here.</p>
@@ -97,5 +129,6 @@
 
     {!{template "tailcontent"}!}
     <script src="/static/js/app/mainController.js"></script>
+    <script src="/static/js/app/userController.js"></script>
   </body>
 </html>

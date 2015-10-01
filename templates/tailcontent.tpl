@@ -6,6 +6,7 @@
     <script src="/static/js/angular/angular-messages.min.js"></script>
     <script src="/static/js/angular/angular-material.min.js"></script>
     <script src="/static/js/angular/angular-dragdrop.min.js"></script>
+    <script src="/static/js/md-data-table.min.js"></script>
 
     <!-- Base App Dependencies -->
 

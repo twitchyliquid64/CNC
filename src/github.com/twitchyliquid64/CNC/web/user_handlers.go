@@ -6,7 +6,24 @@ import (
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/data"
   "github.com/hoisie/web"
+  "encoding/json"
 )
+
+func getUsersHandlerAPI(ctx *web.Context) {
+  isLoggedIn, _, _ := getSessionByCookie(ctx)
+  //TODO: Check permissions
+  if !isLoggedIn{
+    logging.Warning("web-user", "getUsers() called unauthorized, aborting")
+    return
+  }
+
+  users := user.GetAll(data.DB)
+  d, err := json.Marshal(users)
+  if err != nil {
+    logging.Error("web-user", err)
+  }
+  ctx.ResponseWriter.Write(d)
+}
 
 func loginHandler(ctx *web.Context) {
 

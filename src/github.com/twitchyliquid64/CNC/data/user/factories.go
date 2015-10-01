@@ -5,6 +5,19 @@ import (
   "github.com/jinzhu/gorm"
 )
 
+
+func GetAll(db gorm.DB)[]User{
+  var users = make([]User, 0)
+  db.Find(&users)
+
+  for i := 0; i < len(users); i++ {
+    loadBasicWeakEntities(&(users[i]), db)
+  }
+
+  return users
+}
+
+
 func GetByUsername(username string, db gorm.DB)(success bool, ret User) {
   db.Where(&User{Username:  username}).First(&ret)
 
@@ -13,7 +26,6 @@ func GetByUsername(username string, db gorm.DB)(success bool, ret User) {
   }
 
   loadBasicWeakEntities(&ret, db)
-
   return true, ret
 }
 
