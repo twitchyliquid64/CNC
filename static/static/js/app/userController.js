@@ -37,5 +37,10 @@
         });
 
         $scope.$on('$destroy', unbind);
+
+
+        self.newUser = function() {
+          $rootScope.$broadcast('newuser');
+        };
     }
 })();

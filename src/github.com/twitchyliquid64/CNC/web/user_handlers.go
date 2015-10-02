@@ -9,6 +9,21 @@ import (
   "encoding/json"
 )
 
+func newUserHandlerAPI(ctx *web.Context) {
+  decoder := json.NewDecoder(ctx.Request.Body)
+  var usr user.User
+  err := decoder.Decode(&usr)
+  if err != nil {
+      logging.Error("web-user", "newUserHandlerAPI() failed to decode JSON:", err)
+      ctx.Abort(500, "JSON error")
+      return
+  }
+
+  logging.Info("web-user", usr)
+  data.DB.Create(&usr)
+  ctx.ResponseWriter.Write([]byte("GOOD"))
+}
+
 func getUsersHandlerAPI(ctx *web.Context) {
   isLoggedIn, _, _ := getSessionByCookie(ctx)
   //TODO: Check permissions

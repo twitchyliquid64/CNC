@@ -16,11 +16,12 @@ type User struct {
     UpdatedAt time.Time
     DeletedAt *time.Time
 
-    Username string `sql:"not null;unique"`
+    Username string `sql:"not null;unique;index"`
     Birth time.Time
     Firstname string
     Lastname string
 
+    Mobile string
     MainEmail Email
     MainAddress Address
 
@@ -51,8 +52,9 @@ type Address struct {
     ID       int `gorm:"primary_key"`
     UserID  int `sql:"index"`
     Address1 string         `sql:"not null;unique"` // Set field as not nullable and unique
-    Address2 string         `sql:"unique"`
+    Address2 string
     Postcode int
+    City string
 }
 
 type AuthenticationMethod struct {

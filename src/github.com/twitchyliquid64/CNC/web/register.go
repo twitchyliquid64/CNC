@@ -29,6 +29,7 @@ func registerUserHandlers() {
   web.Post("/login", loginHandler, config.All().Web.Domain)
   web.Get("/users", getUsersHandlerAPI, config.All().Web.Domain)
   web.Get("/logout", logoutHandler, config.All().Web.Domain)
+  web.Post("/users/new", newUserHandlerAPI, config.All().Web.Domain)
 }
 
 func registerSummaryHandlers(){
@@ -44,6 +45,8 @@ func registerCoreTemplates(){
 func registerUserTemplates(){
   logError(registerTemplate("test.tpl", "test"), "Template load error: ")
   logError(registerTemplate("login.tpl", "login"), "Template load error: ")
+  logError(registerTemplate("userpage.tpl", "userpage"), "Template load error: ")
+  logError(registerTemplate("usercreateeditpage.tpl", "usercreateeditpage"), "Template load error: ")
 }
 
 func registerSummaryTemplates(){

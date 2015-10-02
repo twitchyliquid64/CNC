@@ -12,6 +12,7 @@
           console.log("Now activating section: " + element);
           self.focus = element;
           $rootScope.$broadcast('component.changed', element);
+          $mdSidenav('left').close()
         };
 
         self.logout = function() {

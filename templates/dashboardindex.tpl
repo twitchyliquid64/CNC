@@ -76,7 +76,7 @@
       <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
 
         {!{if .IsAdmin}!}
-        <md-content flex id="content" ng-show="main.focus == 'summary'">
+        <md-content class="content" flex ng-show="main.focus == 'summary'">
           <h2>Summary</h2>
           <p>server uptime, resources, running plugins etc</p>
           <p><b>Is Admin: </b>{!{.IsAdmin}!}</p>
@@ -85,40 +85,11 @@
           <p><b>Last Name: </b>{!{.User.Lastname}!}</p>
         </md-content>
 
+        {!{template "userpage"}!}
 
-        <md-content flex id="content" ng-show="main.focus == 'users'" ng-controller="userController as user">
-          <md-data-table-toolbar>
-            <h2 class="md-title">Users</h2>
-          </md-data-table-toolbar>
+        {!{template "usercreateeditpage"}!}
 
-          <div layout="row" layout-sm="column" layout-align="space-around" ng-show="showLoading">
-            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-          </div>
-
-          <md-data-table-container ng-hide="showLoading">
-            <table md-data-table md-row-select="selected" md-progress="deferred">
-              <thead>
-                <tr>
-                  <th name="Name" order-by="Firstname"></th>
-                  <th name="Username" order-by="Username"></th>
-                  <th name="Permissions"></th>
-                  <th name="Email" order-by="Email"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr md-auto-select ng-repeat="user in users">
-                  <td>{{user.Firstname}} {{user.Lastname}}</td>
-                  <td>{{user.Username}}</td>
-                  <td><md-chips ng-model="user.perms"></md-chips></td>
-                  <td>{{user.MailEmail.Address}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </md-data-table-container>
-        </md-content>
-
-
-        <md-content flex id="content" ng-show="main.focus == 'data'">
+        <md-content class="content" flex ng-show="main.focus == 'data'">
           <h2>Data</h2>
           <p>all custom datasets and active streams will go here.</p>
         </md-content>
@@ -130,5 +101,6 @@
     {!{template "tailcontent"}!}
     <script src="/static/js/app/mainController.js"></script>
     <script src="/static/js/app/userController.js"></script>
+    <script src="/static/js/app/usereditController.js"></script>
   </body>
 </html>
