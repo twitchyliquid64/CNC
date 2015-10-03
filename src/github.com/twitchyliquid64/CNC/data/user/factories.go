@@ -42,8 +42,30 @@ func GetUser(id int, db gorm.DB)*User {
   }
 }
 
-//loads all AuthMethods and Permissions
+//loads all Permissions - called in factory methods to populate key fields
 func loadBasicWeakEntities(usr *User, db gorm.DB){
-  db.Model(&usr).Related(&usr.AuthMethods)
   db.Model(&usr).Related(&usr.Permissions)
+}
+
+//called for login verification only - no need to get authentication methods otherwise
+//should be called be user if auth methods are required
+func LoadAuthMethods(usr *User, db gorm.DB){
+  db.Model(&usr).Related(&usr.AuthMethods)
+}
+
+//should be called prior to using Address or Email fields.
+func LoadEphemeral(usr *User, db gorm.DB){
+  db.Model(&usr).Related(&usr.Emails)
+  db.Model(&usr).Related(&usr.Addresses)
+
+  //DB engine (gorm) does not keep track of which elements are 'MainAddress' / 'MainEmail'
+  //hence, we need to find the first one and use that to populate the field.
+  if (len(usr.Emails) > 0) {
+    usr.MainEmail = usr.Emails[0]
+    usr.Emails = usr.Emails[1:]
+  }
+  if (len(usr.Addresses) > 0) {
+    usr.MainAddress = usr.Addresses[0]
+    usr.Addresses = usr.Addresses[1:]
+  }
 }

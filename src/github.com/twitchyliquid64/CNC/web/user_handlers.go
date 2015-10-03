@@ -9,7 +9,28 @@ import (
   "encoding/json"
 )
 
+func deleteUserHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-user", "deleteUser() called unauthorized, aborting")
+    return
+  }
+
+  username := ctx.Params["username"]
+
+  data.DB.Where("username = ?", username).Delete(&user.User{})
+  ctx.ResponseWriter.Write([]byte("GOOD"))
+}
+
 func newUserHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-user", "newUser() called unauthorized, aborting")
+    return
+  }
+
   decoder := json.NewDecoder(ctx.Request.Body)
   var usr user.User
   err := decoder.Decode(&usr)
@@ -24,10 +45,57 @@ func newUserHandlerAPI(ctx *web.Context) {
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
 
+func updateUserHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-user", "updateUser() called unauthorized, aborting")
+    return
+  }
+
+  decoder := json.NewDecoder(ctx.Request.Body)
+  var usr user.User
+  err := decoder.Decode(&usr)
+  if err != nil {
+      logging.Error("web-user", "updateUserHandlerAPI() failed to decode JSON:", err)
+      ctx.Abort(500, "JSON error")
+      return
+  }
+
+  logging.Info("web-user", usr)
+  data.DB.Save(&usr)
+  ctx.ResponseWriter.Write([]byte("GOOD"))
+}
+
+func getUserHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-user", "getUsers() called unauthorized, aborting")
+    return
+  }
+
+  username := ctx.Params["username"]
+  success, usr := user.GetByUsername(username, data.DB)
+
+  if !success {
+    ctx.ResponseWriter.Write([]byte("ERROR NOT FOUND"))
+    return
+  }
+
+  user.LoadEphemeral(&usr, data.DB) //populates all the addresses/emails
+
+  d, err := json.Marshal(usr)
+  if err != nil {
+    logging.Error("web-user", err)
+  }
+  ctx.ResponseWriter.Write(d)
+}
+
 func getUsersHandlerAPI(ctx *web.Context) {
-  isLoggedIn, _, _ := getSessionByCookie(ctx)
-  //TODO: Check permissions
-  if !isLoggedIn{
+  isLoggedIn, usr, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!usr.IsAdmin()){
     logging.Warning("web-user", "getUsers() called unauthorized, aborting")
     return
   }

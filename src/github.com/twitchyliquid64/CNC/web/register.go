@@ -28,8 +28,11 @@ func registerCoreHandlers() {
 func registerUserHandlers() {
   web.Post("/login", loginHandler, config.All().Web.Domain)
   web.Get("/users", getUsersHandlerAPI, config.All().Web.Domain)
+  web.Get("/user", getUserHandlerAPI, config.All().Web.Domain)
+  web.Get("/user/delete", deleteUserHandlerAPI, config.All().Web.Domain)
   web.Get("/logout", logoutHandler, config.All().Web.Domain)
   web.Post("/users/new", newUserHandlerAPI, config.All().Web.Domain)
+  web.Post("/users/edit", updateUserHandlerAPI, config.All().Web.Domain)
 }
 
 func registerSummaryHandlers(){

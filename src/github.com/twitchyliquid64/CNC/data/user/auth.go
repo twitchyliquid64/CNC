@@ -14,6 +14,7 @@ func CheckAuthByPassword(username, password string, db gorm.DB)(bool,User) {
     return false, tmp
   }
 
+  LoadAuthMethods(&tmp, db)
   for _, authmethod := range tmp.AuthMethods {
     if authmethod.MethodType == AUTH_PASSWD {
       if authmethod.Value == password {

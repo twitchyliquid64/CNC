@@ -19,18 +19,23 @@
     <table md-data-table md-row-select="selected" md-progress="deferred">
       <thead>
         <tr>
-          <th name="Name" order-by="Firstname"></th>
-          <th name="Username" order-by="Username"></th>
-          <th name="Permissions"></th>
-          <th name="Email" order-by="Email"></th>
+          <th name="Username"></th>
+          <th name="Name"></th>
+          <th name="Actions"></th>
         </tr>
       </thead>
       <tbody>
-        <tr md-auto-select ng-repeat="user in users">
-          <td>{{user.Firstname}} {{user.Lastname}}</td>
+        <tr ng-repeat="user in users">
           <td>{{user.Username}}</td>
-          <td><md-chips ng-model="user.perms" readonly="true"></md-chips></td>
-          <td>{{user.MailEmail.Address}}</td>
+          <td>{{user.Firstname}} {{user.Lastname}}</td>
+          <td>
+            <md-button class="ng-icon-button" ng-click="userC.editUser(user.Username);main.activate('user-edit')" aria-label="Edit User">
+              <md-icon md-font-library="material-icons">mode_edit</md-icon>
+            </md-button>
+            <md-button class="ng-icon-button" ng-click="userC.deleteUser(user.Username)" aria-label="Delete User">
+              <md-icon md-font-library="material-icons">delete</md-icon>
+            </md-button>
+          </td>
         </tr>
       </tbody>
     </table>

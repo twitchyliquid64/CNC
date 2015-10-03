@@ -44,6 +44,8 @@ func (m Permission)Init(DB gorm.DB) {
 
 type Email struct {
     ID int `gorm:"primary_key"`
+    CreatedAt time.Time
+
     UserID  int `sql:"index"`
     Address string `sql:"not null;unique"`
 }
@@ -55,6 +57,7 @@ type Address struct {
     Address2 string
     Postcode int
     City string
+    State string
 }
 
 type AuthenticationMethod struct {
@@ -62,4 +65,14 @@ type AuthenticationMethod struct {
     UserID  int `sql:"index"`
     MethodType string `sql:"not null;index"`
     Value string
+}
+
+
+func (inst *User)IsAdmin()bool{
+  for _, perm := range inst.Permissions {
+    if perm.Name == PERM_ADMIN {
+      return true
+    }
+  }
+  return false
 }

@@ -23,7 +23,7 @@ func (inst mainPageData)IsAdmin()bool{
 
 func dashboardMainPage(ctx *web.Context) {
   isLoggedIn, user, session := getSessionByCookie(ctx)
-  logging.Info("web", isLoggedIn, user, session)
+
   if !isLoggedIn {
     ctx.Redirect(302, "/login")
     return
