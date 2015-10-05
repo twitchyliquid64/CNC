@@ -89,6 +89,8 @@
 
         {!{template "usercreateeditpage"}!}
 
+        {!{template "userpermissions"}!}
+
         <md-content class="content" flex ng-show="main.focus == 'data'">
           <h2>Data</h2>
           <p>all custom datasets and active streams will go here.</p>
@@ -102,5 +104,6 @@
     <script src="/static/js/app/mainController.js"></script>
     <script src="/static/js/app/userController.js"></script>
     <script src="/static/js/app/usereditController.js"></script>
+    <script src="/static/js/app/userpermissionController.js"></script>
   </body>
 </html>

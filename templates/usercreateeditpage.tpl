@@ -1,6 +1,15 @@
 <md-content class="content" flex ng-show="main.focus == 'user-edit'" ng-controller="usereditController as userC">
   <md-data-table-toolbar>
-    <h2 class="md-title">Users <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> <span ng-show="isNewUserMode">New</span><span ng-hide="isNewUserMode">Edit</span></h2>
+    <h2 class="md-title" flex="50">Users <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> <span ng-show="isNewUserMode">New</span><span ng-hide="isNewUserMode">Edit</span></h2>
+
+    <div class="md-toolbar-tools">
+      <span flex></span>
+
+      <md-button class="ng-icon-button" ng-disabled="!user.Username" ng-hide="isNewUserMode" ng-click="userC.editPermsUser(user.Username);main.activate('user-permissions')" aria-label="Edit Permissions">
+        <md-icon md-font-library="material-icons">security</md-icon>
+      </md-button>
+    </div>
+
   </md-data-table-toolbar>
 
 

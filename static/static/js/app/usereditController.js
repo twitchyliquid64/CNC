@@ -107,6 +107,12 @@
           });
         });
 
+        self.editPermsUser = function(username) {
+          console.log(username);
+          $rootScope.$broadcast('editperms', username);
+        };
+
+
         $scope.$on('$destroy', unbind1);
         $scope.$on('$destroy', unbind2);
         $scope.user = self.buildEmptyUserObject();
