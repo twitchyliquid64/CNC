@@ -80,7 +80,28 @@
             self.load(username);
         });
 
+        self.delPerm = function(permName) {
+          if (permName == null){return;}
+          if (permName == undefined){return;}
+
+          console.log(permName);
+          self.searchText = "";
+          self.selectedItem = null;
+          self.showLoading = true;
+
+          $http.get('/user/permission/delete?username='+$scope.user.Username+'&perm='+permName, {}).then(function (response) {
+            self.load($scope.user.Username);
+          }, function errorCallback(response){
+            self.createDialog(response, "Server Error");
+            self.load($scope.user.Username);
+          });
+        };
+
         self.addPerm = function(permName) {
+
+          if (permName == null){return;}
+          if (permName == undefined){return;}
+
           console.log(permName);
           self.searchText = "";
           self.selectedItem = null;

@@ -14,7 +14,7 @@
       <md-icon md-font-library="material-icons">vpn_key</md-icon>
       <div class="md-list-item-text" ng-class="md-offset">
         <h3> {{item.key}}</h3>
-        <p>Permission<md-button class="md-icon-button md-accent" aria-label="Delete">
+        <p>Permission<md-button class="md-icon-button md-accent" aria-label="Delete" ng-click="userC.delPerm(item.key)">
           <md-icon md-font-library="material-icons">close</md-icon>
         </md-button></p>
       </div>
@@ -32,7 +32,6 @@
       md-selected-item-change="userC.addPerm(item.key)"
       md-item-text="item.key"
       md-min-length="0"
-      md-autofocus="true"
       placeholder=" + Add a permission">
     <md-item-template>
       <md-icon md-font-library="material-icons">vpn_key</md-icon>

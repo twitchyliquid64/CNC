@@ -33,6 +33,8 @@ func registerUserHandlers() {
   web.Get("/logout", logoutHandler, config.All().Web.Domain)
   web.Post("/users/new", newUserHandlerAPI, config.All().Web.Domain)
   web.Post("/users/edit", updateUserHandlerAPI, config.All().Web.Domain)
+  web.Get("/user/permission/add", addPermissionUserHandlerAPI, config.All().Web.Domain)
+  web.Get("/user/permission/delete", deletePermissionUserHandlerAPI, config.All().Web.Domain)
 }
 
 func registerSummaryHandlers(){

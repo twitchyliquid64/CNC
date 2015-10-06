@@ -9,6 +9,47 @@ import (
   "encoding/json"
 )
 
+func addPermissionUserHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-user", "addPermission() called unauthorized, aborting")
+    return
+  }
+
+  username := ctx.Params["username"]
+  success, usr := user.GetByUsername(username, data.DB)
+
+  if !success {
+    ctx.Abort(500, "ERROR NOT FOUND")
+    return
+  }
+
+  usr.Permissions = append(usr.Permissions, user.Permission{Name: ctx.Params["perm"]})
+  data.DB.Save(&usr)
+}
+
+func deletePermissionUserHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-user", "addPermission() called unauthorized, aborting")
+    return
+  }
+
+  username := ctx.Params["username"]
+  success, usr := user.GetByUsername(username, data.DB)
+
+  if !success {
+    ctx.Abort(500, "ERROR NOT FOUND")
+    return
+  }
+
+  data.DB.Where("user_id = ? and name = ?", usr.ID, ctx.Params["perm"]).Delete(&user.Permission{})
+  ctx.ResponseWriter.Write([]byte("GOOD"))
+}
+
+
 func deleteUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -40,7 +81,6 @@ func newUserHandlerAPI(ctx *web.Context) {
       return
   }
 
-  logging.Info("web-user", usr)
   data.DB.Create(&usr)
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
@@ -79,7 +119,7 @@ func getUserHandlerAPI(ctx *web.Context) {
   success, usr := user.GetByUsername(username, data.DB)
 
   if !success {
-    ctx.ResponseWriter.Write([]byte("ERROR NOT FOUND"))
+    ctx.Abort(500, "ERROR NOT FOUND")
     return
   }
 
@@ -121,7 +161,7 @@ func loginHandler(ctx *web.Context) {
     ctx.SetCookie(web.NewCookie(COOKIE_KEY_NAME, skey, 60*60*24*20))
     ctx.ResponseWriter.Write([]byte("GOOD"))
   }else{
-    ctx.ResponseWriter.Write([]byte("ERROR"))
+    ctx.Abort(500, "ERROR NOT FOUND")
   }
 }
 
