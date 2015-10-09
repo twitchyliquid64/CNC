@@ -45,6 +45,7 @@ func deletePermissionUserHandlerAPI(ctx *web.Context) {
     return
   }
 
+  //TODO: Refactor so DB code is in model/user rather than in the handler
   data.DB.Where("user_id = ? and name = ?", usr.ID, ctx.Params["perm"]).Delete(&user.Permission{})
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
@@ -60,6 +61,7 @@ func deleteUserHandlerAPI(ctx *web.Context) {
 
   username := ctx.Params["username"]
 
+  //TODO: Refactor so DB code is in model/user rather than in the handler
   data.DB.Where("username = ?", username).Delete(&user.User{})
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }

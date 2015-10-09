@@ -3,6 +3,7 @@ package data
 import (
   "github.com/twitchyliquid64/CNC/data/user"
   "github.com/twitchyliquid64/CNC/data/session"
+  "github.com/twitchyliquid64/CNC/data/entity"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/config"
   "github.com/jinzhu/gorm"
@@ -72,4 +73,15 @@ func checkStructures() {
   DB.AutoMigrate(&user.AuthenticationMethod{})
   logging.Info("data", "Checking structure: Sessions")
   DB.AutoMigrate(&session.Session{})
+
+  logging.Info("data", "Checking structure: Entity")
+  DB.AutoMigrate(&entity.Entity{})
+  logging.Info("data", "Checking structure: EntityPivot")
+  DB.AutoMigrate(&entity.EntityPivot{})
+  logging.Info("data", "Checking structure: EntityLocationRecord")
+  DB.AutoMigrate(&entity.EntityLocationRecord{})
+  logging.Info("data", "Checking structure: EntityStatusRecord")
+  DB.AutoMigrate(&entity.EntityStatusRecord{})
+  logging.Info("data", "Checking structure: EntityLogRecord")
+  DB.AutoMigrate(&entity.EntityLogRecord{})
 }

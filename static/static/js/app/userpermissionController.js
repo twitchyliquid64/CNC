@@ -6,6 +6,7 @@
     function userpermissionControlller($scope, $rootScope, $http, $mdDialog) {
         var self = this;
 
+        //ones that are available by default
         self.recommendedPermissions = [
           {key:'ADMIN', display: 'Admin'},
           {key:'HR', display: 'HR'},
