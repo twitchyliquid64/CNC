@@ -28,4 +28,10 @@ type Config struct {
 		Domain string
 		Listener string
 	}
+	Messenger struct{
+		TelegramIntegration struct{
+			Token string
+			BotUsername string
+		}
+	}
 }

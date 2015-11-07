@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/twitchyliquid64/CNC/signaller"
+	// "github.com/twitchyliquid64/CNC/signaller"
+	"github.com/twitchyliquid64/CNC/messenger"
 	"github.com/twitchyliquid64/CNC/logging"
 	"github.com/twitchyliquid64/CNC/config"
 	"github.com/twitchyliquid64/CNC/data"
@@ -22,10 +23,11 @@ func run(stopSignal chan bool) {
 
 	data.Initialise()
 
-	signaller.Initialise()
-	for _, a := range config.All().Signaller.SockAddr{
-		signaller.StartListener(a)
-	}
+	messenger.Initialise()
+	//signaller.Initialise()
+	//for _, a := range config.All().Signaller.SockAddr{
+	//	signaller.StartListener(a)
+	//}
 
 	web.Initialise()
 	go web.Run()
@@ -34,7 +36,7 @@ func run(stopSignal chan bool) {
 		select {
 		case <- stopSignal:
 			logging.Info("main", "Got stop signal, finalizing now")
-			signaller.Stop()
+			//signaller.Stop()
 			return
 		default:
 			time.Sleep(time.Millisecond * 400)
