@@ -13,6 +13,7 @@ func Initialise() {
   registerCoreHandlers()
   registerUserHandlers()
   registerSummaryHandlers()
+  registerTemplateViews()
 
   logging.Info("web", "Registering templates")
   registerCoreTemplates()
@@ -20,10 +21,13 @@ func Initialise() {
   registerSummaryTemplates()
 }
 
+func registerTemplateViews() {
+  web.Get("/view/users", usersAdminMainPage_view, config.All().Web.Domain)
+}
+
 func registerCoreHandlers() {
   web.Get("/login", loginMainPage, config.All().Web.Domain)
   web.Get("/dev/reload", templateReloadHandler, config.All().Web.Domain)
-  web.Get("/view/users", usersAdminMainPage_view, config.All().Web.Domain)
 }
 
 func registerUserHandlers() {
@@ -36,6 +40,7 @@ func registerUserHandlers() {
   web.Post("/users/edit", updateUserHandlerAPI, config.All().Web.Domain)
   web.Get("/user/permission/add", addPermissionUserHandlerAPI, config.All().Web.Domain)
   web.Get("/user/permission/delete", deletePermissionUserHandlerAPI, config.All().Web.Domain)
+  web.Get("/user/updatepass", resetPasswordHandlerAPI, config.All().Web.Domain)
 }
 
 func registerSummaryHandlers(){

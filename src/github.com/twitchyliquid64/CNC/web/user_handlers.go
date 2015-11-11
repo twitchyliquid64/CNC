@@ -66,6 +66,28 @@ func deleteUserHandlerAPI(ctx *web.Context) {
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
 
+func resetPasswordHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-user", "resetPassword() called unauthorized, aborting")
+    return
+  }
+
+  username := ctx.Params["username"]
+  success, usr := user.GetByUsername(username, data.DB)
+
+  if !success {
+    ctx.Abort(500, "ERROR NOT FOUND")
+    return
+  }
+
+  var authMethod user.AuthenticationMethod
+  data.DB.Where("user_id = ? and method_type = ?", usr.ID, user.AUTH_PASSWD).First(&authMethod)
+  authMethod.Value = ctx.Params["pass"]
+  data.DB.Save(&authMethod)
+}
+
 func newUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
