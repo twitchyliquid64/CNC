@@ -2,6 +2,7 @@
     <!-- Angular Material Dependencies -->
     <script src="/static/js/angular/angular.min.js"></script>
     <script src="/static/js/angular/angular-animate.min.js"></script>
+    <script src="/static/js/angular/angular-route.min.js"></script>
     <script src="/static/js/angular/angular-aria.min.js"></script>
     <script src="/static/js/angular/angular-messages.min.js"></script>
     <script src="/static/js/angular/angular-material.min.js"></script>

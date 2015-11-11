@@ -13,6 +13,14 @@ func loginMainPage(ctx *web.Context) {
 	t.Execute(ctx.ResponseWriter, nil)
 }
 
+func usersAdminMainPage_view(ctx *web.Context) {
+  t := templates.Lookup("userpage")
+	if t == nil {
+		logging.Error("web", "No template found.")
+	}
+	t.Execute(ctx.ResponseWriter, nil)
+}
+
 func templateReloadHandler(ctx *web.Context) {
   templateReInit()
 }

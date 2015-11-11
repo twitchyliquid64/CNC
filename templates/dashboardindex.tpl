@@ -45,7 +45,7 @@
               </md-button>
           </md-list-item>
           <md-list-item>
-              <md-button ng-click="main.activate('plugins')">
+              <md-button ng-click="go('/admin/users')">
                 <md-icon md-font-library="material-icons">memory</md-icon> Plugins
               </md-button>
           </md-list-item>
