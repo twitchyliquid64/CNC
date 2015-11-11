@@ -8,3 +8,4 @@
   <link rel="stylesheet" href="/static/fonts/material-icons/materialicons.css">
   <link rel="stylesheet" href="/static/css/angular-material.css">
   <link rel="stylesheet" href="/static/css/md-data-table.min.css">
+  <script src="/static/js/angular/angular.min.js"></script>

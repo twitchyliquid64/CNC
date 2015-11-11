@@ -6,7 +6,7 @@
       {!{template "headcontent"}!}
   </head>
 
-  <body layout="column" ng-app="baseApp" ng-controller="mainController as main">
+  <body layout="column" ng-app="baseApp" ng-controller="mainController as main" ng-cloak>
       <md-toolbar layout="row" flex="10" class="md-whiteframe-z1">
         <h1 flex><md-icon md-font-library="material-icons" style="font-size: 250%;">av_timer</md-icon> CNC</h1>
 
@@ -35,7 +35,7 @@
               </md-button>
           </md-list-item>
           <md-list-item>
-              <md-button ng-click="main.activate('users')">
+              <md-button ng-click="main.activateRouted('/admin/users', 'users')">
                 <md-icon md-font-library="material-icons">people</md-icon> Users
               </md-button>
           </md-list-item>
@@ -45,7 +45,7 @@
               </md-button>
           </md-list-item>
           <md-list-item>
-              <md-button ng-click="go('/admin/users')">
+              <md-button ng-click="main.activate('plugins')">
                 <md-icon md-font-library="material-icons">memory</md-icon> Plugins
               </md-button>
           </md-list-item>
@@ -85,11 +85,13 @@
           <p><b>Last Name: </b>{!{.User.Lastname}!}</p>
         </md-content>
 
-        {!{template "userpage"}!}
-
         {!{template "usercreateeditpage"}!}
 
         {!{template "userpermissions"}!}
+
+        <md-content class="content" flex ng-show="main.isRoutingMode">
+          <div ng-view></div>
+        </md-content>
 
         <md-content class="content" flex ng-show="main.focus == 'data'">
           <h2>Data</h2>

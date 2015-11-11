@@ -1,6 +1,5 @@
 
-    <!-- Angular Material Dependencies -->
-    <script src="/static/js/angular/angular.min.js"></script>
+    <!-- Angular Material Dependencies - angular moved to head-->
     <script src="/static/js/angular/angular-animate.min.js"></script>
     <script src="/static/js/angular/angular-route.min.js"></script>
     <script src="/static/js/angular/angular-aria.min.js"></script>

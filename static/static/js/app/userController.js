@@ -1,9 +1,9 @@
 (function () {
 
     angular.module('baseApp')
-        .controller('userController', ['$scope', '$rootScope', '$http', userController]);
+        .controller('userController', ['$scope', '$rootScope', '$http', '$mdDialog', userController]);
 
-    function userController($scope, $rootScope, $http) {
+    function userController($scope, $rootScope, $http, $mdDialog) {
         var self = this;
         $scope.users = [];
         $scope.showLoading = true;
@@ -23,6 +23,7 @@
         $scope.$on('$destroy', unbind);
 
         self.updateUsers = function(){
+          console.log("userController.updateUsers()")
           $http.get('/users', {}).then(function (response) { //get user data to display in table
             users = response.data;
             $scope.users = users;
@@ -39,11 +40,23 @@
           $rootScope.$broadcast('edituser', username);
         };
 
-        self.deleteUser = function(username) {
-          $http.get('/user/delete?username='+username, {}).then(function (response) { //get user data to display in table
-            $scope.showLoading = true;
-            self.updateUsers();
-          });
-        }
+        self.deleteUser = function(username, ev) {
+          var confirm = $mdDialog.confirm()
+                .title('Confirm user deletion')
+                .content('Are you sure you want to delete ' + username + '\'s account?')
+                .ariaLabel('Confirm user deletion')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('Abort');
+          $mdDialog.show(confirm).then(function() {
+            $http.get('/user/delete?username='+username, {}).then(function (response) { //get user data to display in table
+              $scope.showLoading = true;
+              self.updateUsers();
+            });
+          }, function() {  });
+        };
+
+        //done after controller initialisation
+        self.updateUsers();
     }
 })();
