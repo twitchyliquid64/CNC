@@ -14,6 +14,13 @@
   <div layout="row" layout-sm="column" layout-align="space-around" ng-show="showLoading">
     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
   </div>
+  <style>
+  .small-icons {
+    min-width: 16px;
+    padding: 2px;
+    margin: 2px;
+  }
+  </style>
 
   <md-data-table-container ng-hide="showLoading">
     <table md-data-table md-row-select="selected" md-progress="deferred">
@@ -29,11 +36,14 @@
           <td>{{user.Username}}</td>
           <td>{{user.Firstname}} {{user.Lastname}}</td>
           <td>
-            <md-button class="ng-icon-button" ng-click="userC.editUser(user.Username);main.activate('user-edit')" aria-label="Edit User">
+            <md-button class="ng-icon-button small-icons" ng-click="userC.editUser(user.Username);main.activate('user-edit')" aria-label="Edit User">
               <md-icon md-font-library="material-icons">mode_edit</md-icon>
             </md-button>
-            <md-button class="ng-icon-button" ng-click="userC.deleteUser(user.Username)" aria-label="Delete User">
+            <md-button class="ng-icon-button small-icons" ng-click="userC.deleteUser(user.Username, $event)" aria-label="Delete User">
               <md-icon md-font-library="material-icons">delete</md-icon>
+            </md-button>
+            <md-button class="ng-icon-button small-icons" ng-click="userC.resetPassword(user.Username, $event)" aria-label="Reset Password of User">
+              <md-icon md-font-library="material-icons">security</md-icon>
             </md-button>
           </td>
         </tr>

@@ -56,7 +56,53 @@
           }, function() {  });
         };
 
+        self.resetPassword = function(username, ev) {
+            $mdDialog.show({
+              controller: ResetPasswordDialogController,
+              template: '<md-dialog aria-label="Reset Password"  ng-cloak ">' +
+              '<md-toolbar><div class="md-toolbar-tools"><h2>Reset Password</h2><span flex></span>' +
+              '<md-button class="md-icon-button" ng-click="cancel()">' +
+              '<md-icon md-font-library="material-icons">close</md-icon>' +
+              '</md-button>' +
+              '</div></md-toolbar>' +
+              '' +
+              '<md-dialog-content style="max-width:800px;max-height:810px; " layout="row">' +
+              '<md-input-container>' +
+              '<label>New Password</label>' +
+              '<input ng-model="pass" flex>' +
+              '</md-input-container>' +
+              '<md-button ng-click="done()">Set Password </md-button>' +
+              '</md-dialog-content>' +
+              '</md-dialog>',
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:true
+            })
+            .then(function(pass) {
+              console.log(pass);
+              $http.get('/user/updatepass?username='+username+"&pass="+pass, {}).then(function (response) { //get user data to display in table
+                $scope.showLoading = true;
+                self.updateUsers();
+              });
+            }, function() {
+              //cancelled
+            });
+        }
+
         //done after controller initialisation
         self.updateUsers();
-    }
+    };
+
+    function ResetPasswordDialogController($scope, $mdDialog) {
+      $scope.pass = '';
+      $scope.hide = function() {
+        $mdDialog.hide();
+      };
+      $scope.cancel = function() {
+        $mdDialog.cancel();
+      };
+      $scope.done = function() {
+        $mdDialog.hide($scope.pass);
+      };
+    };
 })();
