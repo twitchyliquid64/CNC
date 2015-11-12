@@ -9,6 +9,7 @@
     app.config(['$routeProvider',
       function($routeProvider) {
         $routeProvider.when('/admin/users', {templateUrl: '/view/users'});
+        $routeProvider.when('/admin/entities', {templateUrl: '/view/entities', controller: 'entityViewerAdminController'});
     }]);
 
     //material colour scheme

@@ -40,6 +40,11 @@
               </md-button>
           </md-list-item>
           <md-list-item>
+              <md-button ng-click="main.activateRouted('/admin/entities', 'entities')">
+                <md-icon md-font-library="material-icons">settings_input_antenna</md-icon> Entities
+              </md-button>
+          </md-list-item>
+          <md-list-item>
               <md-button ng-click="main.activate('data')">
                 <md-icon md-font-library="material-icons">storage</md-icon> Data
               </md-button>
@@ -107,5 +112,6 @@
     <script src="/static/js/app/userController.js"></script>
     <script src="/static/js/app/usereditController.js"></script>
     <script src="/static/js/app/userpermissionController.js"></script>
+    <script src="/static/js/app/entity/entityViewerAdminController.js"></script>
   </body>
 </html>

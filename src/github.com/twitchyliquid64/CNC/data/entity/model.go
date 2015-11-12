@@ -10,9 +10,12 @@ type Entity struct {
     UpdatedAt       time.Time
     DeletedAt       *time.Time
 
+    Icon            string
     CreatorUserID   int       `sql:"index"`
     Name            string    `sql:"index"`
     Category        string
+
+    LastStatString  string
 
     APIKey          string    `sql:"index"`
 }

@@ -13,16 +13,14 @@ func Initialise() {
   registerCoreHandlers()
   registerUserHandlers()
   registerSummaryHandlers()
+  registerEntityHandlers()
   registerTemplateViews()
 
   logging.Info("web", "Registering templates")
   registerCoreTemplates()
   registerUserTemplates()
   registerSummaryTemplates()
-}
-
-func registerTemplateViews() {
-  web.Get("/view/users", usersAdminMainPage_view, config.All().Web.Domain)
+  registerEntityTemplates()
 }
 
 func registerCoreHandlers() {
@@ -43,9 +41,19 @@ func registerUserHandlers() {
   web.Get("/user/updatepass", resetPasswordHandlerAPI, config.All().Web.Domain)
 }
 
-func registerSummaryHandlers(){
+func registerSummaryHandlers(){ //main page - dashboard at '/'
   web.Get("/", dashboardMainPage, config.All().Web.Domain)
 }
+
+func registerEntityHandlers(){
+  web.Get("/entities", getAllEntitiesHandlerAPI, config.All().Web.Domain)
+}
+
+func registerTemplateViews() {
+  web.Get("/view/users", usersAdminMainPage_view, config.All().Web.Domain)
+  web.Get("/view/entities", entityAdminViewerPage_view, config.All().Web.Domain)
+}
+
 
 func registerCoreTemplates(){
   logError(registerTemplate("bannertop.tpl", "bannertop"), "Template load error: ")
@@ -65,6 +73,9 @@ func registerSummaryTemplates(){
   logError(registerTemplate("dashboardindex.tpl", "dashboardindex"), "Template load error: ")
 }
 
+func registerEntityTemplates(){
+  logError(registerTemplate("entity/adminentityviewer.tpl", "adminentityviewer"), "Template load error: ")
+}
 
 func logError(e error, prefix string){
   if e != nil{
