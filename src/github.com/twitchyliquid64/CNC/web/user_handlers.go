@@ -9,6 +9,11 @@ import (
   "encoding/json"
 )
 
+
+
+// API endpoint called to add a new permission to a specified username.
+// Checks if the session's user is an admin.
+//
 func addPermissionUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -29,6 +34,15 @@ func addPermissionUserHandlerAPI(ctx *web.Context) {
   data.DB.Save(&usr)
 }
 
+
+
+
+
+
+
+// API endpoint called to delete a permission from a specified username.
+// Checks if the session's user is an admin.
+//
 func deletePermissionUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -51,6 +65,14 @@ func deletePermissionUserHandlerAPI(ctx *web.Context) {
 }
 
 
+
+
+
+
+
+// API endpoint called to delete a specific user.
+// Checks if the session's user is an admin.
+//
 func deleteUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -66,6 +88,15 @@ func deleteUserHandlerAPI(ctx *web.Context) {
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
 
+
+
+
+
+
+
+// API endpoint called to set a users password to a given string.
+// Checks if the session's user is an admin.
+//
 func resetPasswordHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -88,6 +119,15 @@ func resetPasswordHandlerAPI(ctx *web.Context) {
   data.DB.Save(&authMethod)
 }
 
+
+
+
+
+
+
+// API endpoint called to create a new user.
+// Checks if the session's user is an admin.
+//
 func newUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -109,6 +149,15 @@ func newUserHandlerAPI(ctx *web.Context) {
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
 
+
+
+
+
+
+
+// API endpoint called to update the details associated with a user.
+// Checks if the session's user is an admin.
+//
 func updateUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -131,6 +180,16 @@ func updateUserHandlerAPI(ctx *web.Context) {
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
 
+
+
+
+
+
+
+
+// API endpoint called to fetch all details given a given username.
+// Checks if the session's user is an admin.
+//
 func getUserHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 
@@ -156,6 +215,15 @@ func getUserHandlerAPI(ctx *web.Context) {
   ctx.ResponseWriter.Write(d)
 }
 
+
+
+
+
+
+
+// API endpoint called to fetch ALL users details and return them as JSON.
+// Checks if the session's user is an admin.
+//
 func getUsersHandlerAPI(ctx *web.Context) {
   isLoggedIn, usr, _ := getSessionByCookie(ctx)
 
@@ -171,6 +239,13 @@ func getUsersHandlerAPI(ctx *web.Context) {
   }
   ctx.ResponseWriter.Write(d)
 }
+
+
+
+
+
+
+
 
 func loginHandler(ctx *web.Context) {
 
@@ -188,6 +263,10 @@ func loginHandler(ctx *web.Context) {
     ctx.Abort(500, "ERROR NOT FOUND")
   }
 }
+
+
+
+
 
 
 func logoutHandler(ctx *web.Context) {

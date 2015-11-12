@@ -27,6 +27,8 @@ func init() {
 }
 
 
+// destroys memory structures for already loaded templates, re-parsing them
+// such that any changes to them can now be seen.
 func templateReInit() {
   logging.Info("web", "Now reloading all templates.")
   templates = template.New("__unused__")
@@ -39,6 +41,8 @@ func templateReInit() {
 }
 
 
+// Registers a template with a given filename and template name into the system.
+// Is immediately available for use upon returning.
 func registerTemplate(fname, templateName string)error {
   fname = path.Join(TEMPLATE_FOLDER, fname)
   templateRecords = append(templateRecords, templateRecord{name: templateName, file: fname,})
@@ -46,6 +50,8 @@ func registerTemplate(fname, templateName string)error {
   return newTemplateFromFile(fname, templateName)
 }
 
+
+// Helper function to parse templates from a file.
 func newTemplateFromFile(fname, templateName string)error {
     templ := templates.New(templateName)
     templ.Delims(TEMPLATE_LEFT_DELIMITER, TEMPLATE_RIGHT_DELIMITER)

@@ -6,7 +6,7 @@ import (
   "github.com/hoisie/web"
 )
 
-
+// ### THIS FILE SHOULD CONTAIN ALL INITIALISATION CODE FOR BOTH TEMPLATES AND URL HANDLERS ###
 
 func Initialise() {
   logging.Info("web", "Registering page handlers")

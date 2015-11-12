@@ -43,7 +43,17 @@
               );
             }
           }, function(response) {
-            alert(response);
+            self.isLoggingIn = false;
+
+            $mdDialog.show(
+              $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('Authentication Error')
+                .content('The supplied credentials are invalid. Please try again.')
+                .ariaLabel('Login Error Dialog')
+                .ok('OK')
+            );
           });
         };
     }

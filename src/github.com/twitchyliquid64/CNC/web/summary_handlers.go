@@ -21,6 +21,10 @@ func (inst mainPageData)IsAdmin()bool{
   return false
 }
 
+
+// Page Handler which outputs the HTML for the main page.
+//
+//
 func dashboardMainPage(ctx *web.Context) {
   isLoggedIn, user, session := getSessionByCookie(ctx)
 
