@@ -62,11 +62,10 @@ func registerCoreTemplates(){
 }
 
 func registerUserTemplates(){
-  logError(registerTemplate("test.tpl", "test"), "Template load error: ")
   logError(registerTemplate("login.tpl", "login"), "Template load error: ")
-  logError(registerTemplate("userpage.tpl", "userpage"), "Template load error: ")
-  logError(registerTemplate("usercreateeditpage.tpl", "usercreateeditpage"), "Template load error: ")
-  logError(registerTemplate("userpermissions.tpl", "userpermissions"), "Template load error: ")
+  logError(registerTemplate("user/userpage.tpl", "userpage"), "Template load error: ")
+  logError(registerTemplate("user/usercreateeditpage.tpl", "usercreateeditpage"), "Template load error: ")
+  logError(registerTemplate("user/userpermissions.tpl", "userpermissions"), "Template load error: ")
 }
 
 func registerSummaryTemplates(){
