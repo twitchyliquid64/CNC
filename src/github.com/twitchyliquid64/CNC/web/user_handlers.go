@@ -59,8 +59,7 @@ func deletePermissionUserHandlerAPI(ctx *web.Context) {
     return
   }
 
-  //TODO: Refactor so DB code is in model/user rather than in the handler
-  data.DB.Where("user_id = ? and name = ?", usr.ID, ctx.Params["perm"]).Delete(&user.Permission{})
+  data.DB.Where(user.USERID_AND_THEN_NAME_FILTER, usr.ID, ctx.Params["perm"]).Delete(&user.Permission{})
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
 
@@ -83,9 +82,13 @@ func deleteUserHandlerAPI(ctx *web.Context) {
 
   username := ctx.Params["username"]
 
-  //TODO: Refactor so DB code is in model/user rather than in the handler
-  data.DB.Where("username = ?", username).Delete(&user.User{})
-  ctx.ResponseWriter.Write([]byte("GOOD"))
+  err := user.DeleteByUsername(data.DB, username)
+  if err == nil {
+      ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte("ERR"))
+      logging.Error("web-user", err)
+  }
 }
 
 
@@ -113,8 +116,9 @@ func resetPasswordHandlerAPI(ctx *web.Context) {
     return
   }
 
+  //get the first authentication method of type password, and set its value
   var authMethod user.AuthenticationMethod
-  data.DB.Where("user_id = ? and method_type = ?", usr.ID, user.AUTH_PASSWD).First(&authMethod)
+  data.DB.Where(user.USERID_AND_THEN_METHODTYPE_FILTER, usr.ID, user.AUTH_PASSWD).First(&authMethod)
   authMethod.Value = ctx.Params["pass"]
   data.DB.Save(&authMethod)
 }
@@ -175,7 +179,6 @@ func updateUserHandlerAPI(ctx *web.Context) {
       return
   }
 
-  logging.Info("web-user", usr)
   data.DB.Save(&usr)
   ctx.ResponseWriter.Write([]byte("GOOD"))
 }
