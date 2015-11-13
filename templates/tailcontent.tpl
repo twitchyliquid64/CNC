@@ -12,4 +12,3 @@
 
     <!-- Module declaration needs to come first -->
     <script src="/static/js/app/baseApp.js"></script>
-    <script src="/static/js/app/loggerService.js"></script>
