@@ -113,5 +113,6 @@
     <script src="/static/js/app/user/usereditController.js"></script>
     <script src="/static/js/app/user/userpermissionController.js"></script>
     <script src="/static/js/app/entity/entityViewerAdminController.js"></script>
+    <script src="/static/js/app/entity/entityFormController.js"></script>
   </body>
 </html>

@@ -7,7 +7,7 @@
       <md-button class="ng-icon-button" ng-click="refresh()" aria-label="Refresh">
         <md-icon md-font-library="material-icons">refresh</md-icon>
       </md-button>
-      <md-button class="ng-icon-button" ng-click="" aria-label="Add Entity">
+      <md-button class="ng-icon-button" ng-click="main.activateRouted('/admin/entities/new', 'entity-edit')" aria-label="Add Entity">
         <md-icon md-font-library="material-icons">add</md-icon>
       </md-button>
     </div>

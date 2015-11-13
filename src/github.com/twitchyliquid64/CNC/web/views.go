@@ -29,6 +29,14 @@ func entityAdminViewerPage_view(ctx *web.Context) {
 	t.Execute(ctx.ResponseWriter, nil)
 }
 
+func entityAdminForm_view(ctx *web.Context) {
+  t := templates.Lookup("adminentityform")
+	if t == nil {
+		logging.Error("web", "No template found.")
+	}
+	t.Execute(ctx.ResponseWriter, nil)
+}
+
 func templateReloadHandler(ctx *web.Context) {
   templateReInit()
 }

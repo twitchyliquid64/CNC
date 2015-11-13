@@ -44,6 +44,8 @@
           self.activateRouted('/admin/users', 'users');
         } else if(p == '/admin/entities') {
           self.activateRouted('/admin/entities', 'entities');
+        } else if(p == '/admin/entities/new') {
+          self.activateRouted('/admin/entities/new', 'entity-edit');
         }
     }
 })();

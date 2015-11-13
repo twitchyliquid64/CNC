@@ -52,6 +52,7 @@ func registerEntityHandlers(){
 func registerTemplateViews() {
   web.Get("/view/users", usersAdminMainPage_view, config.All().Web.Domain)
   web.Get("/view/entities", entityAdminViewerPage_view, config.All().Web.Domain)
+  web.Get("/view/entities/form", entityAdminForm_view, config.All().Web.Domain)
 }
 
 
@@ -74,6 +75,7 @@ func registerSummaryTemplates(){
 
 func registerEntityTemplates(){
   logError(registerTemplate("entity/adminentityviewer.tpl", "adminentityviewer"), "Template load error: ")
+  logError(registerTemplate("entity/adminentitycreateedit.tpl", "adminentityform"), "Template load error: ")
 }
 
 func logError(e error, prefix string){

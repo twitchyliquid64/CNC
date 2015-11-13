@@ -10,6 +10,7 @@
       function($routeProvider) {
         $routeProvider.when('/admin/users', {templateUrl: '/view/users'});
         $routeProvider.when('/admin/entities', {templateUrl: '/view/entities', controller: 'entityViewerAdminController'});
+        $routeProvider.when('/admin/entities/new', {templateUrl: '/view/entities/form', controller: 'entityFormController'});
     }]);
 
     //material colour scheme
