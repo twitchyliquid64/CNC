@@ -86,7 +86,7 @@ func deleteUserHandlerAPI(ctx *web.Context) {
   if err == nil {
       ctx.ResponseWriter.Write([]byte("GOOD"))
   } else {
-      ctx.ResponseWriter.Write([]byte("ERR"))
+      ctx.ResponseWriter.Write([]byte(err.Error()))
       logging.Error("web-user", err)
   }
 }
@@ -149,8 +149,13 @@ func newUserHandlerAPI(ctx *web.Context) {
       return
   }
 
-  data.DB.Create(&usr)
-  ctx.ResponseWriter.Write([]byte("GOOD"))
+  err = data.DB.Create(&usr).Error
+  if err == nil {
+      ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-user", err)
+  }
 }
 
 
@@ -179,8 +184,13 @@ func updateUserHandlerAPI(ctx *web.Context) {
       return
   }
 
-  data.DB.Save(&usr)
-  ctx.ResponseWriter.Write([]byte("GOOD"))
+  err = data.DB.Save(&usr).Error
+  if err == nil {
+      ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-user", err)
+  }
 }
 
 

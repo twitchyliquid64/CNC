@@ -60,6 +60,8 @@
                 console.log(response);
                 if (response.data == "GOOD") {
                   self.createDialog("New user created successfully.", "Users");
+                } else {
+                  self.createDialog("Server responded with error: " + response.data, "Server Error");
                 }
               }, function errorCallback(response) {
                 console.log(response);
@@ -74,6 +76,8 @@
                 console.log(response);
                 if (response.data == "GOOD") {
                   self.createDialog("User edited successfully.", "Users");
+                } else {
+                  self.createDialog("Server responded with error: " + response.data, "Server Error");
                 }
               }, function errorCallback(response) {
                 console.log(response);
