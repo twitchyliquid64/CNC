@@ -46,6 +46,8 @@
           self.activateRouted('/admin/entities', 'entities');
         } else if(p == '/admin/entities/new') {
           self.activateRouted('/admin/entities/new', 'entity-edit');
+        } else if(p.startsWith('/admin/entity/')) {
+          self.activateRouted(p, 'entity-edit');
         }
     }
 })();

@@ -14,6 +14,12 @@ func GetAll(db gorm.DB)[]Entity{
 }
 
 
+func GetEntityById(id uint, db gorm.DB)(ret Entity,err error) {
+  err = db.Where(&Entity{ID:  id}).First(&ret).Error
+  return
+}
+
+
 func NewEntity(ent *Entity, usrID uint, db gorm.DB)(*Entity,error){
   ent.CreatorUserID = int(usrID)
   ent.APIKey = util.RandAlphaKey(DEFAULT_APIKEY_SIZE)

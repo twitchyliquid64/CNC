@@ -1,9 +1,9 @@
 (function () {
 
     angular.module('baseApp')
-        .controller('entityFormController', ['$scope', '$rootScope', '$http', '$mdDialog', '$location', entityFormController]);
+        .controller('entityFormController', ['$scope', '$rootScope', '$http', '$mdDialog', '$location', '$routeParams', '$mdToast', entityFormController]);
 
-    function entityFormController($scope, $rootScope, $http, $mdDialog, $location) {
+    function entityFormController($scope, $rootScope, $http, $mdDialog, $location, $routeParams, $mdToast) {
         var self = this;
 
         if($location.path().indexOf("new", this.length - "new".length) !== -1){ //if the url (/entities/?) ends in new
@@ -52,10 +52,35 @@
           });
         }
 
+        self.saveChanges = function() {
+          $http({
+            method: 'POST',
+            url: '/entities/edit',
+            data: $scope.entity
+          }).then(function successCallback(response) {
+              console.log(response);
+              if (response.data == "GOOD") {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .content('Entity details updated successfully.')
+                    .position('bottom')
+                    .hideDelay(3000)
+                );
+              } else {
+                self.createDialog("Server responded with error: " + response.data, "Server Error");
+              }
+            }, function errorCallback(response) {
+              console.log(response);
+              self.createDialog(response.data, "Server Error");
+          });
+        }
+
         self.process = function() {
           console.log($scope.entity);
           if ($scope.isNewEntityMode) {
             self.create();
+          }else {
+            self.saveChanges();
           }
         };
 
@@ -66,5 +91,18 @@
 
         $scope.process = self.process;
         $scope.entity = self.buildEmptyEntityObject();
+
+        // if we are editing an existing entity we need to load it's existing fields
+        if (!$scope.isNewEntityMode) {
+          $http.get('/entity?entityID='+$routeParams.entityID, {}).then(function (response) {
+            entity = response.data;
+            $scope.entity = entity;
+            $scope.showLoading = false;
+            console.log($scope.entity);
+          }, function errorCallback(response) {
+            console.log(response);
+            self.createDialog(response, "Server Error");
+          });
+        }
     }
 })();

@@ -6,6 +6,7 @@ import (
   "github.com/twitchyliquid64/CNC/data"
   "github.com/hoisie/web"
   "encoding/json"
+  "strconv"
 )
 
 // Passes back a JSON array of all entities
@@ -51,6 +52,68 @@ func newEntityHandlerAPI(ctx *web.Context) {
   }
 
   _, err = entity.NewEntity(&ent, u.ID, data.DB)
+  if err == nil {
+      ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-entity", err)
+  }
+}
+
+
+
+
+// Called to get the details for a specific entity ID, passing back all info in JSON.
+//
+//
+func getEntityHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-entity", "getEntity() called unauthorized, aborting")
+    return
+  }
+
+  entID, err := strconv.Atoi(ctx.Params["entityID"])
+  if err != nil {
+      logging.Error("web-entity", err)
+  }
+
+  ent, err := entity.GetEntityById(uint(entID), data.DB)
+  if err != nil {
+      logging.Error("web-entity", err)
+  }
+
+  d, err := json.Marshal(ent)
+  if err != nil {
+    logging.Error("web-entity", err)
+  }
+  ctx.ResponseWriter.Write(d)
+}
+
+
+
+// Called to update the details for a specific entity, recieving all info as JSON.
+//
+//
+func updateEntityHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-entity", "updateEntity() called unauthorized, aborting")
+    return
+  }
+
+  decoder := json.NewDecoder(ctx.Request.Body)
+  var ent entity.Entity
+  err := decoder.Decode(&ent)
+  if err != nil {
+      logging.Error("web-entity", "updateEntity() failed to decode JSON:", err)
+      ctx.Abort(500, "JSON error")
+      return
+  }
+
+  err = data.DB.Save(&ent).Error
   if err == nil {
       ctx.ResponseWriter.Write([]byte("GOOD"))
   } else {

@@ -25,8 +25,9 @@
       md-input-name="autocompleteField"
       md-no-cache="true"
       md-items="icon in icons"
-      md-item-text="icon"
+      md-item-text="entity.Icon"
       md-search-text="entity.Icon"
+      md-selected-item="entity.Icon"
       md-floating-label="Icon">
       <md-item-template>
         <i class="material-icons" style="vertical-align: middle;">{{icon}}</i> {{icon}}
