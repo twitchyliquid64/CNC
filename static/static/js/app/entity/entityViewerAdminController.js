@@ -16,6 +16,7 @@
             entities = response.data;
             $scope.entities = entities;
             $scope.showLoading = false;
+            console.log($scope.entities);
           });
         };
 

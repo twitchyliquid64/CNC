@@ -34,8 +34,29 @@
           );
         };
 
+        self.create = function() {
+          $http({
+            method: 'POST',
+            url: '/entities/new',
+            data: $scope.entity
+          }).then(function successCallback(response) {
+              console.log(response);
+              if (response.data == "GOOD") {
+                self.createDialog("New entity created successfully.", "Entities");
+              } else {
+                self.createDialog("Server responded with error: " + response.data, "Server Error");
+              }
+            }, function errorCallback(response) {
+              console.log(response);
+              self.createDialog(response.data, "Server Error");
+          });
+        }
+
         self.process = function() {
           console.log($scope.entity);
+          if ($scope.isNewEntityMode) {
+            self.create();
+          }
         };
 
         //random list of icons to choose from

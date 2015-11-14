@@ -47,6 +47,7 @@ func registerSummaryHandlers(){ //main page - dashboard at '/'
 
 func registerEntityHandlers(){
   web.Get("/entities", getAllEntitiesHandlerAPI, config.All().Web.Domain)
+  web.Post("/entities/new", newEntityHandlerAPI, config.All().Web.Domain)
 }
 
 func registerTemplateViews() {
