@@ -37,7 +37,7 @@
       <tbody>
         <tr ng-repeat="entity in entities">
           <td><i class="material-icons" style="vertical-align: middle;">{{entity.Icon}}</i> {{entity.Name}}</td>
-          <td>{{entity.UpdatedAt}}</td>
+          <td>{{entity.UpdatedAt_time}}</td>
           <td>{{entity.LastStatString}}</td>
           <td>
             <md-button class="ng-icon-button small-icons" ng-click="edit(entity.ID);main.activate('entity-edit')" aria-label="Edit Entity">

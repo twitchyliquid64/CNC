@@ -12,3 +12,6 @@
 
     <!-- Module declaration needs to come first -->
     <script src="/static/js/app/baseApp.js"></script>
+
+    <!-- Other dependencies -->
+    <script src="/static/js/moment.min.js"></script>
