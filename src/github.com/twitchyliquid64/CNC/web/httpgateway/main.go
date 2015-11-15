@@ -25,8 +25,8 @@ func redir(w http.ResponseWriter, req *http.Request) {
   if(strings.Contains(config.All().Web.Listener, ":")) { //if a port is specified in the listening address
     portStr = config.All().Web.Listener[strings.Index(config.All().Web.Listener, ":"):] //get it
   }
-  if(portStr == ":80") {
-    portStr = ""//no point, port 80 is implicit anyway
+  if(portStr == ":443") {
+    portStr = ""//no point, port 443 is implicit anyway for HTTPS
   }
 
   newURL := "https://" + config.All().Web.Domain + portStr + req.RequestURI
@@ -62,8 +62,9 @@ func (f *BasicHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 //
 func Init() {
   if(config.All().Web.SimpleHTTPGateway.Enable) {
-    logging.Info("web-gateway", "Initialising gateway on ", config.All().Web.SimpleHTTPGateway.Listener)
+    // sets up a gateway on the address specificed in config, with all req's handled by ServeHTTP above
     go http.ListenAndServe(config.All().Web.SimpleHTTPGateway.Listener, &BasicHTTPHandler{})
+    logging.Info("web-gateway", "Initialised server on ", config.All().Web.SimpleHTTPGateway.Listener)
   } else {
     logging.Warning("web-gateway", "HTTP Gateway disabled.")
   }

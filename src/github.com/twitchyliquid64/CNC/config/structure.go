@@ -27,7 +27,7 @@ type Config struct {
 	Web struct{							//Details needed to get the website part working.
 		Domain string					//Domain should be in the form example.com
 		Listener string				//Address:port (address can be omitted) where the HTTPS listener will bind.
-		SimpleHTTPGateway struct {
+		SimpleHTTPGateway struct {	//Simple HTTP only server, used mostly to redirect to HTTPS or provide endpoints for devices which only support HTTP
 			Enable bool
 			Listener string			//Address:port where the HTTP listener should bind.
 		}

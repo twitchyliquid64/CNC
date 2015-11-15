@@ -8,8 +8,8 @@ import (
 )
 
 func Run() {
-  logging.Info("web", "Initialising server")
   httpgateway.Init()
+  logging.Info("web", "Initialised server on ", config.All().Web.Listener)
   web.RunTLS(config.All().Web.Listener, config.TLS())
   //web.Run(config.All().Web.Listener)
 }

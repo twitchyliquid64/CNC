@@ -3,6 +3,7 @@ package main
 import (
 	// "github.com/twitchyliquid64/CNC/signaller"
 	"github.com/twitchyliquid64/CNC/messenger"
+	"github.com/twitchyliquid64/CNC/registry"
 	"github.com/twitchyliquid64/CNC/logging"
 	"github.com/twitchyliquid64/CNC/config"
 	"github.com/twitchyliquid64/CNC/data"
@@ -20,7 +21,7 @@ func run(stopSignal chan bool) {
 		logging.Fatal("main", "Configuration error")
 	}
 	logging.Info("main", "Configuration read, now starting '", config.GetServerName(), "'")
-
+	registry.Initialise()
 	data.Initialise()
 
 	messenger.Initialise()
