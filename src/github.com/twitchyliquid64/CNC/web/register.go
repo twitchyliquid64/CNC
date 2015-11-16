@@ -3,6 +3,7 @@ package web
 import (
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/config"
+  "golang.org/x/net/websocket"
   "github.com/hoisie/web"
 )
 
@@ -14,6 +15,7 @@ func Initialise() {
   registerUserHandlers()
   registerSummaryHandlers()
   registerEntityHandlers()
+  registerWebSockets()
   registerTemplateViews()
 
   logging.Info("web", "Registering templates")
@@ -26,6 +28,7 @@ func Initialise() {
 func registerCoreHandlers() {
   web.Get("/login", loginMainPage, config.All().Web.Domain)
   web.Get("/dev/reload", templateReloadHandler, config.All().Web.Domain)
+  web.Get("/sys-status", getSysComponentsStatusAPIHandler, config.All().Web.Domain)
 }
 
 func registerUserHandlers() {
@@ -50,6 +53,10 @@ func registerEntityHandlers(){
   web.Post("/entities/new", newEntityHandlerAPI, config.All().Web.Domain)
   web.Post("/entities/edit", updateEntityHandlerAPI, config.All().Web.Domain)
   web.Get("/entity", getEntityHandlerAPI, config.All().Web.Domain)
+}
+
+func registerWebSockets() {
+  web.Get("/ws/echotest", websocket.Handler(ws_EchoServer), config.All().Web.Domain)
 }
 
 func registerTemplateViews() {

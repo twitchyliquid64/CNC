@@ -7,7 +7,7 @@
   </head>
 
   <body layout="column" ng-app="baseApp" ng-controller="mainController as main" ng-cloak>
-      <md-toolbar layout="row" flex="10" class="md-whiteframe-z1">
+      <md-toolbar layout="row" flex="10">
         <h1 flex><md-icon md-font-library="material-icons" style="font-size: 250%;">av_timer</md-icon> CNC</h1>
 
           <div class="md-toolbar-tools" flex layout-align="end center">

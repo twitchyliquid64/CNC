@@ -1,6 +1,8 @@
 package syscomponents
 
 import (
+	"github.com/twitchyliquid64/CNC/logging"
+  "encoding/json"
   "sync"
 )
 
@@ -25,4 +27,36 @@ func Register(component SysComponent) {
   defer componentListLock.Unlock()
 
   sysComponent = append(sysComponent, component)
+}
+
+
+func GetJSON()string{
+  var data []map[string]interface{}
+  componentListLock.Lock()
+  defer componentListLock.Unlock()
+
+  for _, component := range sysComponent {
+    temp := map[string]interface{}{}
+    temp["Name"] = component.Name()
+    temp["Icon"] = component.IconStr()
+    if component.IsDisabled() {
+      temp["State"] = "Disabled"
+    } else if component.IsNominal() {
+      temp["State"] = "OK"
+    } else if component.IsFault() {
+      temp["State"] = "Fault"
+    }
+    if component.IsFault() {
+      temp["Error"] = component.Error()
+    }
+
+    data = append(data, temp)
+  }
+
+  output, err := json.Marshal(data)
+  if err != nil{
+    logging.Error("registry-syscomponent", "JSON error: ", err)
+  }
+
+  return string(output)
 }

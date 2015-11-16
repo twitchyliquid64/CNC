@@ -20,7 +20,7 @@
     app.config(function($mdThemingProvider, $mdIconProvider){
       $mdThemingProvider.theme('default')
                           .primaryPalette('teal')
-                          .accentPalette('brown');
+                          .accentPalette('amber');
     });
 
 })();
