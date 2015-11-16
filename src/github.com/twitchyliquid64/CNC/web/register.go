@@ -56,6 +56,7 @@ func registerTemplateViews() {
   web.Get("/view/users", usersAdminMainPage_view, config.All().Web.Domain)
   web.Get("/view/entities", entityAdminViewerPage_view, config.All().Web.Domain)
   web.Get("/view/entities/form", entityAdminForm_view, config.All().Web.Domain)
+  web.Get("/view/dashboard/summary", dashboardSummary_view, config.All().Web.Domain)
 }
 
 
@@ -74,6 +75,7 @@ func registerUserTemplates(){
 
 func registerSummaryTemplates(){
   logError(registerTemplate("dashboardindex.tpl", "dashboardindex"), "Template load error: ")
+  logError(registerTemplate("dashboardsummary.tpl", "dashboardsummary"), "Template load error: ")
 }
 
 func registerEntityTemplates(){

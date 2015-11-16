@@ -46,8 +46,12 @@
           self.activateRouted('/admin/entities', 'entities');
         } else if(p == '/admin/entities/new') {
           self.activateRouted('/admin/entities/new', 'entity-edit');
+        } else if(p == '/admin/dashboard') {
+          self.activateRouted('/admin/dashboard', 'summary');
         } else if(p.startsWith('/admin/entity/')) {
           self.activateRouted(p, 'entity-edit');
+        } else if(p == "/" || p == ""){ // default
+          self.activateRouted('/admin/dashboard', 'summary');
         }
     }
 })();

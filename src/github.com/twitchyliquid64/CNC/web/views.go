@@ -37,6 +37,14 @@ func entityAdminForm_view(ctx *web.Context) {
 	t.Execute(ctx.ResponseWriter, nil)
 }
 
+func dashboardSummary_view(ctx *web.Context) {
+  t := templates.Lookup("dashboardsummary")
+	if t == nil {
+		logging.Error("web", "No template found.")
+	}
+	t.Execute(ctx.ResponseWriter, nil)
+}
+
 func templateReloadHandler(ctx *web.Context) {
   templateReInit()
 }

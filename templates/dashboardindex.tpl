@@ -30,7 +30,7 @@
           {!{if .IsAdmin}!}
           <md-subheader class="md-no-sticky">Admin</md-subheader>
           <md-list-item>
-              <md-button ng-click="main.activate('summary')">
+              <md-button ng-click="main.activateRouted('/admin/dashboard', 'summary')">
                 <md-icon md-font-library="material-icons">tune</md-icon> Summary
               </md-button>
           </md-list-item>
@@ -81,28 +81,19 @@
       <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
 
         {!{if .IsAdmin}!}
-        <md-content class="content" flex ng-show="main.focus == 'summary'">
-          <h2>Summary</h2>
-          <p>server uptime, resources, running plugins etc</p>
-          <p><b>Is Admin: </b>{!{.IsAdmin}!}</p>
-          <p><b>Username: </b>{!{.User.Username}!}</p>
-          <p><b>First Name: </b>{!{.User.Firstname}!}</p>
-          <p><b>Last Name: </b>{!{.User.Lastname}!}</p>
-        </md-content>
-
         {!{template "usercreateeditpage"}!}
 
         {!{template "userpermissions"}!}
-
-        <md-content class="content" flex ng-show="main.isRoutingMode">
-          <div ng-view></div>
-        </md-content>
 
         <md-content class="content" flex ng-show="main.focus == 'data'">
           <h2>Data</h2>
           <p>all custom datasets and active streams will go here.</p>
         </md-content>
         {!{end}!}
+
+        <md-content class="content" flex ng-show="main.isRoutingMode" layout-fill>
+          <div ng-view layout-fill></div>
+        </md-content>
 
       </div>
     </div>

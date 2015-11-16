@@ -6,3 +6,18 @@
   padding-right: 40px;
   padding-top: 5px;
 }
+
+
+.logContainer {
+	overflow-y:scroll;
+	max-height: 700px;
+}
+
+.logElement {
+	font-family: monospace;
+}
+
+.logComponent {
+	color: #FF6607;
+  min-width: 95px;
+}

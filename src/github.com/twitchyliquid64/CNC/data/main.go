@@ -15,6 +15,7 @@ var DB gorm.DB
 
 func Initialise() {
   logging.Info("data", "Initialise()")
+  trackingSetup()
 
   dbConn, err := sql.Open("postgres", "postgres://" + config.All().Database.Username +
                                      ":" + config.All().Database.Password +
@@ -24,6 +25,7 @@ func Initialise() {
 	if err != nil {
 		logging.Error("data", "Error opening DB connection")
     logging.Error("data", "Error: ", err)
+    tracking_notifyFault(err)
 	}
 
   DB, err = gorm.Open("postgres", dbConn)
