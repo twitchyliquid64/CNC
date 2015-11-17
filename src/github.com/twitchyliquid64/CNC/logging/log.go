@@ -45,5 +45,6 @@ func writeLogLine(inp string) {
 }
 
 func publishLogMessage(msgType, module string, content ...interface{}) {
-
+	c := fmt.Sprint(content...)
+	publishMessage(module, msgType, c)
 }

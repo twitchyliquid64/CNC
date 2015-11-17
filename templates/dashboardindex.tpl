@@ -100,10 +100,12 @@
 
     {!{template "tailcontent"}!}
     <script src="/static/js/app/mainController.js"></script>
+    <script src="/static/js/app/summaryController.js"></script>
     <script src="/static/js/app/user/userController.js"></script>
     <script src="/static/js/app/user/usereditController.js"></script>
     <script src="/static/js/app/user/userpermissionController.js"></script>
     <script src="/static/js/app/entity/entityViewerAdminController.js"></script>
     <script src="/static/js/app/entity/entityFormController.js"></script>
+    <script src="/static/js/app/services/loggerService.js"></script>
   </body>
 </html>

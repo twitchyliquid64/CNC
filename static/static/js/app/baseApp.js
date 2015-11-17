@@ -12,7 +12,7 @@
         $routeProvider.when('/admin/entities', {templateUrl: '/view/entities', controller: 'entityViewerAdminController'});
         $routeProvider.when('/admin/entities/new', {templateUrl: '/view/entities/form', controller: 'entityFormController'});
         $routeProvider.when('/admin/entity/:entityID', {templateUrl: '/view/entities/form', controller: 'entityFormController'});
-        $routeProvider.when('/admin/dashboard', {templateUrl: '/view/dashboard/summary'});
+        $routeProvider.when('/admin/dashboard', {templateUrl: '/view/dashboard/summary', controller: 'summaryController'});
 
     }]);
 

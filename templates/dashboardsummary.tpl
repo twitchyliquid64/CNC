@@ -5,15 +5,15 @@
 
   <md-content flex layout="row" layout-fill>
     <md-content flex="99" layout="column" layout-fill>
-      <md-subheader class="md-no-sticky">System Log</md-subheader>
+      <md-subheader class="md-no-sticky" layout="column">
+        <span flex layout-fill>System Log</span>
+        <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="isConnected()">check</md-icon>
+        <md-icon flex class="md-avatar" md-font-library="material-icons" ng-hide="isConnected()">close</md-icon>
+      </md-subheader>
 
-      <div class="logElement" layout="row">
-        <span class="logComponent">MESSENGER</span>
-        <span >Initialisation completed</span>
-      </div>
-      <div class="logElement" layout="row">
-        <span class="logComponent">WEB-GATEWAY</span>
-        <span >Request with invalid route dropped</span>
+      <div class="logElement" layout="row" ng-repeat="msg in getLogMsgs()">
+        <span class="logComponent">[{{msg.Component | uppercase}}]</span>
+        <span >{{msg.Message}}</span>
       </div>
     </md-content>
 

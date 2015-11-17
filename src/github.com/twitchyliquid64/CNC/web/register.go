@@ -57,6 +57,7 @@ func registerEntityHandlers(){
 
 func registerWebSockets() {
   web.Get("/ws/echotest", websocket.Handler(ws_EchoServer), config.All().Web.Domain)
+  web.Get("/ws/logging", websocket.Handler(ws_LogServer), config.All().Web.Domain)
 }
 
 func registerTemplateViews() {
