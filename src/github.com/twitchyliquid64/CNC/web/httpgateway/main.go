@@ -62,10 +62,17 @@ func (f *BasicHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 //
 func Init() {
   if(config.All().Web.SimpleHTTPGateway.Enable) {
+    
     // sets up a gateway on the address specificed in config, with all req's handled by ServeHTTP above
-    go http.ListenAndServe(config.All().Web.SimpleHTTPGateway.Listener, &BasicHTTPHandler{})
+    go func(){
+      err := http.ListenAndServe(config.All().Web.SimpleHTTPGateway.Listener, &BasicHTTPHandler{})
+      tracking_notifyFault(err)
+    }()
+
     logging.Info("web-gateway", "Initialised server on ", config.All().Web.SimpleHTTPGateway.Listener)
+    trackingSetup(false)//enabled
   } else {
     logging.Warning("web-gateway", "HTTP Gateway disabled.")
+    trackingSetup(true) //disabled
   }
 }

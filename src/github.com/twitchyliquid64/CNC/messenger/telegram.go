@@ -12,6 +12,7 @@ func TelegramMessageHandler() {
   err := gTelegramConnection.UpdatesChan(u)
   if err != nil {
       logging.Error("messenger", err)
+			tracking_notifyFault(err)
   } else {
     for update := range gTelegramConnection.Updates {
 

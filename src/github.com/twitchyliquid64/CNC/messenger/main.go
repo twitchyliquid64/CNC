@@ -18,11 +18,13 @@ func Initialise()error{
 
   gTelegramBotUsername = config.All().Messenger.TelegramIntegration.BotUsername
   logging.Info("messenger", "Now connecting to telegram.org 'BotFather' using ", gTelegramBotUsername)
+	trackingSetup(false) //enabled
 
   var err error
   gTelegramConnection, err = tgbotapi.NewBotAPI(config.All().Messenger.TelegramIntegration.Token)
   if err != nil {
       logging.Error("messenger", err.Error())
+			tracking_notifyFault(err)
   }else {
     go TelegramMessageHandler()
   }

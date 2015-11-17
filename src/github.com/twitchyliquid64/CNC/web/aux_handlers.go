@@ -6,7 +6,9 @@ import (
   "github.com/hoisie/web"
 )
 
-
+// Replies with JSON data signifying the state of internal components
+// Does NOT require admin, only a valid (logged-in) session
+//
 func getSysComponentsStatusAPIHandler(ctx *web.Context) {
   isLoggedIn, _, _ := getSessionByCookie(ctx)
 

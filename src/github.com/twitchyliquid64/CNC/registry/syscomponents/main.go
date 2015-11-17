@@ -20,6 +20,7 @@ type SysComponent interface{
   IsDisabled()bool  //Returns True if the component is disabled by configuration
   IsFault()bool     //Returns True on complete failure (not just temporal error)
   Error()string     //Returns a description of a fault
+  SetError(error)   //Called to report an error to the system component
 }
 
 func Register(component SysComponent) {
@@ -29,6 +30,17 @@ func Register(component SysComponent) {
   sysComponent = append(sysComponent, component)
 }
 
+func SetError(componentName string, e error){
+  componentListLock.Lock()
+  defer componentListLock.Unlock()
+
+  for _, component := range sysComponent {
+    if component.Name() == componentName {
+      component.SetError(e)
+      break
+    }
+  }
+}
 
 func GetJSON()string{
   var data []map[string]interface{}
@@ -45,6 +57,8 @@ func GetJSON()string{
       temp["State"] = "OK"
     } else if component.IsFault() {
       temp["State"] = "Fault"
+    } else {
+      temp["State"] = "?"
     }
     if component.IsFault() {
       temp["Error"] = component.Error()
