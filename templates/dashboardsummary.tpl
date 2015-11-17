@@ -20,12 +20,16 @@
 
     <md-content flex="40" layout="column">
       <md-list>
-        <md-subheader class="md-no-sticky">System Status</md-subheader>
-        <md-list-item class="md-2-line">
-          <md-icon class="md-avatar" md-font-library="material-icons">people</md-icon>
+        <md-subheader class="md-no-sticky">System Status
+          <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="updateState=='done'">check</md-icon>
+          <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="updateState=='loading'">more_horiz</md-icon>
+          <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="updateState=='error'">error</md-icon>
+        </md-subheader>
+        <md-list-item class="md-2-line" ng-repeat="component in components">
+          <md-icon class="md-avatar" md-font-library="material-icons">{{component.Icon}}</md-icon>
           <div class="md-list-item-text">
-            <h3>Database</h3>
-            <p style="color: red;">TRACKING NOT IMPLEMENTED</p>
+            <h3>{{component.Name}}</h3>
+            <p ng-class="{red: component.State=='Fault', green: component.State=='OK', amber: component.State=='Disabled'}">{{component.State}}</p>
           </div>
         </md-list-item>
       </md-list>
