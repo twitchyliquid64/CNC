@@ -91,7 +91,7 @@
         </md-content>
         {!{end}!}
 
-        <md-content class="content" flex ng-show="main.isRoutingMode" layout-fill>
+        <md-content flex ng-show="main.isRoutingMode" layout-fill>
           <div ng-view layout-fill></div>
         </md-content>
 

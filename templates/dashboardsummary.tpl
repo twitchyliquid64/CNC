@@ -3,7 +3,7 @@
     <h2>Summary</h2>
   </md-content>
 
-  <md-content flex layout="row" layout-fill>
+  <md-content flex layout="row" layout-fill layout-wrap>
     <md-content flex="99" layout="column" layout-fill>
       <md-subheader class="md-no-sticky" layout="column">
         <span flex layout-fill>System Log</span>
@@ -12,8 +12,7 @@
       </md-subheader>
 
       <div class="logElement" layout="row" ng-repeat="msg in getLogMsgs()">
-        <span class="logComponent">[{{msg.Component | uppercase}}]</span>
-        <span >{{msg.Message}}</span>
+        <span class="logComponent">[{{msg.Component | uppercase}}]</span>{{msg.Message}}
       </div>
     </md-content>
 
