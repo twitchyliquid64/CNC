@@ -3,8 +3,8 @@
     <h2>Summary</h2>
   </md-content>
 
-  <md-content flex layout="row" layout-fill layout-wrap style="min-height: 400px;">
-    <md-content flex="99" flex-sm="100" layout="column" layout-fill>
+  <md-content flex layout="row" layout-fill layout-wrap>
+    <md-content flex="99" flex-sm="100" layout="column" layout-fill style="min-height: 400px;">
       <md-subheader class="md-no-sticky" layout="column">
         <span flex layout-fill>System Log</span>
         <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="isConnected()">check</md-icon>
