@@ -3,7 +3,7 @@
     <h2>Summary</h2>
   </md-content>
 
-  <md-content flex layout="row" layout-fill layout-wrap>
+  <md-content flex layout="row" layout-fill layout-wrap style="min-height: 400px;">
     <md-content flex="99" flex-sm="100" layout="column" layout-fill>
       <md-subheader class="md-no-sticky" layout="column">
         <span flex layout-fill>System Log</span>
@@ -17,7 +17,7 @@
     </md-content>
 
 
-    <md-content flex="40" layout="column">
+    <md-content flex="40" flex-sm="100" layout="column">
       <md-list>
         <md-subheader class="md-no-sticky">System Status
           <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="updateState=='done'">check</md-icon>
