@@ -105,6 +105,7 @@
     <script src="/static/js/app/user/usereditController.js"></script>
     <script src="/static/js/app/user/userpermissionController.js"></script>
     <script src="/static/js/app/entity/entityViewerAdminController.js"></script>
+    <script src="/static/js/app/entity/entityViewerController.js"></script>
     <script src="/static/js/app/entity/entityFormController.js"></script>
     <script src="/static/js/app/services/loggerService.js"></script>
   </body>

@@ -50,6 +50,8 @@
           self.activateRouted('/admin/dashboard', 'summary');
         } else if(p.startsWith('/admin/entity/')) {
           self.activateRouted(p, 'entity-edit');
+        } else if(p.startsWith('/entity/')) {
+          self.activateRouted(p, 'entity-view');
         } else if(p == "/" || p == ""){ // default TODO: Make it do something else for ppl who are not admins
           self.activateRouted('/admin/dashboard', 'summary');
         }

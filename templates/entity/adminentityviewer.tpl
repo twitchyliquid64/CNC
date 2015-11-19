@@ -13,7 +13,7 @@
     </div>
   </md-data-table-toolbar>
 
-  <div layout="row" layout-sm="column" layout-align="space-around" ng-show="showLoading">
+  <div layout="row" layout-align="space-around" ng-show="showLoading">
     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
   </div>
   <style>
@@ -49,7 +49,7 @@
             <md-button class="ng-icon-button small-icons" ng-click="" aria-label="Delete Entity">
               <md-icon md-font-library="material-icons">delete</md-icon>
             </md-button>
-            <md-button class="ng-icon-button small-icons" ng-click="" aria-label="View Entity">
+            <md-button class="ng-icon-button small-icons" ng-click="main.activateRouted('/entity/'+entity.ID, 'entity-view');" aria-label="View Entity">
               <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
             </md-button>
           </td>
