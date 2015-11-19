@@ -7,6 +7,7 @@
         var self = this;
         $scope.components = [];
         $scope.updateState = 'loading';
+        $scope.disableActions = false;
 
         $scope.getLogMsgs = function() {
           return loggerService.msgs;
@@ -25,6 +26,13 @@
         }, function errorCallback(response) {
             console.log(response);
             $scope.updateState = 'error';
+          });
+        }
+
+        $scope.reloadTemplates = function(){
+          $scope.disableActions = true;
+          $http.get('/dev/reload', {}).then(function (response) {
+            $scope.disableActions = false;
           });
         }
 
