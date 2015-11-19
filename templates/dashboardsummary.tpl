@@ -11,13 +11,13 @@
         <md-icon flex class="md-avatar" md-font-library="material-icons" ng-hide="isConnected()">close</md-icon>
       </md-subheader>
 
-      <div class="logElement" layout="row" ng-repeat="msg in getLogMsgs()">
-        <span class="logComponent">[{{msg.Component | uppercase}}]</span>{{msg.Message}}
-      </div>
+      <p class="logElement" layout="row" ng-repeat="msg in getLogMsgs()" style="margin: 0px;">
+        <span class="logComponent">[{{msg.Component | uppercase}}] </span> {{msg.Message}}
+      </p>
     </md-content>
 
 
-    <md-content flex="40" flex-sm="100" layout="column">
+    <md-content flex="35" flex-sm="100" layout="column">
       <md-list>
         <md-subheader class="md-no-sticky">System Status
           <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="updateState=='done'">check</md-icon>

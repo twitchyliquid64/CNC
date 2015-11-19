@@ -20,12 +20,23 @@ func ws_LogServer(ws *websocket.Conn){
     return
   }
 
+  //transmit the log messages stored in history
+  for _, msg := range logging.GetBacklog() {
+    err := websocket.JSON.Send(ws, msg)
+    if err != nil{
+      return
+    }
+  }
+
   logMessages := make(chan logging.LogMessage, 10)
 
   logging.Subscribe(logMessages)
   defer logging.Unsubscribe(logMessages)
 
   for msg := range logMessages {
-    websocket.JSON.Send(ws, msg)
+    err := websocket.JSON.Send(ws, msg)
+    if err != nil{
+      return
+    }
   }
 }

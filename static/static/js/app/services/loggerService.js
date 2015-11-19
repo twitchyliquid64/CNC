@@ -22,7 +22,7 @@
         console.log(evt.data);
         $rootScope.$apply(function(){
           self.msgs.push(JSON.parse(evt.data));
-          if (self.msgs.length > 22){
+          if (self.msgs.length > 15){
             self.msgs.shift();
           }
         });
