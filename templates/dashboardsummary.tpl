@@ -36,7 +36,7 @@
   </md-content>
 
   <md-content flex layout="row">
-    <md-button flex class="md-raised" ng-disabled="disableActions" ng-click="reloadTemplates();">Reload Templates</md-button>
-    <md-button flex class="md-raised" ng-disabled="disableActions" >Clean DB</md-button>
+    <md-button flex class="md-raised" ng-disabled="disableActions" ng-click="reloadTemplates();"><i class="material-icons" style="vertical-align: middle;">refresh</i> Reload Templates</md-button>
+    <md-button flex class="md-raised" ng-disabled="disableActions" ><i class="material-icons" style="vertical-align: middle;">data_usage</i> Clean DB</md-button>
   </md-content>
 </md-content>
