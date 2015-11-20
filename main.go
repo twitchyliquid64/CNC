@@ -5,6 +5,7 @@ import (
 	"github.com/twitchyliquid64/CNC/messenger"
 	"github.com/twitchyliquid64/CNC/registry"
 	"github.com/twitchyliquid64/CNC/logging"
+	"github.com/twitchyliquid64/CNC/plugin"
 	"github.com/twitchyliquid64/CNC/config"
 	"github.com/twitchyliquid64/CNC/data"
 	"github.com/twitchyliquid64/CNC/web"
@@ -25,10 +26,7 @@ func run(stopSignal chan bool) {
 	data.Initialise()
 
 	messenger.Initialise()
-	//signaller.Initialise()
-	//for _, a := range config.All().Signaller.SockAddr{
-	//	signaller.StartListener(a)
-	//}
+	plugin.Initialise()
 
 	web.Initialise()
 	go web.Run()
