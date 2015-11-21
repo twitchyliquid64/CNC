@@ -14,6 +14,9 @@ var structureLock sync.Mutex
 
 func Initialise(){
   logging.Info("plugin", "Initialise()")
+  structureLock.Lock()
+  defer structureLock.Unlock()
+
   pluginByName = map[string]*exec.Plugin{}
   hooksByType = map[string]map[string]exec.Hook{}
 
@@ -68,4 +71,24 @@ func RegisterHook(plugin *exec.Plugin, hook exec.Hook)error {
     hooksByType[hook.Name()][plugin.Name] = hook
   }
   return nil
+}
+
+
+//called to trigger all hooks with that name.
+func Dispatch(hookName string, data interface{})bool{
+  var foundSome bool = false
+  logging.Info("plugin", "Dispatch() called")
+  structureLock.Lock()
+  defer structureLock.Unlock()
+
+  hookSet, ok := hooksByType[hookName]
+  if !ok{
+    return false
+  }
+
+  for _, hook := range hookSet{
+    foundSome = true
+    hook.Dispatch(data)
+  }
+  return foundSome
 }

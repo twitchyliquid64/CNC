@@ -1,6 +1,7 @@
 package exec
 
 import (
+  "github.com/twitchyliquid64/CNC/logging"
   "github.com/robertkrimen/otto"
 )
 
@@ -17,8 +18,7 @@ const (
 type Hook interface{
   Name()string            //identifies the class of hook - eg: OnLogMsg. Should never change.
   Destroy()
-  Plugin()*Plugin
-  MethodName()string      //the method to call in javascript code when the hook fires
+  Dispatch(interface{})   //Called by plugin.Dispatch to actually dispatch an invocation request on its respective plugin
 }
 
 //Represents a pending invocation - typically enqueued
@@ -40,4 +40,12 @@ type Plugin struct {
 
   //this channel is closed when the mainloop should stop
   PendingInvocations chan *JSInvocation
+}
+
+func (p *Plugin)RegisterHook(h Hook){
+  p.Hooks = append(p.Hooks, h)
+  err := RegisterHookFunction(p, h)
+  if err != nil {
+    logging.Error("plugin", "RegisterHook() ", err)
+  }
 }

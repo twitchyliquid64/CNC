@@ -1,6 +1,7 @@
 package plugin
 
 import (
+  "github.com/twitchyliquid64/CNC/plugin/builtin"
   "github.com/twitchyliquid64/CNC/plugin/exec"
   //"github.com/twitchyliquid64/CNC/logging"
   "testing"
@@ -9,6 +10,7 @@ import (
 
 func TestBasicExec(t *testing.T) {
   resetAndInit()
+  builtin.TestEndpointGood_called = false
 
   code := `
   var i = 0;
@@ -16,6 +18,7 @@ func TestBasicExec(t *testing.T) {
   i = i * 4;
   console.log(i);
   log('Kek');
+  testendpoint_good();
   `
 
   p1 := exec.BuildPlugin("Test1", code)
@@ -27,6 +30,10 @@ func TestBasicExec(t *testing.T) {
 
   DeregisterPlugin(p1)
   p1.Stop()
+
+  if !builtin.TestEndpointGood_called {
+    t.Error("Did not run builtin successfully")
+  }
 }
 
 func TestSyntaxError(t *testing.T) {
@@ -71,4 +78,28 @@ func TestInterrupt(t *testing.T) {
 
 func TestDispatch(t *testing.T) {
   resetAndInit()
+  builtin.TestEndpointGood_called = false
+
+  code := `
+  function testDispatchHandler() {
+  log('Kek, it actually got called')
+    testendpoint_good();
+  }
+  onTestDispatchTriggered("testDispatchHandler");
+  `
+
+  p1 := exec.BuildPlugin("Test1", code)
+  RegisterPlugin(p1)
+  time.Sleep(time.Millisecond * 100)
+  if p1.Error != nil{
+    t.Error("code error:", p1.Error)
+  }
+  if p1.State != exec.STATE_RUNNING{
+    t.Error("Wrong State")
+  }
+  Dispatch("dispatchtest", nil)
+  time.Sleep(time.Millisecond * 100)
+  if !builtin.TestEndpointGood_called {
+    t.Error("Did not run builtin successfully")
+  }
 }

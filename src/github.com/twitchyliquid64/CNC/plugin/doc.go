@@ -17,17 +17,16 @@ Internally:
   -(goroutine 1)Sets up a goroutine with a mainloop to execute incoming invocations
 
   When a hook is created:
-  -Method plugin.registerHook() called in plugin/exec
+  -Method plugin.RegisterHook() called in plugin/exec
   -Adds hook to an array in the plugin structure
-  -Runs function pointer registerHookPtr initialised by plugin during package initialisation
-  -That method is actually plugin.RegisterHook (done this way to avoid circular dependencies)
+  -Method plugin.RegisterHook is called (done this way to avoid circular dependencies)
   -This method adds it to HookByType using the hook type and the plugin name.
 
   When a hook is invoked: (TODO)
   -Lock is held on the hooksByType structure.
   -All hooks stored in the correct type are iterated and for each hook.
-  -System code calls plugin.ExecHookByType(hookname, function(hook) ptr), which then for each hook
-   builds a JSInvocation and its it to its .Plugin.PendingInvocations
+  -For each hook instance of that type, .Dispatch is called. If the hook decides, it can build a
+   JSInvocation and add that to the PendingInvocations queue to cause execution.
 
   When DeregisterPlugin() is invoked:
   -Lock is held on the hooksByType structure.

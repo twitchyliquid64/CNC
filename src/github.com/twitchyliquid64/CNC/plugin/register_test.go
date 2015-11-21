@@ -92,13 +92,7 @@ func (h *MockHook)Destroy(){
 func (h *MockHook)Name()string{
   return h.TestName
 }
-func (h *MockHook)Plugin()*exec.Plugin{
-  return nil
-}
-func (h *MockHook)MethodName()string{
-  return "TestMockMethod"
-}
-
+func (h *MockHook)Dispatch(data interface{}){}
 
 
 func TestHookRegistration(t *testing.T) {
@@ -110,13 +104,8 @@ func TestHookRegistration(t *testing.T) {
 
   testp1 := exec.Plugin{Name: "Test1"}
   testm1 := MockHook{TestName: "Testhook"}
-  testp1.Hooks = append(testp1.Hooks, &testm1)
   RegisterPlugin(&testp1)
-  err := RegisterHook(&testp1, &testm1)
-  if err != nil{
-    t.Error("RegisterHook() returned error:", err)
-    t.FailNow()
-  }
+  testp1.RegisterHook(&testm1)
 
   //we should now have a single hook with key "Testhook1"
   if len(hooksByType) != 1{
@@ -131,17 +120,8 @@ func TestHookRegistration(t *testing.T) {
   //test adding another hook of the same type with a different plugin
   testp2 := exec.Plugin{Name: "Test2"}
   testm2 := MockHook{TestName: "Testhook"}
-  testp2.Hooks = append(testp2.Hooks, &testm2)
   RegisterPlugin(&testp2)
-  err = RegisterHook(&testp2, &testm2)
-  if err != nil{
-    t.Error("RegisterHook() returned error:", err)
-    t.FailNow()
-  }
-  if len(hooksByType) != 1{
-    t.Error("Expected hooksByType to be len = 1 after the second registration")
-    t.FailNow()
-  }
+  testp2.RegisterHook(&testm2)
   pluginsWithHook := hooksByType["Testhook"]
   if len(pluginsWithHook) != 2 {
     t.Error("Expected two plugins registered with the same hook type")
@@ -161,30 +141,16 @@ func TestHookDeregistration(t *testing.T) {
   //setup first plugin
   testp1 := exec.Plugin{Name: "Test1"}
   testm1 := MockHook{TestName: "Testhook"}
-  testp1.Hooks = append(testp1.Hooks, &testm1)
   RegisterPlugin(&testp1)
-  err := RegisterHook(&testp1, &testm1)
-  if err != nil{
-    t.Error("RegisterHook() returned error:", err)
-    t.FailNow()
-  }
+  testp1.RegisterHook(&testm1)
 
   //setup second plugin
   testp2 := exec.Plugin{Name: "Test2"}
   testm2 := MockHook{TestName: "Testhook"}
   testm3 := MockHook{TestName: "Testhook2"}
-  testp2.Hooks = append(testp2.Hooks, &testm2, &testm3)
   RegisterPlugin(&testp2)
-  err = RegisterHook(&testp2, &testm2)
-  if err != nil{
-    t.Error("RegisterHook() returned error:", err)
-    t.FailNow()
-  }
-  err = RegisterHook(&testp2, &testm3)
-  if err != nil{
-    t.Error("RegisterHook() returned error:", err)
-    t.FailNow()
-  }
+  testp2.RegisterHook(&testm2)
+  testp2.RegisterHook(&testm3)
 
   //unregister first plugin and see if the hooks got removed
   DeregisterPlugin(&testp1)
