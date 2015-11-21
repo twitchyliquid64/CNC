@@ -11,6 +11,15 @@ func initialise(plugin *Plugin) {
   logging.Info("plugin", "plugin.initialise()")
   plugin.State = STATE_RUNNING
   go func(){
+    defer func() {
+        if caught := recover(); caught != nil {
+            plugin.IsCurrentlyInExecution = false
+            plugin.State = STATE_STOPPED
+            return
+        }
+    }()
+
+    LoadBuiltinFunction(plugin)//populates the namespace with API methods
     firstRun(plugin)
 
     if plugin.State == STATE_RUNNING{
@@ -24,7 +33,9 @@ func initialise(plugin *Plugin) {
 //
 func firstRun(plugin *Plugin) {
   logging.Info("plugin", "plugin.firstRun()")
+  plugin.IsCurrentlyInExecution = true
   _, err := plugin.VM.Run(plugin.Code)
+  plugin.IsCurrentlyInExecution = false
   if err != nil{
     plugin.State = STATE_CODE_ERROR
     plugin.Error = err

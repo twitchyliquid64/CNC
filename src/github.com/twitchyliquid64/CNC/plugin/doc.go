@@ -17,7 +17,7 @@ Internally:
   -(goroutine 1)Sets up a goroutine with a mainloop to execute incoming invocations
 
   When a hook is created:
-  -Method registerHook() called in plugin/exec
+  -Method plugin.registerHook() called in plugin/exec
   -Adds hook to an array in the plugin structure
   -Runs function pointer registerHookPtr initialised by plugin during package initialisation
   -That method is actually plugin.RegisterHook (done this way to avoid circular dependencies)

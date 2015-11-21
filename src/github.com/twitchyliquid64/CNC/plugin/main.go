@@ -2,6 +2,7 @@ package plugin
 
 import (
   "github.com/twitchyliquid64/CNC/plugin/exec"
+  "github.com/twitchyliquid64/CNC/plugin/builtin"
   "github.com/twitchyliquid64/CNC/logging"
   "errors"
   "sync"
@@ -15,6 +16,10 @@ func Initialise(){
   logging.Info("plugin", "Initialise()")
   pluginByName = map[string]*exec.Plugin{}
   hooksByType = map[string]map[string]exec.Hook{}
+
+  //dependency injection
+  exec.LoadBuiltinFunction = builtin.LoadBuiltinsToVM
+  exec.RegisterHookFunction = RegisterHook
 }
 
 func RegisterPlugin(plugin *exec.Plugin){
@@ -38,6 +43,7 @@ func removeAllHooksOfPlugin(plugin *exec.Plugin){//assumes structureLock is held
   for hookType, _ := range hooksByType {
     _, ok := hooksByType[hookType][plugin.Name]
     if ok {
+      hooksByType[hookType][plugin.Name].Destroy()
       delete(hooksByType[hookType], plugin.Name)
       logging.Info("plugin", "Found hook ", hookType, " for plugin ", plugin.Name, ", deleting")
     }
