@@ -8,6 +8,7 @@ import (
   "sync"
 )
 
+var isInitialised bool = false
 var pluginByName map[string]*exec.Plugin
 var hooksByType map[string]map[string]exec.Hook //maps hooks[name] to plugins by name to hooks
 var structureLock sync.Mutex
@@ -19,6 +20,7 @@ func Initialise(){
 
   pluginByName = map[string]*exec.Plugin{}
   hooksByType = map[string]map[string]exec.Hook{}
+  isInitialised = true
 
   //dependency injection
   exec.LoadBuiltinFunction = builtin.LoadBuiltinsToVM
@@ -76,6 +78,8 @@ func RegisterHook(plugin *exec.Plugin, hook exec.Hook)error {
 
 //called to trigger all hooks with that name.
 func Dispatch(hookName string, data interface{})bool{
+  if !isInitialised{return false}
+
   var foundSome bool = false
   logging.Info("plugin", "Dispatch() called")
   structureLock.Lock()

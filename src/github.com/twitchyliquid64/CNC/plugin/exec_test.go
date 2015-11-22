@@ -16,8 +16,7 @@ func TestBasicExec(t *testing.T) {
   var i = 0;
   i = 3;
   i = i * 4;
-  console.log(i);
-  log('Kek');
+  log(i);
   testendpoint_good();
   `
 
