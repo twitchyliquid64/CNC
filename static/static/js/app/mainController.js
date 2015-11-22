@@ -42,6 +42,8 @@
         //if the page URL is set to a section, switch the UI to that section.
         if(p == '/admin/users') {
           self.activateRouted('/admin/users', 'users');
+        } else if(p == '/admin/plugins') {
+          self.activateRouted('/admin/plugins', 'plugins');
         } else if(p == '/admin/entities') {
           self.activateRouted('/admin/entities', 'entities');
         } else if(p == '/admin/entities/new') {

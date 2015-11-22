@@ -50,7 +50,7 @@
               </md-button>
           </md-list-item>
           <md-list-item>
-              <md-button ng-click="main.activate('plugins')">
+              <md-button ng-click="main.activateRouted('/admin/plugins', 'plugins');">
                 <md-icon md-font-library="material-icons">memory</md-icon> Plugins
               </md-button>
           </md-list-item>
@@ -107,6 +107,7 @@
     <script src="/static/js/app/entity/entityViewerAdminController.js"></script>
     <script src="/static/js/app/entity/entityViewerController.js"></script>
     <script src="/static/js/app/entity/entityFormController.js"></script>
+    <script src="/static/js/app/plugin/pluginListController.js"></script>
     <script src="/static/js/app/services/loggerService.js"></script>
   </body>
 </html>
