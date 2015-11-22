@@ -15,6 +15,7 @@ func Initialise() {
   registerUserHandlers()
   registerSummaryHandlers()
   registerEntityHandlers()
+  registerPluginHandlers()
   registerWebSockets()
   registerTemplateViews()
 
@@ -54,6 +55,10 @@ func registerEntityHandlers(){
   web.Post("/entities/new", newEntityHandlerAPI, config.All().Web.Domain)
   web.Post("/entities/edit", updateEntityHandlerAPI, config.All().Web.Domain)
   web.Get("/entity", getEntityHandlerAPI, config.All().Web.Domain)
+}
+
+func registerPluginHandlers(){
+  web.Get("/plugins", getAllPluginsHandlerAPI, config.All().Web.Domain)
 }
 
 func registerWebSockets() {

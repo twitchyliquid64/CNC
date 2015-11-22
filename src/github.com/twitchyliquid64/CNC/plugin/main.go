@@ -96,3 +96,17 @@ func Dispatch(hookName string, data interface{})bool{
   }
   return foundSome
 }
+
+
+//called to return a structure of all the plugins
+func GetAll()[]*exec.Plugin {
+  structureLock.Lock()
+  defer structureLock.Unlock()
+
+  var ret []*exec.Plugin
+
+  for _, plugin := range pluginByName {
+    ret = append(ret, plugin)
+  }
+  return ret
+}
