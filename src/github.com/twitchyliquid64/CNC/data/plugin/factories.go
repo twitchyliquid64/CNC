@@ -33,3 +33,7 @@ func LoadResources(p *Plugin, db gorm.DB, trimResourceData bool){
     }
   }
 }
+
+func Create(p Plugin, db gorm.DB)error{
+  return db.Create(&p).Error
+}

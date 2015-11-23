@@ -1,6 +1,7 @@
 package exec
 
 import (
+  "github.com/twitchyliquid64/CNC/data/plugin"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/robertkrimen/otto"
 )
@@ -40,6 +41,11 @@ type Plugin struct {
 
   //this channel is closed when the mainloop should stop
   PendingInvocations chan *JSInvocation
+
+  //Populated when this plugin is based off one saved in the DB, and
+  //updates should be made accordingly.
+  Model plugin.Plugin
+  Resources []plugin.Resource //these structures should not omit any data.
 }
 
 func (p *Plugin)RegisterHook(h Hook){

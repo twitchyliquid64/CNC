@@ -59,6 +59,7 @@ func registerEntityHandlers(){
 
 func registerPluginHandlers(){
   web.Get("/plugins", getAllPluginsHandlerAPI, config.All().Web.Domain)
+  web.Post("/plugins/new", newPluginHandlerAPI, config.All().Web.Domain)
 }
 
 func registerWebSockets() {
@@ -73,6 +74,7 @@ func registerTemplateViews() {
   web.Get("/view/entities/form", entityAdminForm_view, config.All().Web.Domain)
   web.Get("/view/dashboard/summary", dashboardSummary_view, config.All().Web.Domain)
   web.Get("/view/plugins", pluginAdminListPage_view, config.All().Web.Domain)
+  web.Get("/view/plugins/newform", pluginAdminNewPage_view, config.All().Web.Domain)
 }
 
 
@@ -102,6 +104,7 @@ func registerEntityTemplates(){
 
 func registerPluginTemplates(){
   logError(registerTemplate("plugin/pluginlist.tpl", "pluginlist"), "Template load error: ")
+  logError(registerTemplate("plugin/newplugin.tpl", "newplugin"), "Template load error: ")
 }
 
 func logError(e error, prefix string){

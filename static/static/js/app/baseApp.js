@@ -17,7 +17,7 @@
         $routeProvider.when('/entity/:entityID', {templateUrl: '/view/entity', controller: 'entityViewerController'});
 
         $routeProvider.when('/admin/plugins', {templateUrl: '/view/plugins', controller: 'pluginListController'});
-
+        $routeProvider.when('/admin/plugins/new', {templateUrl: '/view/plugins/newform', controller: 'pluginCreateController'})
     }]);
 
     //material colour scheme

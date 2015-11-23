@@ -7,7 +7,7 @@
       <md-button class="ng-icon-button" ng-click="" aria-label="Refresh">
         <md-icon md-font-library="material-icons">refresh</md-icon>
       </md-button>
-      <md-button class="ng-icon-button" ng-click="" aria-label="Add Plugin">
+      <md-button class="ng-icon-button" ng-click="main.activateRouted('/admin/plugins/new', 'plugin-new')" aria-label="Add Plugin">
         <md-icon md-font-library="material-icons">add</md-icon>
       </md-button>
     </div>
