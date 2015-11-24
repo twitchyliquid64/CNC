@@ -11,6 +11,30 @@ import (
   "strconv"
 )
 
+
+// Passes back a JSON object representing that particular
+// plugin.
+//
+func getPluginHandlerAPI(ctx *web.Context){
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "getPluginHandlerAPI() called unauthorized, aborting")
+    return
+  }
+
+  pluginID, _ := strconv.Atoi(ctx.Params["pluginid"])
+  databaseObj := pluginData.Get(data.DB, pluginID, true)
+
+  d, err := json.Marshal(databaseObj)
+  if err != nil {
+    logging.Error("web-plugin", err)
+  }
+  ctx.ResponseWriter.Write(d)
+}
+
+
+
 // Passes back a JSON array of all plugins
 //
 //

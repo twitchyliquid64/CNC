@@ -9,35 +9,37 @@
   </md-data-table-toolbar>
 
 
-  <p>Plugin Details</p>
-  <md-input-container flex layout-fill>
-    <label>Name</label>
-    <input ng-model="plugin.Name" type="text">
-  </md-input-container>
+  <md-content>
+    <p>Plugin Details</p>
+    <md-input-container flex layout-fill>
+      <label>Name</label>
+      <input ng-model="plugin.Name" type="text">
+    </md-input-container>
 
-  <md-input-container flex>
-    <md-autocomplete flex required
-      md-input-name="autocompleteField"
-      md-no-cache="true"
-      md-items="icon in icons"
-      md-item-text="plugin.Icon"
-      md-search-text="plugin.Icon"
-      md-selected-item="plugin.Icon"
-      md-floating-label="Icon">
-      <md-item-template>
-        <i class="material-icons" style="vertical-align: middle;">{{icon}}</i> {{icon}}
-      </md-item-template>
-    </md-autocomplete>
-  </md-input-container>
+    <md-input-container flex>
+      <md-autocomplete flex required
+        md-input-name="autocompleteField"
+        md-no-cache="true"
+        md-items="icon in icons"
+        md-item-text="plugin.Icon"
+        md-search-text="plugin.Icon"
+        md-selected-item="plugin.Icon"
+        md-floating-label="Icon">
+        <md-item-template>
+          <i class="material-icons" style="vertical-align: middle;">{{icon}}</i> {{icon}}
+        </md-item-template>
+      </md-autocomplete>
+    </md-input-container>
 
-  <md-input-container class="md-block">
-        <label>Description</label>
-        <textarea ng-model="plugin.Description" columns="1" md-maxlength="150" rows="5"></textarea>
-  </md-input-container>
+    <md-input-container class="md-block">
+          <label>Description</label>
+          <textarea ng-model="plugin.Description" columns="1" md-maxlength="150" rows="5"></textarea>
+    </md-input-container>
 
-  <md-switch ng-model="plugin.Enabled" aria-label="Enabled" class="md-block">
-    Enabled
-  </md-switch>
+    <md-switch ng-model="plugin.Enabled" aria-label="Enabled" class="md-block">
+      Enabled
+    </md-switch>
+  </md-content>
 
   <button flex="" layout-fill=""
   class="md-raised md-primary md-button md-scope"

@@ -109,6 +109,7 @@
     <script src="/static/js/app/entity/entityFormController.js"></script>
     <script src="/static/js/app/plugin/pluginListController.js"></script>
     <script src="/static/js/app/plugin/pluginCreateController.js"></script>
+    <script src="/static/js/app/plugin/pluginEditController.js"></script>
     <script src="/static/js/app/services/loggerService.js"></script>
   </body>
 </html>

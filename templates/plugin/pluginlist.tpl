@@ -42,7 +42,7 @@
         <p layout-margin ng-hide="plugin.Enabled" layout-padding class="amber">Disabled</p>
         <span flex hide-sm>
         </span>
-        <md-button><md-icon md-font-library="material-icons">edit</md-icon> Edit</md-button>
+        <md-button ng-click="main.activateRouted('/admin/plugin/'+plugin.ID, 'plugin-edit')"><md-icon md-font-library="material-icons">edit</md-icon> Edit</md-button>
       </md-card-actions>
     </md-card>
 

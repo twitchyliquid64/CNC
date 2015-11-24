@@ -13,8 +13,8 @@
           $scope.showLoading = true;
           $http.get('/plugins', {}).then(function (response) { //get entities data to display in table
             plugins = response.data;
-            $scope.running = plugins.Running;
-            $scope.stopped = plugins.Disabled;
+            $scope.running = plugins.Running || [];
+            $scope.stopped = plugins.Disabled || [];
             $scope.plugins = [];
             for(var i = 0; i < $scope.running.length ;i++)
               $scope.plugins[$scope.plugins.length] = $scope.running[i];

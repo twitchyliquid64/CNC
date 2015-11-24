@@ -29,6 +29,14 @@ func pluginAdminNewPage_view(ctx *web.Context) { //kaaatelyn
 	t.Execute(ctx.ResponseWriter, nil)
 }
 
+func pluginAdminEditPage_view(ctx *web.Context) { //kaaatelyn
+  t := templates.Lookup("pluginedit")
+	if t == nil {
+		logging.Error("web", "No template found.")
+	}
+	t.Execute(ctx.ResponseWriter, nil)
+}
+
 func usersAdminMainPage_view(ctx *web.Context) {
   t := templates.Lookup("userpage")
 	if t == nil {
