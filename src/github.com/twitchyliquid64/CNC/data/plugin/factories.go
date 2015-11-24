@@ -7,12 +7,24 @@ import (
 )
 
 
-func GetAll(db gorm.DB)[]Plugin{
+func GetAllDisabled(db gorm.DB)[]Plugin{
   var plugins = make([]Plugin, 0)
-  db.Find(&plugins)
+  db.Where("enabled = ?", false).Find(&plugins)
 
   for i := 0; i < len(plugins); i++ {
     LoadResources(&(plugins[i]), db, true)
+  }
+
+  return plugins
+}
+
+
+func GetAllEnabledNoTrim(db gorm.DB)[]Plugin{
+  var plugins = make([]Plugin, 0)
+  db.Where("enabled = ?", true).Find(&plugins)
+
+  for i := 0; i < len(plugins); i++ {
+    LoadResources(&(plugins[i]), db, false)
   }
 
   return plugins

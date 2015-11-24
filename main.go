@@ -68,8 +68,6 @@ func main() {
 		}
 	}()
 
-	for shouldRun{
-		run(chanStop)//will run until signalled to stop from above goroutine
-	}
+	run(chanStop)//will run until signalled to stop from above goroutine
 	time.Sleep(time.Millisecond * 100)
 }

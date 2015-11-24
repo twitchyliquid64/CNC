@@ -1,9 +1,12 @@
 package plugin
 
 import (
+
+  pluginData "github.com/twitchyliquid64/CNC/data/plugin"
   "github.com/twitchyliquid64/CNC/plugin/exec"
   "github.com/twitchyliquid64/CNC/plugin/builtin"
   "github.com/twitchyliquid64/CNC/logging"
+  "github.com/twitchyliquid64/CNC/data"
   "errors"
   "sync"
 )
@@ -25,6 +28,18 @@ func Initialise(){
   //dependency injection
   exec.LoadBuiltinFunction = builtin.LoadBuiltinsToVM
   exec.RegisterHookFunction = RegisterHook
+  startEnabledPluginsFromDatabase()
+}
+
+func startEnabledPluginsFromDatabase(){ //assumes lock is held
+  plugins := pluginData.GetAllEnabledNoTrim(data.DB)
+  for _, plugin := range plugins {
+    logging.Info("plugin", "Starting plugin ", plugin.Name)
+    createdPluginObj := exec.BuildPluginFromDatabase(plugin.Name, plugin, plugin.Resources)
+    structureLock.Unlock()
+    RegisterPlugin(createdPluginObj)
+    structureLock.Lock()
+  }
 }
 
 func RegisterPlugin(plugin *exec.Plugin){

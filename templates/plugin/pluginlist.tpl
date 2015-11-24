@@ -4,7 +4,7 @@
 
     <div class="md-toolbar-tools">
       <span flex></span>
-      <md-button class="ng-icon-button" ng-click="" aria-label="Refresh">
+      <md-button class="ng-icon-button" ng-click="refresh()" aria-label="Refresh">
         <md-icon md-font-library="material-icons">refresh</md-icon>
       </md-button>
       <md-button class="ng-icon-button" ng-click="main.activateRouted('/admin/plugins/new', 'plugin-new')" aria-label="Add Plugin">
@@ -26,22 +26,22 @@
 
   <md-content ng-hide="showLoading">
 
-    <md-card>
+    <md-card ng-repeat="plugin in plugins">
       <md-card-content>
         <md-data-table-toolbar>
-          <h2 flex="50" class="md-title"><md-icon md-font-library="material-icons">cloud</md-icon> Weather Alerter</h2>
+          <h2 flex="50" class="md-title"><md-icon md-font-library="material-icons">{{plugin.Icon}}</md-icon> {{plugin.Name}}</h2>
           <div class="md-toolbar-tools">
             <span flex hide-sm></span>
-            <md-switch ng-model="blue" aria-label="Enable" class="md-block"></md-switch>
+            <md-switch ng-model="plugin.Enabled" aria-label="Enable" class="md-block"></md-switch>
           </div>
         </md-data-table-toolbar>
 
       </md-card-content>
       <md-card-actions layout="row" layout-align="end center">
-        <p layout-margin layout-padding class="green">Running</p>
+        <p layout-margin ng-show="plugin.Enabled" layout-padding class="green">Running</p>
+        <p layout-margin ng-hide="plugin.Enabled" layout-padding class="amber">Disabled</p>
         <span flex hide-sm>
         </span>
-        <md-button><md-icon md-font-library="material-icons">close</md-icon> Stop</md-button>
         <md-button><md-icon md-font-library="material-icons">edit</md-icon> Edit</md-button>
       </md-card-actions>
     </md-card>

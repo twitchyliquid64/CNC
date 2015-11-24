@@ -21,12 +21,25 @@ func getAllPluginsHandlerAPI(ctx *web.Context) {
     return
   }
 
-  plugins := pluginController.GetAll()
-  if plugins == nil {
-    plugins = []*pluginExec.Plugin{}
+  //get plugindata.Plugin's out of the currently running plugins
+  var plugins []pluginData.Plugin
+  temp := pluginController.GetAll()
+  if temp == nil {
+    temp = []*pluginExec.Plugin{}
+  }
+  for _, p := range temp {
+    plugins = append(plugins, p.Model)
   }
 
-  d, err := json.Marshal(plugins)
+  //turn them into JSON
+  d, err := json.Marshal(
+    struct{
+      Running []pluginData.Plugin
+      Disabled []pluginData.Plugin
+    }{
+    Running: plugins,
+    Disabled: pluginData.GetAllDisabled(data.DB),
+  })
   if err != nil {
     logging.Error("web-plugin", err)
   }

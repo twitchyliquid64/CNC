@@ -30,3 +30,7 @@ type Resource struct {
   IsExecutable bool
   IsTemplate bool
 }
+
+func (r Resource)IsJavascriptCode()bool {
+  return r.IsExecutable && (!r.IsTemplate)
+}
