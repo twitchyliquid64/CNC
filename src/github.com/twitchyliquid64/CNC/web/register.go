@@ -60,6 +60,7 @@ func registerEntityHandlers(){
 func registerPluginHandlers(){
   web.Get("/plugins", getAllPluginsHandlerAPI, config.All().Web.Domain)
   web.Post("/plugins/new", newPluginHandlerAPI, config.All().Web.Domain)
+  web.Get("/plugins/changestate", changePluginStateAPI, config.All().Web.Domain)
 }
 
 func registerWebSockets() {

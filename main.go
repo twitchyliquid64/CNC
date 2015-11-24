@@ -26,7 +26,7 @@ func run(stopSignal chan bool) {
 	data.Initialise()
 
 	messenger.Initialise()
-	plugin.Initialise()
+	plugin.Initialise(true) //true = load and run plugins from database
 
 	web.Initialise()
 	go web.Run()

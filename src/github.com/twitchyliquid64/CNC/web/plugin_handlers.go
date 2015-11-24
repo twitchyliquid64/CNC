@@ -8,6 +8,7 @@ import (
   "github.com/twitchyliquid64/CNC/data"
   "github.com/hoisie/web"
   "encoding/json"
+  "strconv"
 )
 
 // Passes back a JSON array of all plugins
@@ -46,7 +47,30 @@ func getAllPluginsHandlerAPI(ctx *web.Context) {
   ctx.ResponseWriter.Write(d)
 }
 
+func changePluginStateAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
 
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "newPlugin() called unauthorized, aborting")
+    return
+  }
+
+  pluginID, _ := strconv.Atoi(ctx.Params["pluginid"])
+  startPlugin := ctx.Params["state"] == "true"
+  databaseObj := pluginData.Get(data.DB, pluginID, true)
+
+  if startPlugin {
+    databaseObj.Enabled = true
+    data.DB.Save(&databaseObj)
+    pluginController.StartPluginBasedFromDB(pluginData.Get(data.DB, pluginID, false))
+  } else { //stop plugin
+    plugin := pluginController.FindByName(databaseObj.Name)
+    pluginController.DeregisterPlugin(plugin)
+    plugin.Stop()
+    databaseObj.Enabled = false
+    data.DB.Save(&databaseObj)
+  }
+}
 
 // API endpoint called to create a new plugin.
 // Checks if the session's user is an admin.

@@ -9,7 +9,7 @@ import (
 func resetAndInit() {
   pluginByName = nil
   hooksByType = nil
-  Initialise()
+  Initialise(false)
 }
 
 func TestRegistration(t *testing.T) {

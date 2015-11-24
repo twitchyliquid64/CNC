@@ -32,7 +32,7 @@
           <h2 flex="50" class="md-title"><md-icon md-font-library="material-icons">{{plugin.Icon}}</md-icon> {{plugin.Name}}</h2>
           <div class="md-toolbar-tools">
             <span flex hide-sm></span>
-            <md-switch ng-model="plugin.Enabled" aria-label="Enable" class="md-block"></md-switch>
+            <md-switch ng-model="plugin.Enabled" ng-change="switchChanged(plugin.ID, plugin.Enabled)" aria-label="Enable" class="md-block"></md-switch>
           </div>
         </md-data-table-toolbar>
 

@@ -4,52 +4,45 @@ import (
 
   pluginData "github.com/twitchyliquid64/CNC/data/plugin"
   "github.com/twitchyliquid64/CNC/plugin/exec"
-  "github.com/twitchyliquid64/CNC/plugin/builtin"
   "github.com/twitchyliquid64/CNC/logging"
-  "github.com/twitchyliquid64/CNC/data"
   "errors"
-  "sync"
 )
 
-var isInitialised bool = false
-var pluginByName map[string]*exec.Plugin
-var hooksByType map[string]map[string]exec.Hook //maps hooks[name] to plugins by name to hooks
-var structureLock sync.Mutex
 
-func Initialise(){
-  logging.Info("plugin", "Initialise()")
+
+//Called with a fully populated plugin (no trimming of resources)
+//To create a plugin and get it running.
+//
+func StartPluginBasedFromDB(plugin pluginData.Plugin){
   structureLock.Lock()
   defer structureLock.Unlock()
-
-  pluginByName = map[string]*exec.Plugin{}
-  hooksByType = map[string]map[string]exec.Hook{}
-  isInitialised = true
-
-  //dependency injection
-  exec.LoadBuiltinFunction = builtin.LoadBuiltinsToVM
-  exec.RegisterHookFunction = RegisterHook
-  startEnabledPluginsFromDatabase()
+  startPluginBasedFromDB(plugin)
 }
 
-func startEnabledPluginsFromDatabase(){ //assumes lock is held
-  plugins := pluginData.GetAllEnabledNoTrim(data.DB)
-  for _, plugin := range plugins {
-    logging.Info("plugin", "Starting plugin ", plugin.Name)
-    createdPluginObj := exec.BuildPluginFromDatabase(plugin.Name, plugin, plugin.Resources)
-    structureLock.Unlock()
-    RegisterPlugin(createdPluginObj)
-    structureLock.Lock()
-  }
-}
 
-func RegisterPlugin(plugin *exec.Plugin){
+//Called to register an already-existing plugin with the system. This method
+//should probably not be used - use startPluginBasedFromDB() instead.
+//
+func RegisterPlugin(plugin *exec.Plugin)error{
   logging.Info("plugin", "RegisterPlugin() ", plugin.Name)
   structureLock.Lock()
   defer structureLock.Unlock()
 
+  _, ok := pluginByName[plugin.Name]
+  if ok{
+    logging.Error("plugin", "Attempted to add plugin '", plugin.Name, "' which already exists!")
+    return errors.New("Plugin already exists")
+  }
+
   pluginByName[plugin.Name] = plugin
+  return nil
 }
 
+
+
+// Do this prior to stopping a plugin - remove it from tracking so it is not visible
+// to incoming dispatches/hooks.
+//
 func DeregisterPlugin(plugin *exec.Plugin){
   logging.Info("plugin", "DeregisterPlugin() ", plugin.Name)
   structureLock.Lock()
@@ -59,6 +52,20 @@ func DeregisterPlugin(plugin *exec.Plugin){
   removeAllHooksOfPlugin(plugin)
 }
 
+
+// If you know a plugin is running and is named something, you can get the
+// plugin object. Typically used to .Stop() it.
+//
+func FindByName(name string)*exec.Plugin{
+  structureLock.Lock()
+  defer structureLock.Unlock()
+  return pluginByName[name]
+}
+
+
+// Called internally during deregistration to remove hooks associated with
+// the plugin.
+//
 func removeAllHooksOfPlugin(plugin *exec.Plugin){//assumes structureLock is held
   for hookType, _ := range hooksByType {
     _, ok := hooksByType[hookType][plugin.Name]
@@ -70,7 +77,9 @@ func removeAllHooksOfPlugin(plugin *exec.Plugin){//assumes structureLock is held
   }
 }
 
-//populates hooksByType with a hook for that specific plugin
+// Populates hooksByType with a hook for that specific plugin
+// Typically called internally.
+//
 func RegisterHook(plugin *exec.Plugin, hook exec.Hook)error {
   logging.Info("plugin", "RegisterHook() ", hook.Name())
   structureLock.Lock()
@@ -91,7 +100,9 @@ func RegisterHook(plugin *exec.Plugin, hook exec.Hook)error {
 }
 
 
-//called to trigger all hooks with that name.
+// Called to trigger all hooks with that name, passing data
+// to the hooks' handler method.
+//
 func Dispatch(hookName string, data interface{})bool{
   if !isInitialised{return false}
 
@@ -113,7 +124,9 @@ func Dispatch(hookName string, data interface{})bool{
 }
 
 
-//called to return a structure of all the plugins
+// Called to return a structure of all the plugins
+//
+//
 func GetAll()[]*exec.Plugin {
   structureLock.Lock()
   defer structureLock.Unlock()

@@ -25,7 +25,15 @@
           });
         }
 
+        self.switchChanged = function(pluginID, state){
+          console.log("pluginListController.switchChanged(): ", pluginID, state);
+          $http.get('/plugins/changestate?pluginid=' + pluginID + '&state='+state, {}).then(function (response) {
+            console.log(response);
+          });
+        }
+
         $scope.refresh = self.refresh;
+        $scope.switchChanged = self.switchChanged;
         self.refresh();
     };
 
