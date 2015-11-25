@@ -1,8 +1,5 @@
 package exec
 
-import (
-  "github.com/twitchyliquid64/CNC/logging"
-)
 
 // Called by all factory methods to initialise
 //
