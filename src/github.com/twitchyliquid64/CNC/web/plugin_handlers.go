@@ -56,7 +56,8 @@ func getAllPluginsHandlerAPI(ctx *web.Context) {
     plugins = append(plugins, p.Model)
   }
 
-  //turn them into JSON
+  //turn them into JSON, combining the list from the running plugins,
+  //and the list of disabled plugins.
   d, err := json.Marshal(
     struct{
       Running []pluginData.Plugin
@@ -119,6 +120,51 @@ func newPluginHandlerAPI(ctx *web.Context) {
   err = pluginData.Create(pl, data.DB)
   if err == nil {
       ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-plugin", err)
+  }
+}
+
+
+
+
+// API endpoint called to edit the general properties of an existing plugin.
+// Checks if the session's user is an admin.
+//
+func editPluginHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "editPlugin() called unauthorized, aborting")
+    return
+  }
+
+  //decode JSON to pl
+  decoder := json.NewDecoder(ctx.Request.Body)
+  var pl pluginData.Plugin
+  err := decoder.Decode(&pl)
+  if err != nil {
+      logging.Error("web-plugin", "editPluginHandlerAPI() failed to decode JSON:", err)
+      ctx.Abort(500, "JSON error")
+      return
+  }
+
+  //to preserve integrity, shut down the plugin if it is currently running.
+  existingDatabaseObj := pluginData.Get(data.DB, int(pl.ID), true)
+  if existingDatabaseObj.Enabled { //must of been running, shut it down.
+    plugin := pluginController.FindByName(existingDatabaseObj.Name)
+    pluginController.DeregisterPlugin(plugin)
+    plugin.Stop()
+  }
+
+  //FINALLY, save the changes.
+  err = data.DB.Save(&pl).Error
+  if err == nil {
+    if pl.Enabled { //was saved successfully, so we should start it again if pl.Enabled == true
+      pluginController.StartPluginBasedFromDB(pluginData.Get(data.DB, int(pl.ID), false))
+    }
+    ctx.ResponseWriter.Write([]byte("GOOD"))
   } else {
       ctx.ResponseWriter.Write([]byte(err.Error()))
       logging.Error("web-plugin", err)

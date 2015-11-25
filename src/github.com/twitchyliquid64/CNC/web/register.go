@@ -60,6 +60,7 @@ func registerEntityHandlers(){
 func registerPluginHandlers(){
   web.Get("/plugins", getAllPluginsHandlerAPI, config.All().Web.Domain)
   web.Post("/plugins/new", newPluginHandlerAPI, config.All().Web.Domain)
+  web.Post("/plugins/edit", editPluginHandlerAPI, config.All().Web.Domain)
   web.Get("/plugins/changestate", changePluginStateAPI, config.All().Web.Domain)
   web.Get("/plugin", getPluginHandlerAPI, config.All().Web.Domain)
 }
@@ -78,6 +79,7 @@ func registerTemplateViews() {
   web.Get("/view/plugins", pluginAdminListPage_view, config.All().Web.Domain)
   web.Get("/view/plugins/newform", pluginAdminNewPage_view, config.All().Web.Domain)
   web.Get("/view/plugins/editform", pluginAdminEditPage_view, config.All().Web.Domain)
+  web.Get("/view/plugins/resourceform", pluginAdminResourcePage_view, config.All().Web.Domain)
 }
 
 
@@ -109,6 +111,7 @@ func registerPluginTemplates(){
   logError(registerTemplate("plugin/pluginlist.tpl", "pluginlist"), "Template load error: ")
   logError(registerTemplate("plugin/newplugin.tpl", "newplugin"), "Template load error: ")
   logError(registerTemplate("plugin/pluginedit.tpl", "pluginedit"), "Template load error: ")
+  logError(registerTemplate("plugin/resourcecreateedit.tpl", "resourcecreateedit"), "Template load error: ")
 }
 
 func logError(e error, prefix string){

@@ -17,8 +17,8 @@
   </style>
 
   <md-content flex layout="row" layout-fill layout-wrap>
-    <md-content flex="99" flex-sm="100" layout="column" layout-fill >
-      <p>Plugin Details</p>
+    <md-content md-margin md-padding flex="99" flex-sm="100" layout="column" layout-fill >
+
       <md-input-container flex layout-fill>
         <label>Name</label>
         <input ng-model="plugin.Name" type="text">
@@ -49,19 +49,36 @@
       </md-switch>
     </md-content>
 
-    <md-content md-margin flex="42" flex-sm="100" layout="column">
-      <md-list>
-        <p>Resources</p>
-        <md-list-item class="md-2-line" ng-repeat="resource in plugin.Resources">
-          <md-icon class="md-avatar" md-font-library="material-icons">code</md-icon>
-          <div class="md-list-item-text">
-            <h3>resource.Name</h3>
-          </div>
-        </md-list-item>
-        <div ng-if="plugin.Resources.length == 0" >
-          <span ><i>This plugin has no resources.</i></span>
-        </div>
-      </md-list>
+    <md-content md-margin md-padding flex="42" flex-sm="100" layout="column">
+      <p style="color: rgba(0, 0, 0, 0.54);">Resources
+        <md-button class="ng-icon-button" ng-click="main.activateRouted('/admin/newresource/'+plugin.ID, 'resource-form')" aria-label="Add Resource">
+          <md-icon md-font-library="material-icons">add</md-icon>
+        </md-button>
+      </p>
+      <p ng-hide="showLoading" ng-show="plugin.Resources.length == 0">This plugin does not have any resources.</p>
+      <md-data-table-container ng-hide="showLoading || (plugin.Resources.length == 0)">
+        <table md-data-table md-progress="deferred">
+          <thead>
+            <tr>
+              <th name="Name"></th>
+              <th name="Actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="resource in plugin.Resources">
+              <td><md-icon md-font-library="material-icons">code</md-icon> {{resource.Name}}</td>
+              <td>
+                <md-button class="ng-icon-button small-icons" ng-click="" aria-label="Edit Resource">
+                  <md-icon md-font-library="material-icons">mode_edit</md-icon>
+                </md-button>
+                <md-button class="ng-icon-button small-icons" ng-click="" aria-label="Delete Resource">
+                  <md-icon md-font-library="material-icons">delete</md-icon>
+                </md-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </md-data-table-container>
     </md-content>
   </md-content>
 
@@ -70,7 +87,7 @@
   ng-click="process()"
   aria-label="Save Plugin" tabindex="0" aria-disabled="true">
    <i class="material-icons" style="vertical-align: middle;">save</i>
-  <span style="vertical-align: middle;"> Save Changes</span>
+  <span style="vertical-align: middle;"> Commit Changes</span>
   </button>
 
 </md-content>

@@ -19,6 +19,7 @@
         $routeProvider.when('/admin/plugins', {templateUrl: '/view/plugins', controller: 'pluginListController'});
         $routeProvider.when('/admin/plugins/new', {templateUrl: '/view/plugins/newform', controller: 'pluginCreateController'})
         $routeProvider.when('/admin/plugin/:pluginID', {templateUrl: '/view/plugins/editform', controller: 'pluginEditController'});
+        $routeProvider.when('/admin/newresource/:pluginID', {templateUrl: '/view/plugins/resourceform', controller: 'resourceCreateEditController'});
     }]);
 
     //material colour scheme

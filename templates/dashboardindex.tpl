@@ -110,6 +110,8 @@
     <script src="/static/js/app/plugin/pluginListController.js"></script>
     <script src="/static/js/app/plugin/pluginCreateController.js"></script>
     <script src="/static/js/app/plugin/pluginEditController.js"></script>
+    <script src="/static/js/app/plugin/resourceCreateEditController.js"></script>
     <script src="/static/js/app/services/loggerService.js"></script>
+    <script src="/static/js/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
   </body>
 </html>

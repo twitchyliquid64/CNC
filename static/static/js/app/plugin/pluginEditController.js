@@ -6,6 +6,7 @@
     function pluginEditController($scope, $rootScope, $http, $mdDialog, $location, $routeParams, $mdToast) {
         var self = this;
         $scope.showLoading = true;
+        $scope.resourceSelected = [];
 
 
         self.buildEmptyPluginObject = function() {
@@ -39,6 +40,30 @@
           }, function errorCallback(response) {
             console.log(response);
             self.createDialog(response, "Server Error");
+          });
+        }
+
+
+        self.update = function() {
+          $http({
+            method: 'POST',
+            url: '/plugins/edit',
+            data: $scope.plugin
+          }).then(function successCallback(response) {
+              console.log(response);
+              if (response.data == "GOOD") {
+                $mdToast.show(
+                  $mdToast.simple()
+                    .content('Plugin details updated successfully.')
+                    .position('bottom')
+                    .hideDelay(3000)
+                );
+              } else {
+                self.createDialog("Server responded with error: " + response.data, "Server Error");
+              }
+            }, function errorCallback(response) {
+              console.log(response);
+              self.createDialog(response.data, "Server Error");
           });
         }
 
