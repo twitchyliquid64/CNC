@@ -129,6 +129,37 @@ func newPluginHandlerAPI(ctx *web.Context) {
 
 
 
+// API endpoint called to create a new resource.
+// Checks if the session's user is an admin.
+//
+func newResourceHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "newResourceHandlerAPI() called unauthorized, aborting")
+    return
+  }
+
+  decoder := json.NewDecoder(ctx.Request.Body)
+  var res pluginData.Resource
+  err := decoder.Decode(&res)
+  if err != nil {
+      logging.Error("web-plugin", "newResourceHandlerAPI() failed to decode JSON:", err)
+      ctx.Abort(500, "JSON error")
+      return
+  }
+
+  err = data.DB.Create(&res).Error
+  if err == nil {
+      ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-plugin", err)
+  }
+}
+
+
+
 // API endpoint called to edit the general properties of an existing plugin.
 // Checks if the session's user is an admin.
 //

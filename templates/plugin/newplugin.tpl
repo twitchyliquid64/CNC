@@ -36,9 +36,6 @@
           <textarea ng-model="plugin.Description" columns="1" md-maxlength="150" rows="5"></textarea>
     </md-input-container>
 
-    <md-switch ng-model="plugin.Enabled" aria-label="Enabled" class="md-block">
-      Enabled
-    </md-switch>
   </md-content>
 
   <button flex="" layout-fill=""
