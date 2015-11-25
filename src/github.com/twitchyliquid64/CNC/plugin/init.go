@@ -35,7 +35,7 @@ func Initialise(loadFromDatabase bool){
 
 
 func startEnabledPluginsFromDatabase(){ //assumes lock is held
-  plugins := pluginData.GetAllEnabledNoTrim(data.DB)
+  plugins := pluginData.GetAllEnabled(data.DB)
   for _, plugin := range plugins {
     startPluginBasedFromDB(plugin)
   }

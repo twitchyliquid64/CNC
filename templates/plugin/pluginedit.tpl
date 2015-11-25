@@ -55,7 +55,6 @@
           <md-icon md-font-library="material-icons">add</md-icon>
         </md-button>
       </p>
-      <p ng-hide="showLoading" ng-show="plugin.Resources.length == 0">This plugin does not have any resources.</p>
       <md-data-table-container ng-hide="showLoading || (plugin.Resources.length == 0)">
         <table md-data-table md-progress="deferred">
           <thead>

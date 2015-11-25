@@ -32,7 +32,7 @@
 
         self.process = function() {
           var content = self.editor.getValue();
-          $scope.resource.Data = content;
+          $scope.resource.JSONData = content;
           console.log($scope.resource);
 
           $http({
@@ -42,7 +42,7 @@
           }).then(function successCallback(response) {
               console.log(response);
               if (response.data == "GOOD") {
-                self.createDialog("Resource created successfully. To apply your changes, please restart the plugin.", "Server Error");
+                self.createDialog("Resource created successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
               } else {
                 self.createDialog("Server responded with error: " + response.data, "Server Error");
               }

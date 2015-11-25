@@ -6,7 +6,6 @@ import (
 )
 
 func (p *Plugin)run(){ //should be called in initialise() once everything is setup
-  logging.Info("plugin", "plugin.run()")
   for {
     select {
     case invocation, ok := <- p.PendingInvocations:

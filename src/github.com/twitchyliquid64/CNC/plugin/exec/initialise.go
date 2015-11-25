@@ -8,7 +8,6 @@ import (
 //
 //
 func initialise(plugin *Plugin) {
-  logging.Info("plugin", "plugin.initialise()")
   plugin.State = STATE_RUNNING
   go func(){
     defer func() {
@@ -32,7 +31,6 @@ func initialise(plugin *Plugin) {
 //
 //
 func firstRun(plugin *Plugin) {
-  logging.Info("plugin", "plugin.firstRun()")
   plugin.IsCurrentlyInExecution = true
   _, err := plugin.VM.Run(plugin.Code)
   plugin.IsCurrentlyInExecution = false

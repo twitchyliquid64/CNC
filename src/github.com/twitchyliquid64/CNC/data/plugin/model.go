@@ -26,11 +26,12 @@ type Resource struct {
   ID int      `gorm:"primary_key"`
   PluginID int `sql:"index"`
   Name string `sql:"index"`
-  Data string `sql:"type:text"`
+  Data []byte
   IsExecutable bool
   IsTemplate bool
+  JSONData string `sql:"-"` //only used for JSON deserialisation - not a DB field
 }
 
 func (r Resource)IsJavascriptCode()bool {
-  return r.IsExecutable && (!r.IsTemplate)
+  return r.IsExecutable
 }

@@ -2,7 +2,6 @@ package exec
 
 import (
   pluginData "github.com/twitchyliquid64/CNC/data/plugin"
-  "github.com/twitchyliquid64/CNC/logging"
   "github.com/robertkrimen/otto"
 )
 
@@ -12,7 +11,6 @@ const MAX_INVOCATION_QUEUE = 10
 //
 //
 func BuildPlugin(name, code string)*Plugin {
-  logging.Info("plugin", "BuildPlugin()")
   p := &Plugin{
     Name: name,
     Code: code,
@@ -32,12 +30,10 @@ func BuildPlugin(name, code string)*Plugin {
 //
 //
 func BuildPluginFromDatabase(name string, plugin pluginData.Plugin, res []pluginData.Resource)*Plugin {
-  logging.Info("plugin", "BuildPluginFromDatabase()")
-
   code := ""
   for _, resource := range res {
     if resource.IsJavascriptCode() {
-      code += "\n" + resource.Data
+      code += "\n" + string(resource.Data)
     }
   }
 

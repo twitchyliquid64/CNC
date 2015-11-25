@@ -7,43 +7,33 @@ import (
 )
 
 
-func GetAllDisabled(db gorm.DB)[]Plugin{
+func GetAllDisabledNoResources(db gorm.DB)[]Plugin{
   var plugins = make([]Plugin, 0)
   db.Where("enabled = ?", false).Find(&plugins)
-
-  for i := 0; i < len(plugins); i++ {
-    LoadResources(&(plugins[i]), db, true)
-  }
-
   return plugins
 }
 
 
-func GetAllEnabledNoTrim(db gorm.DB)[]Plugin{
+func GetAllEnabled(db gorm.DB)[]Plugin{
   var plugins = make([]Plugin, 0)
   db.Where("enabled = ?", true).Find(&plugins)
 
   for i := 0; i < len(plugins); i++ {
-    LoadResources(&(plugins[i]), db, false)
+    LoadResources(&(plugins[i]), db)
   }
 
   return plugins
 }
 
-func Get(db gorm.DB, pluginID int, trimResourceData bool)Plugin{
+func Get(db gorm.DB, pluginID int)Plugin{
   var plugin Plugin
   db.Find(&plugin, pluginID)
-  LoadResources(&plugin, db, trimResourceData)
+  LoadResources(&plugin, db)
   return plugin
 }
 
-func LoadResources(p *Plugin, db gorm.DB, trimResourceData bool){
+func LoadResources(p *Plugin, db gorm.DB){
   db.Model(&p).Related(&p.Resources)
-  if trimResourceData {
-    for i := 0; i < len(p.Resources); i++ {
-      p.Resources[i].Data = ""
-    }
-  }
 }
 
 func Create(p Plugin, db gorm.DB)error{

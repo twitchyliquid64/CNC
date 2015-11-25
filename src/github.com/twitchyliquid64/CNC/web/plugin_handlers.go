@@ -24,7 +24,7 @@ func getPluginHandlerAPI(ctx *web.Context){
   }
 
   pluginID, _ := strconv.Atoi(ctx.Params["pluginid"])
-  databaseObj := pluginData.Get(data.DB, pluginID, true)
+  databaseObj := pluginData.Get(data.DB, pluginID)
 
   d, err := json.Marshal(databaseObj)
   if err != nil {
@@ -53,7 +53,10 @@ func getAllPluginsHandlerAPI(ctx *web.Context) {
     temp = []*pluginExec.Plugin{}
   }
   for _, p := range temp {
-    plugins = append(plugins, p.Model)
+    var tempPlugin pluginData.Plugin
+    tempPlugin = p.Model
+    tempPlugin.Resources = nil
+    plugins = append(plugins, tempPlugin)
   }
 
   //turn them into JSON, combining the list from the running plugins,
@@ -64,7 +67,7 @@ func getAllPluginsHandlerAPI(ctx *web.Context) {
       Disabled []pluginData.Plugin
     }{
     Running: plugins,
-    Disabled: pluginData.GetAllDisabled(data.DB),
+    Disabled: pluginData.GetAllDisabledNoResources(data.DB),
   })
   if err != nil {
     logging.Error("web-plugin", err)
@@ -82,12 +85,12 @@ func changePluginStateAPI(ctx *web.Context) {
 
   pluginID, _ := strconv.Atoi(ctx.Params["pluginid"])
   startPlugin := ctx.Params["state"] == "true"
-  databaseObj := pluginData.Get(data.DB, pluginID, true)
+  databaseObj := pluginData.Get(data.DB, pluginID)
 
   if startPlugin {
     databaseObj.Enabled = true
     data.DB.Save(&databaseObj)
-    pluginController.StartPluginBasedFromDB(pluginData.Get(data.DB, pluginID, false))
+    pluginController.StartPluginBasedFromDB(pluginData.Get(data.DB, pluginID))
   } else { //stop plugin
     plugin := pluginController.FindByName(databaseObj.Name)
     pluginController.DeregisterPlugin(plugin)
@@ -148,6 +151,9 @@ func newResourceHandlerAPI(ctx *web.Context) {
       ctx.Abort(500, "JSON error")
       return
   }
+  res.Data = []byte(res.JSONData) //hack so that we can pass the data in as a string on clientside.
+  res.JSONData = ""
+  logging.Info("web-plugin", res)
 
   err = data.DB.Create(&res).Error
   if err == nil {
@@ -182,7 +188,7 @@ func editPluginHandlerAPI(ctx *web.Context) {
   }
 
   //to preserve integrity, shut down the plugin if it is currently running.
-  existingDatabaseObj := pluginData.Get(data.DB, int(pl.ID), true)
+  existingDatabaseObj := pluginData.Get(data.DB, int(pl.ID))
   if existingDatabaseObj.Enabled { //must of been running, shut it down.
     plugin := pluginController.FindByName(existingDatabaseObj.Name)
     pluginController.DeregisterPlugin(plugin)
@@ -193,7 +199,7 @@ func editPluginHandlerAPI(ctx *web.Context) {
   err = data.DB.Save(&pl).Error
   if err == nil {
     if pl.Enabled { //was saved successfully, so we should start it again if pl.Enabled == true
-      pluginController.StartPluginBasedFromDB(pluginData.Get(data.DB, int(pl.ID), false))
+      pluginController.StartPluginBasedFromDB(pluginData.Get(data.DB, int(pl.ID)))
     }
     ctx.ResponseWriter.Write([]byte("GOOD"))
   } else {
