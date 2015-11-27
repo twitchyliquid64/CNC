@@ -5,6 +5,7 @@ import (
   pluginData "github.com/twitchyliquid64/CNC/data/plugin"
   "github.com/twitchyliquid64/CNC/plugin/exec"
   "github.com/twitchyliquid64/CNC/plugin/builtin"
+  "github.com/twitchyliquid64/CNC/registry"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/data"
   "sync"
@@ -19,6 +20,8 @@ func Initialise(loadFromDatabase bool){
   logging.Info("plugin", "Initialise()")
   structureLock.Lock()
   defer structureLock.Unlock()
+
+  registry.SetupDispatchMethod(Dispatch)
 
   pluginByName = map[string]*exec.Plugin{}
   hooksByType = map[string]map[string]exec.Hook{}

@@ -2,6 +2,7 @@ package messenger
 
 import (
 	"github.com/twitchyliquid64/CNC/logging"
+	"github.com/twitchyliquid64/CNC/registry"
   "github.com/Syfaro/telegram-bot-api"
 )
 
@@ -29,19 +30,20 @@ func TelegramMessageHandler() {
 
 func onMessage(msg tgbotapi.Message) {
   logging.Info("messenger", "Message from ", msg.From.UserName, " - text: ", msg.Text)
-  sendReply(msg, "Noted.")
-  sendSimpleMessage(msg.Chat.ID, "Lol.")
+	registry.DispatchEvent("telegram_CHAT_MSG", msg)
 }
 
 func onChatJoined(msg tgbotapi.Message) {
   logging.Info("messenger", "Added to new chat: ", msg.Chat.Title)
+	registry.DispatchEvent("telegram_CHAT_JOINED", msg)
 }
 
 func onChatLeft(msg tgbotapi.Message) {
   logging.Info("messenger", "Removed from chat: ", msg.Chat.Title)
+	registry.DispatchEvent("telegram_CHAT_LEFT", msg)
 }
 
-func sendSimpleMessage(chatID int, text string) {
+func SendSimpleMessage(chatID int, text string) {
   reply := tgbotapi.NewMessage(chatID, text)
   gTelegramConnection.SendMessage(reply)
 }
