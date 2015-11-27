@@ -2,6 +2,7 @@ package exec
 
 import (
   "github.com/twitchyliquid64/CNC/logging"
+  "github.com/twitchyliquid64/CNC/data"
   "time"
 )
 
@@ -15,6 +16,13 @@ func (p *Plugin)run(){ //should be called in initialise() once everything is set
         if err != nil{
           p.Error = err
           p.State = STATE_RUN_ERROR
+          if p.Model.ID != 0 {
+            p.Model.ErrorStr = err.Error()
+            p.Model.HasCrashed = true
+            p.Model.Resources = nil
+            data.DB.Save(&(p.Model))
+            logging.Error("plugin-"+p.Name, "Code Error: " + err.Error())
+          }
         }
         p.IsCurrentlyInExecution = false
       }else{

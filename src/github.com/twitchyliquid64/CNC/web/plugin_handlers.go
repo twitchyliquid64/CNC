@@ -289,6 +289,7 @@ func deleteResourceHandlerAPI(ctx *web.Context) {
 // API endpoint called to delete a plugin using a pluginID.
 // Checks if the session's user is an admin.
 //
+// TODO: Make method stop the plugin if it is running first.
 func deletePluginHandlerAPI(ctx *web.Context) {
   isLoggedIn, u, _ := getSessionByCookie(ctx)
 

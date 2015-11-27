@@ -38,11 +38,16 @@
 
       </md-card-content>
       <md-card-actions layout="row" layout-align="end center">
-        <p hide-sm layout-margin ng-show="plugin.Enabled" layout-padding class="green">Running</p>
-        <p hide-sm layout-margin ng-hide="plugin.Enabled" layout-padding class="amber">Disabled</p>
+        <span ng-if="!plugin.HasCrashed">
+          <p hide-sm layout-margin ng-show="plugin.Enabled" layout-padding class="green">Running</p>
+          <p hide-sm layout-margin ng-hide="plugin.Enabled" layout-padding class="amber">Disabled</p>
+        </span>
+        <span ng-if="plugin.HasCrashed">
+          <p hide-sm layout-margin  layout-padding class="red">{{plugin.ErrorStr}}</p>
+        </span>
         <span flex hide-sm>
         </span>
-        <md-button ng-click="deletePlugin(plugin.ID, plugin.Name, $event)"><md-icon md-font-library="material-icons">close</md-icon> Delete</md-button>
+        <md-button ng-disabled="plugin.Enabled" ng-click="deletePlugin(plugin.ID, plugin.Name, $event)"><md-icon md-font-library="material-icons">close</md-icon> Delete</md-button>
         <md-button ng-click="main.activateRouted('/admin/plugin/'+plugin.ID, 'plugin-edit')"><md-icon md-font-library="material-icons">edit</md-icon> Edit</md-button>
 
 
