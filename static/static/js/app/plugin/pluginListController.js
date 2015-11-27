@@ -32,8 +32,28 @@
           });
         }
 
+        self.deletePlugin = function (pluginID, pluginName, ev) {
+          var confirm = $mdDialog.confirm()
+                .title('Confirm plugin deletion')
+                .content('Are you sure you want to delete plugin \'' + pluginName + '\'?')
+                .ariaLabel('Confirm plugin deletion')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('Abort');
+          $mdDialog.show(confirm).then(function() {
+            $http.get('/plugins/deleteplugin?pluginid='+pluginID, {}).then(function (response) {
+              $scope.showLoading = true;
+              self.refresh();
+            });
+          }, function errorCallback(response) {
+            console.log(response);
+            self.createDialog(response.data, "Server Error");
+          });
+        }
+
         $scope.refresh = self.refresh;
         $scope.switchChanged = self.switchChanged;
+        $scope.deletePlugin = self.deletePlugin;
         self.refresh();
     };
 

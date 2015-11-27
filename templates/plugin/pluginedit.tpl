@@ -2,8 +2,8 @@
   <md-data-table-toolbar>
     <h2 class="md-title" flex="50">Plugins <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> Edit</h2>
 
-    <div class="md-toolbar-tools">
-      <span flex></span>
+    <div class="md-toolbar-tools" md-hide="showLoading" >
+        <md-progress-linear md-mode="{{loadingMode()}}"></md-progress-linear>
     </div>
 
   </md-data-table-toolbar>
@@ -15,6 +15,8 @@
     margin: 2px;
   }
   </style>
+
+
 
   <md-content flex layout="row" layout-fill layout-wrap>
     <md-content md-margin md-padding flex="99" flex-sm="100" layout="column" layout-fill >
@@ -67,10 +69,10 @@
             <tr ng-repeat="resource in plugin.Resources">
               <td><md-icon md-font-library="material-icons">code</md-icon> {{resource.Name}}</td>
               <td>
-                <md-button class="ng-icon-button small-icons" ng-click="" aria-label="Edit Resource">
+                <md-button class="ng-icon-button small-icons" ng-click="main.activateRouted('/admin/resource/'+resource.ID, 'resource-form')" aria-label="Edit Resource">
                   <md-icon md-font-library="material-icons">mode_edit</md-icon>
                 </md-button>
-                <md-button class="ng-icon-button small-icons" ng-click="" aria-label="Delete Resource">
+                <md-button class="ng-icon-button small-icons" ng-click="deleteResource(resource.ID, $event)" aria-label="Delete Resource">
                   <md-icon md-font-library="material-icons">delete</md-icon>
                 </md-button>
               </td>

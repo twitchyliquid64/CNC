@@ -60,6 +60,8 @@
           self.activateRouted(p, 'plugin-edit');
         } else if(p.startsWith('/admin/newresource')) {
           self.activateRouted(p, 'resource-form');
+        } else if(p.startsWith('/admin/resource')) {
+          self.activateRouted(p, 'resource-form');
         } else if(p == "/" || p == ""){ // default TODO: Make it do something else for ppl who are not admins
           self.activateRouted('/admin/dashboard', 'summary');
         }

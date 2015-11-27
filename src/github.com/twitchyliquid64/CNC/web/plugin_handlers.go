@@ -207,3 +207,100 @@ func editPluginHandlerAPI(ctx *web.Context) {
       logging.Error("web-plugin", err)
   }
 }
+
+
+// Passes back a JSON object representing that particular
+// resource.
+//
+func getResourceHandlerAPI(ctx *web.Context){
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "getResourceHandlerAPI() called unauthorized, aborting")
+    return
+  }
+
+  resourceID, _ := strconv.Atoi(ctx.Params["resourceid"])
+  databaseObj := pluginData.GetResource(data.DB, resourceID)
+
+  d, err := json.Marshal(databaseObj)
+  if err != nil {
+    logging.Error("web-plugin", err)
+  }
+  ctx.ResponseWriter.Write(d)
+}
+
+
+
+
+// API endpoint called to edit a resource.
+// Checks if the session's user is an admin.
+//
+func editResourceHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "editResource() called unauthorized, aborting")
+    return
+  }
+
+  //decode JSON to pl
+  decoder := json.NewDecoder(ctx.Request.Body)
+  var res pluginData.Resource
+  err := decoder.Decode(&res)
+  if err != nil {
+      logging.Error("web-plugin", "editResourceHandlerAPI() failed to decode JSON:", err)
+      ctx.Abort(500, "JSON error")
+      return
+  }
+  res.Data = []byte(res.JSONData) //hack so that we can pass the data in as a string on clientside.
+  res.JSONData = ""
+
+  err = data.DB.Save(&res).Error
+  if err == nil {
+    ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-plugin", err)
+  }
+}
+
+
+// API endpoint called to delete a resource using a resourceID.
+// Checks if the session's user is an admin.
+//
+func deleteResourceHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "deleteResource() called unauthorized, aborting")
+    return
+  }
+  err := data.DB.Where("id = ?", ctx.Params["resourceid"]).Delete(&pluginData.Resource{}).Error
+  if err == nil {
+    ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-plugin", err)
+  }
+}
+
+
+// API endpoint called to delete a plugin using a pluginID.
+// Checks if the session's user is an admin.
+//
+func deletePluginHandlerAPI(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-plugin", "deletePlugin() called unauthorized, aborting")
+    return
+  }
+  err := data.DB.Where("id = ?", ctx.Params["pluginid"]).Delete(&pluginData.Plugin{}).Error
+  if err == nil {
+    ctx.ResponseWriter.Write([]byte("GOOD"))
+  } else {
+      ctx.ResponseWriter.Write([]byte(err.Error()))
+      logging.Error("web-plugin", err)
+  }
+}

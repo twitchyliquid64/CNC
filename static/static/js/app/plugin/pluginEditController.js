@@ -7,6 +7,10 @@
         var self = this;
         $scope.showLoading = true;
         $scope.resourceSelected = [];
+        $scope.loadingMode = function() {
+          if ($scope.showLoading)return "indeterminate";
+          return "";
+        }
 
 
         self.buildEmptyPluginObject = function() {
@@ -32,6 +36,7 @@
         };
 
         self.load = function() {
+          $scope.showLoading = true;
           $http.get('/plugin?pluginid='+$routeParams.pluginID, {}).then(function (response) {
             plugin = response.data;
             $scope.plugin = plugin;
@@ -42,6 +47,26 @@
             self.createDialog(response, "Server Error");
           });
         }
+
+
+        self.deleteResource = function(resourceID, ev) {
+          var confirm = $mdDialog.confirm()
+                .title('Confirm resource deletion')
+                .content('Are you sure you want to delete resource ' + resourceID + '?')
+                .ariaLabel('Confirm resource deletion')
+                .targetEvent(ev)
+                .ok('Yes')
+                .cancel('Abort');
+          $mdDialog.show(confirm).then(function() {
+            $http.get('/plugins/deleteresource?resourceid='+resourceID, {}).then(function (response) { //get user data to display in table
+              $scope.showLoading = true;
+              self.load();
+            });
+          }, function errorCallback(response) {
+            console.log(response);
+            self.createDialog(response.data, "Server Error");
+          });
+        };
 
 
         self.update = function() {
@@ -78,6 +103,8 @@
                         "computer", "laptop", "router", "scanner", "phone_android", "directions_bus", "directions_car"];
 
         $scope.process = self.process;
+        $scope.deleteResource = self.deleteResource;
+        $scope.deletePlugin = self.deletePlugin;
         $scope.plugin = self.buildEmptyPluginObject();
         self.load();
     }

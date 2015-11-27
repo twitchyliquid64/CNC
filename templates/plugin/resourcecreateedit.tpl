@@ -2,7 +2,8 @@
   <md-data-table-toolbar>
     <h2 class="md-title" flex="50">Plugins <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
                                   Resources <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
-                                  New</h2>
+                                  <span ng-show="isCreateMode">New</span>
+                                  <span ng-hide="isCreateMode">Edit</span></h2>
 
     <div class="md-toolbar-tools">
       <span flex></span>
@@ -49,7 +50,8 @@
   ng-click="process()"
   aria-label="Save Plugin" tabindex="0" aria-disabled="true">
    <i class="material-icons" style="vertical-align: middle;">save</i>
-  <span style="vertical-align: middle;"> Create</span>
+   <span ng-show="isCreateMode" style="vertical-align: middle;"> Create</span>
+   <span ng-hide="isCreateMode" style="vertical-align: middle;"> Save Changes</span>
   </button>
 
 </md-content>
