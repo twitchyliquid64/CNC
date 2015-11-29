@@ -21,6 +21,13 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   tgram.Set("sendMsg", func(in otto.FunctionCall)otto.Value{return function_telegram_sendMsg(plugin, in)})
   plugin.VM.Set("telegram", tgram)
 
+
+  //gmail
+  gmail, _ := plugin.VM.Object(`gmail = {}`)
+  gmail.Set("setup", func(in otto.FunctionCall)otto.Value{return function_gmail_setup(plugin, in)})
+  gmail.Set("sendMessage", func(in otto.FunctionCall)otto.Value{return function_gmail_sendMessage(plugin, in)})
+  plugin.VM.Set("gmail", gmail)
+
   //aux
   plugin.VM.Set("testendpoint_good", func(in otto.FunctionCall)otto.Value{return function_onTestEndpointGood(plugin, in)})
   plugin.VM.Set("onTestDispatchTriggered", func(in otto.FunctionCall)otto.Value{return function_onTestDispatchTriggered(plugin, in)})
