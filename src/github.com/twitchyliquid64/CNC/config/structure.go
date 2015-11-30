@@ -38,4 +38,9 @@ type Config struct {
 			BotUsername string
 		}
 	}
+	Twilio struct {					//used for SMS integration if the user has a twilio account
+		Enable bool
+		AccountSID string
+		AuthToken string
+	}
 }
