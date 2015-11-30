@@ -28,6 +28,12 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   gmail.Set("sendMessage", func(in otto.FunctionCall)otto.Value{return function_gmail_sendMessage(plugin, in)})
   plugin.VM.Set("gmail", gmail)
 
+  //cron
+  cr, _ := plugin.VM.Object(`cron = {}`)
+  cr.Set("schedule", func(in otto.FunctionCall)otto.Value{return function_cron_schedule(plugin, in)})
+  plugin.VM.Set("cron", cr)
+
+
   //twilio (SMS)
   twilio, _ := plugin.VM.Object(`twilio = {}`)
   twilio.Set("sendSMS", func(in otto.FunctionCall)otto.Value{return function_twilio_sendSMS(plugin, in)})

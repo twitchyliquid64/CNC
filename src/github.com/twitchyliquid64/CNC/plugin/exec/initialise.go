@@ -13,10 +13,18 @@ func initialise(plugin *Plugin) {
   go func(){
     defer func() {
         if caught := recover(); caught != nil {
-            plugin.IsCurrentlyInExecution = false
-            plugin.State = STATE_STOPPED
-            return
+          logging.Error("plugin-mainloop", "Panic: ", caught)
+          plugin.IsCurrentlyInExecution = false
+          plugin.State = STATE_STOPPED
+          if plugin.Model.ID != 0 {
+            plugin.Model.ErrorStr = "Mainloop Panic"
+            plugin.Model.HasCrashed = true
+            plugin.Model.Resources = nil
+            data.DB.Save(&(plugin.Model))
+          }
+          return
         }
+        return
     }()
 
     LoadBuiltinFunction(plugin)//populates the namespace with API methods
