@@ -28,6 +28,14 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   gmail.Set("sendMessage", func(in otto.FunctionCall)otto.Value{return function_gmail_sendMessage(plugin, in)})
   plugin.VM.Set("gmail", gmail)
 
+  //http
+  http, _ := plugin.VM.Object(`http = {}`)
+  http.Set("get", func(in otto.FunctionCall)otto.Value{return function_http_get(plugin, in)})
+  http.Set("post", func(in otto.FunctionCall)otto.Value{return function_http_post(plugin, in)})
+  http.Set("postValues", func(in otto.FunctionCall)otto.Value{return function_http_postValues(plugin, in)})
+  plugin.VM.Set("http", http)
+
+
   //cron
   cr, _ := plugin.VM.Object(`cron = {}`)
   cr.Set("schedule", func(in otto.FunctionCall)otto.Value{return function_cron_schedule(plugin, in)})
