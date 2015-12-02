@@ -1,6 +1,7 @@
 package web
 
 import (
+  "github.com/twitchyliquid64/CNC/web/pluginhandler"
   "github.com/twitchyliquid64/CNC/data/session"
   "github.com/twitchyliquid64/CNC/data/user"
   "github.com/twitchyliquid64/CNC/logging"
@@ -21,6 +22,11 @@ func (inst mainPageData)IsAdmin()bool{
   return false
 }
 
+
+func pluginGeneralHandler(ctx *web.Context, dummy string) {
+  pluginhandler.HandleHTTP(ctx, ctx.Request)
+  return
+}
 
 // Page Handler which outputs the HTML for the main page.
 //

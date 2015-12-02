@@ -1,6 +1,7 @@
 package httpgateway
 
 import (
+  "github.com/twitchyliquid64/CNC/web/pluginhandler"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/config"
 	"net/http"
@@ -13,7 +14,7 @@ type BasicHTTPHandler struct{}
 // Mapping of all the URLs which the gateway can handle without redirecting
 //
 //
-var allowedURLMapping = map[string]map[string]func(w http.ResponseWriter, req *http.Request){
+var allowedURLMapping = map[string]func(w http.ResponseWriter, req *http.Request){
   "/test": nil,
 }
 
@@ -41,6 +42,11 @@ func redir(w http.ResponseWriter, req *http.Request) {
 //
 //
 func (f *BasicHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+  if strings.HasPrefix(req.URL.String(), "/p") {
+    pluginhandler.HandleHTTP(w,req)
+    return
+  }
+
   handler, ok := allowedURLMapping[req.URL.String()]
 
   if !ok{ //no handler for this URL, redirect request to web package (HTTPS address).
@@ -62,7 +68,7 @@ func (f *BasicHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 //
 func Init() {
   if(config.All().Web.SimpleHTTPGateway.Enable) {
-    
+
     // sets up a gateway on the address specificed in config, with all req's handled by ServeHTTP above
     go func(){
       err := http.ListenAndServe(config.All().Web.SimpleHTTPGateway.Listener, &BasicHTTPHandler{})

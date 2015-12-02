@@ -31,6 +31,8 @@ func registerCoreHandlers() {
   web.Get("/login", loginMainPage, config.All().Web.Domain)
   web.Get("/dev/reload", templateReloadHandler, config.All().Web.Domain)
   web.Get("/sys-status", getSysComponentsStatusAPIHandler, config.All().Web.Domain)
+  web.Get("/p/(.*)", pluginGeneralHandler, config.All().Web.Domain)
+  web.Post("/p/(.*)", pluginGeneralHandler, config.All().Web.Domain)
 }
 
 func registerUserHandlers() {
