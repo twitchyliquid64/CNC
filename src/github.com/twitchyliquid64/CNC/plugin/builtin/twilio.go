@@ -33,17 +33,9 @@ func function_twilio_sendSMS(plugin *exec.Plugin, call otto.FunctionCall)otto.Va
   to   := call.Argument(1).String()
   msg  := call.Argument(2).String()
 
-  resp, err := sendMsg(from, to, msg)
+  _, err := sendMsg(from, to, msg)
   if err != nil{
     logging.Error("builtin-twilio", err.Error())
-    out, err := plugin.VM.ToValue(resp)
-    if err != nil {
-      logging.Error("builtin-twilio", err.Error())
-      out, _ = plugin.VM.ToValue(err.Error())
-    }
-    return out
-  } else {
-    out, _ := plugin.VM.ToValue(err.Error())
-    return out
   }
+  return otto.Value{}
 }
