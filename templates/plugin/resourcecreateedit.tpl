@@ -40,6 +40,15 @@
     </div>
   </md-input-container>
 
+  <button flex=""
+  class="md-primary md-button md-scope"
+  ng-click="showReference()"
+  aria-label="View API Reference" tabindex="0" aria-disabled="true">
+   <i class="material-icons" style="vertical-align: middle;">code</i>
+   <span style="vertical-align: middle;"> API Reference</span>
+  </button>
+
+
   <md-input-container class="md-block">
     <pre id="editor">console.log("Hello world!");</pre>
   </md-input-container>

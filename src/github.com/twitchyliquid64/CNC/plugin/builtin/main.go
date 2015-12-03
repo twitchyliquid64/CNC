@@ -23,7 +23,7 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
 
   //web
   web, _ := plugin.VM.Object(`web = {}`)
-  web.Set("handle", func(in otto.FunctionCall)otto.Value{return function_http_handle(plugin, in)})
+  web.Set("handle", func(in otto.FunctionCall)otto.Value{return function_web_handle(plugin, in)})
   plugin.VM.Set("web", web)
 
   //gmail

@@ -33,6 +33,7 @@ func registerCoreHandlers() {
   web.Get("/sys-status", getSysComponentsStatusAPIHandler, config.All().Web.Domain)
   web.Get("/p/(.*)", pluginGeneralHandler, config.All().Web.Domain)
   web.Post("/p/(.*)", pluginGeneralHandler, config.All().Web.Domain)
+  web.Get("/ref/api", apiRefView, config.All().Web.Domain)
 }
 
 func registerUserHandlers() {
@@ -94,6 +95,7 @@ func registerCoreTemplates(){
   logError(registerTemplate("bannertop.tpl", "bannertop"), "Template load error: ")
   logError(registerTemplate("headcontent.tpl", "headcontent"), "Template load error: ")
   logError(registerTemplate("tailcontent.tpl", "tailcontent"), "Template load error: ")
+  logError(registerTemplate("apiref.tpl", "apiref"), "Template load error: ")
 }
 
 func registerUserTemplates(){

@@ -110,5 +110,9 @@
         } else {
           self.load();
         }
+
+        $scope.showReference = function() {
+          window.open("/ref/api");
+        }
     }
 })();

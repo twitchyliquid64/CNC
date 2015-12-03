@@ -15,7 +15,7 @@ const HANDLER_ID_LENGTH = 12
 // Called when JS code executes cron.schedule()
 // cronString format defined @: https://godoc.org/github.com/robfig/cron
 //
-func function_http_handle(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+func function_web_handle(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
   patternRegex := call.Argument(0).String()
   methodName   := call.Argument(1).String()
 

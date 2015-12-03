@@ -5,6 +5,14 @@ import (
   "github.com/hoisie/web"
 )
 
+
+func apiRefView(ctx *web.Context) {
+  t := templates.Lookup("apiref")
+	if t == nil {
+		logging.Error("web", "No template found.")
+	}
+	t.Execute(ctx.ResponseWriter, nil)}
+
 func loginMainPage(ctx *web.Context) {
   t := templates.Lookup("login")
 	if t == nil {
