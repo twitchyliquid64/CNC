@@ -246,10 +246,95 @@
 
 
             <!-- WEB FUNCTIONS -->
-            <v-pane disabled>
+            <v-pane>
               <v-pane-header>
                 <md-icon md-font-library="material-icons">cloud</md-icon>
-                Web Handlers (Documentation coming soon)
+                Web Handlers
+              </v-pane-header>
+
+              <v-pane-content>
+                <p>This feature allows you to specify URLs, prefixed with /p/, which when hit by a HTTP request can be serviced by a method which you specify.</p>
+
+                <p>You need to 'register' the name of the method which will handle requests, along with a regex that will match paths.</p>
+                <p>Inside the method, you control the response and access request parameters by accessing properties and calling methods on the parameter passed.</p>
+                <v-accordion>
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      web.handle(
+                      <i class="amber">url path (regex)</i> <sup style="color: #444444;">str</sup>
+                      ,
+                      <i class="amber">method name</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Registers a method to handle web requests to /p/ which match the specified regex. Returns True if the registration was successful.
+                      <p>EG: </p>
+                      <pre>
+                        function handleHi(web) {
+                            web.done();
+                        }
+
+                        var didBind = web.handle("/p/hi", "handleHi");
+                        log("Bound to /p/hi: " + didBind);
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+
+                  <v-pane>
+                    <v-pane-header style="color: #000077;">
+                      <md-icon md-font-library="material-icons">call_missed </md-icon>
+                      function methodname (
+                      <i class="amber">param1</i> <sup style="color: #444444;">obj</sup> ->
+                      (
+                        <i class="amber">url</i> <sup style="color: #444444;">str</sup> ,
+                        <i class="amber">data</i> <sup style="color: #444444;">str</sup> ,
+                        <i class="green">done()</i> <sup style="color: #444444;">method</sup> ,
+                        <i class="green">write( <i class="amber">data</i> <sup style="color: #444444;">str</sup> )</i><sup style="color: #444444;">method</sup>
+
+                      ) { }
+                    </v-pane-header>
+                    <v-pane-content>
+                      Describes the callback of the method whoes name is passed in web.handle().
+                      <p>Some notes:</p>
+                      <ul>
+                        <li>Use <i class="green">param1.write(data)</i> to write content to the browser.</li>
+                        <li>Use <i class="green">param1.done()</i> to finish the request. Do NOT write after calling done.</li>
+                        <li><i class="green">param1.url</i> is the full request URL.</li>
+                        <li><i class="green">param1.data</i> contains the POST data of the request, if any.</li>
+                        <li><i class="green">param1.parameter(paramname<sup style="color: #444444;">str</sup>)</i> returns the value of the GET/POST parameter, if any.</li>
+                      </ul>
+
+                      <p>EG: </p>
+                      <pre>
+                        function handleHi(web) {
+                            log(web.url);
+                            log(web.data);
+                            web.write("Hi " + web.parameter("name"));
+                            web.done();
+                        }
+
+                        var didBind = web.handle("/p/hi", "handleHi");
+                        log("Bound to /p/hi: " + didBind);
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+                </v-accordion>
+
+              </v-pane-content>
+            </v-pane>
+
+
+
+
+
+            <!-- Web Request FUNCTIONS -->
+            <v-pane disabled>
+              <v-pane-header>
+                <md-icon md-font-library="material-icons">http</md-icon>
+                Web Requests (Documentation coming soon)
               </v-pane-header>
 
               <v-pane-content>
@@ -289,11 +374,60 @@
 
 
 
-            <!-- Web Request FUNCTIONS -->
+
+
+
+
+            <!-- TELEGRAM FUNCTIONS -->
             <v-pane disabled>
               <v-pane-header>
-                <md-icon md-font-library="material-icons">http</md-icon>
-                Web Requests (Documentation coming soon)
+                <md-icon md-font-library="material-icons">send</md-icon>
+                Telegram (Documentation coming soon)
+              </v-pane-header>
+
+              <v-pane-content>
+                <p>This feature allows you to send SMS'es. Be advised this costs the owner (about 6c per SMS).</p>
+
+                <p>The owner will have one or more numbers setup from which can be SMS'ed. One needs to be known to send SMS'es.</p>
+                <v-accordion>
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      twilio.sendSMS(
+                      <i class="amber">from number</i> <sup style="color: #444444;">str</sup>
+                      ,
+                      <i class="amber">to number</i> <sup style="color: #444444;">str</sup>
+                      ,
+                      <i class="amber">message</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      To and from addresses must be in the format: +COUNTRYCODENUMBER.
+                      <p>EG: </p>
+                      <pre>
+                        var fromNumber = "+19284332644";
+                        var toAddress = "+61342320983";
+
+                        twilio.sendSMS(fromNumber, toAddress, "YOLO!!! :D");
+
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+                </v-accordion>
+
+              </v-pane-content>
+            </v-pane>
+
+
+
+
+
+
+            <!-- DATA FUNCTIONS -->
+            <v-pane disabled>
+              <v-pane-header>
+                <md-icon md-font-library="material-icons">dns</md-icon>
+                Data (Documentation coming soon)
               </v-pane-header>
 
               <v-pane-content>

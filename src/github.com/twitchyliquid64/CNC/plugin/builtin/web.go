@@ -12,7 +12,7 @@ const WEB_HOOK_PREFIX = "web_"
 const HANDLER_ID_LENGTH = 12
 
 
-// Called when JS code executes cron.schedule()
+// Called when JS code executes web.handle()
 // cronString format defined @: https://godoc.org/github.com/robfig/cron
 //
 func function_web_handle(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
