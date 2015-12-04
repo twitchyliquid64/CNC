@@ -67,7 +67,10 @@
           </thead>
           <tbody>
             <tr ng-repeat="resource in plugin.Resources">
-              <td><md-icon md-font-library="material-icons">code</md-icon> {{resource.Name}}</td>
+              <td>
+                <md-icon ng-show="resource.IsExecutable" md-font-library="material-icons">code</md-icon>
+                <md-icon ng-show="resource.IsTemplate" md-font-library="material-icons">description</md-icon>
+                 {{resource.Name}}</td>
               <td>
                 <md-button class="ng-icon-button small-icons" ng-click="main.activateRouted('/admin/resource/'+resource.ID, 'resource-form')" aria-label="Edit Resource">
                   <md-icon md-font-library="material-icons">mode_edit</md-icon>
