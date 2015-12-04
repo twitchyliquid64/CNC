@@ -470,37 +470,96 @@
 
 
             <!-- Web Request FUNCTIONS -->
-            <v-pane disabled>
+            <v-pane>
               <v-pane-header>
                 <md-icon md-font-library="material-icons">http</md-icon>
-                Web Requests (Documentation coming soon)
+                Web Requests
               </v-pane-header>
 
               <v-pane-content>
-                <p>This feature allows you to send SMS'es. Be advised this costs the owner (about 6c per SMS).</p>
+                <p>This feature allows you to make HTTP and HTTPS requests.
 
-                <p>The owner will have one or more numbers setup from which can be SMS'ed. One needs to be known to send SMS'es.</p>
+                <p>At the moment, there are a limited amount of parameters that can be configured.</p>
                 <v-accordion>
                   <v-pane>
                     <v-pane-header class="green">
                       <md-icon md-font-library="material-icons">code</md-icon>
-                      twilio.sendSMS(
-                      <i class="amber">from number</i> <sup style="color: #444444;">str</sup>
-                      ,
-                      <i class="amber">to number</i> <sup style="color: #444444;">str</sup>
-                      ,
-                      <i class="amber">message</i> <sup style="color: #444444;">str</sup>
+                      http.get(
+                      <i class="amber">fully qualified URL</i> <sup style="color: #444444;">str</sup>
                       )
                     </v-pane-header>
                     <v-pane-content>
-                      To and from addresses must be in the format: +COUNTRYCODENUMBER.
+                      <p>After making the request, the function returns an object that represents its response. This object has
+                      the following properties:</p>
+
+                      <ul>
+                        <li><i class="green">Code</i> <sup style="color: #444444;">int</sup> - The HTTP response code (200, 404 etc)</li>
+                        <li><i class="green">CodeStr</i> <sup style="color: #444444;">str</sup> - The HTTP response status expressed as a human readable string</li>
+                        <li><i class="green">Data</i> <sup style="color: #444444;">str</sup> - The HTTP response body</li>
+                        <li><i class="green">Address</i> <sup style="color: #444444;">str</sup> - The address in the request</li>
+                      </ul>
+
                       <p>EG: </p>
                       <pre>
-                        var fromNumber = "+19284332644";
-                        var toAddress = "+61342320983";
+                        var data = http.get('http://ciphersink.net/');
+                        console.log(JSON.stringify(data));
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
 
-                        twilio.sendSMS(fromNumber, toAddress, "YOLO!!! :D");
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      http.post(
+                      <i class="amber">fully qualified URL</i> <sup style="color: #444444;">str</sup>,
+                      <i class="amber">data</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      <p>Does a HTTP POST to the specified URL, with the second parameter used as the request body.</p>
+                      <p>After making the request, the function returns an object that represents its response. This object has
+                      the following properties:</p>
 
+                      <ul>
+                        <li><i class="green">Code</i> <sup style="color: #444444;">int</sup> - The HTTP response code (200, 404 etc)</li>
+                        <li><i class="green">CodeStr</i> <sup style="color: #444444;">str</sup> - The HTTP response status expressed as a human readable string</li>
+                        <li><i class="green">Data</i> <sup style="color: #444444;">str</sup> - The HTTP response body</li>
+                        <li><i class="green">Address</i> <sup style="color: #444444;">str</sup> - The address in the request</li>
+                      </ul>
+
+                      <p>EG: </p>
+                      <pre>
+                        var res = http.post('http://posttestserver.com/post.php', 'text/html', 'LOLCAKES');
+                        console.log(JSON.stringify(res));
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      http.postValues(
+                      <i class="amber">fully qualified URL</i> <sup style="color: #444444;">str</sup>,
+                      <i class="amber">values</i> <sup style="color: #444444;">obj</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      <p>Does a HTTP POST to the specified URL, Using a formencoded body specifying the given key-value pairs in <i>values</i>.</p>
+                      <p>After making the request, the function returns an object that represents its response. This object has
+                      the following properties:</p>
+
+                      <ul>
+                        <li><i class="green">Code</i> <sup style="color: #444444;">int</sup> - The HTTP response code (200, 404 etc)</li>
+                        <li><i class="green">CodeStr</i> <sup style="color: #444444;">str</sup> - The HTTP response status expressed as a human readable string</li>
+                        <li><i class="green">Data</i> <sup style="color: #444444;">str</sup> - The HTTP response body</li>
+                        <li><i class="green">Address</i> <sup style="color: #444444;">str</sup> - The address in the request</li>
+                      </ul>
+
+                      <p>EG: </p>
+                      <pre>
+                        var resFinal = http.postValues('http://posttestserver.com/post.php', {yolo: 'swag', 'bruh': 'brah'});
+                        console.log(JSON.stringify(resFinal));
                       </pre>
                     </v-pane-content>
                   </v-pane>
@@ -518,37 +577,101 @@
 
 
             <!-- TELEGRAM FUNCTIONS -->
-            <v-pane disabled>
+            <v-pane>
               <v-pane-header>
                 <md-icon md-font-library="material-icons">send</md-icon>
-                Telegram (Documentation coming soon)
+                Telegram
               </v-pane-header>
 
               <v-pane-content>
-                <p>This feature allows you to send SMS'es. Be advised this costs the owner (about 6c per SMS).</p>
+                <p>This feature allows you to integrate with telegram, a online chat service (like slack or whatsapp).</p>
 
-                <p>The owner will have one or more numbers setup from which can be SMS'ed. One needs to be known to send SMS'es.</p>
                 <v-accordion>
                   <v-pane>
                     <v-pane-header class="green">
                       <md-icon md-font-library="material-icons">code</md-icon>
-                      twilio.sendSMS(
-                      <i class="amber">from number</i> <sup style="color: #444444;">str</sup>
-                      ,
-                      <i class="amber">to number</i> <sup style="color: #444444;">str</sup>
+                      telegram.sendMsg(
+                      <i class="amber">chat ID</i> <sup style="color: #444444;">int</sup>
                       ,
                       <i class="amber">message</i> <sup style="color: #444444;">str</sup>
                       )
                     </v-pane-header>
                     <v-pane-content>
-                      To and from addresses must be in the format: +COUNTRYCODENUMBER.
+                      Sends a message from the bot to the chat/group described by <i class="green">chat ID</i>.
                       <p>EG: </p>
                       <pre>
-                        var fromNumber = "+19284332644";
-                        var toAddress = "+61342320983";
+                        telegram.sendMsg(JSON.parse(data.get('chatid').Content), "Hi!");
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
 
-                        twilio.sendSMS(fromNumber, toAddress, "YOLO!!! :D");
 
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      telegram.onChatJoined(
+                      <i class="amber">method name</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Tells the system to call the method specified by <i class="green">method name</i>
+                      whenever the bot is added to a chat group, or a new private chat is opened.
+                      <p>The format of the parameter passed to the method can be found here:
+                      <a href="https://godoc.org/github.com/Syfaro/telegram-bot-api#Message">https://godoc.org/github.com/Syfaro/telegram-bot-api#Message</a></p>
+                      <p>EG: </p>
+                      <pre>
+                        function onChatJoined(msg) {
+                            telegram.sendMsg(msg.Chat.ID, "Hi!");
+                        }
+
+                        telegram.onChatJoined("onChatJoined");
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      telegram.onChatMsg(
+                      <i class="amber">method name</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Tells the system to call the method specified by <i class="green">method name</i>
+                      whenever a message is posted in any conversation the bot is in.
+                      <p>The format of the parameter passed to the method can be found here:
+                      <a href="https://godoc.org/github.com/Syfaro/telegram-bot-api#Message">https://godoc.org/github.com/Syfaro/telegram-bot-api#Message</a></p>
+
+                      <p>EG: </p>
+                      <pre>
+                        function onChatMsg(msg) {
+                            telegram.sendMsg(msg.Chat.ID, "Hi!");
+                        }
+
+                        telegram.onChatMsg("onChatMsg");
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      telegram.onChatLeft(
+                      <i class="amber">method name</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Tells the system to call the method specified by <i class="green">method name</i>
+                      whenever the bot is kicked from a conversation.
+                      <p>The format of the parameter passed to the method can be found here:
+                      <a href="https://godoc.org/github.com/Syfaro/telegram-bot-api#Message">https://godoc.org/github.com/Syfaro/telegram-bot-api#Message</a></p>
+                      <p>EG: </p>
+                      <pre>
+                        function onChatLeft(msg) {
+                          log('chat killed');
+                        }
+
+                        telegram.onChatLeft("onChatLeft");
                       </pre>
                     </v-pane-content>
                   </v-pane>
@@ -557,50 +680,6 @@
               </v-pane-content>
             </v-pane>
 
-
-
-
-
-
-            <!-- DATA FUNCTIONS -->
-            <v-pane disabled>
-              <v-pane-header>
-                <md-icon md-font-library="material-icons">dns</md-icon>
-                Data (Documentation coming soon)
-              </v-pane-header>
-
-              <v-pane-content>
-                <p>This feature allows you to send SMS'es. Be advised this costs the owner (about 6c per SMS).</p>
-
-                <p>The owner will have one or more numbers setup from which can be SMS'ed. One needs to be known to send SMS'es.</p>
-                <v-accordion>
-                  <v-pane>
-                    <v-pane-header class="green">
-                      <md-icon md-font-library="material-icons">code</md-icon>
-                      twilio.sendSMS(
-                      <i class="amber">from number</i> <sup style="color: #444444;">str</sup>
-                      ,
-                      <i class="amber">to number</i> <sup style="color: #444444;">str</sup>
-                      ,
-                      <i class="amber">message</i> <sup style="color: #444444;">str</sup>
-                      )
-                    </v-pane-header>
-                    <v-pane-content>
-                      To and from addresses must be in the format: +COUNTRYCODENUMBER.
-                      <p>EG: </p>
-                      <pre>
-                        var fromNumber = "+19284332644";
-                        var toAddress = "+61342320983";
-
-                        twilio.sendSMS(fromNumber, toAddress, "YOLO!!! :D");
-
-                      </pre>
-                    </v-pane-content>
-                  </v-pane>
-                </v-accordion>
-
-              </v-pane-content>
-            </v-pane>
 
                 </v-accordion>
         </md-content>
