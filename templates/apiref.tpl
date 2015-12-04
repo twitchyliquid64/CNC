@@ -681,6 +681,41 @@
             </v-pane>
 
 
+
+
+            <!-- TEMPLATE FUNCTIONS -->
+            <v-pane>
+              <v-pane-header>
+                <md-icon md-font-library="material-icons">description</md-icon>
+                Template
+              </v-pane-header>
+
+              <v-pane-content>
+                <p>These functions allow you to use the golang text/template templating engine.</p>
+                <p>The format of the templates is described in: <a href="https://golang.org/pkg/text/template/">https://golang.org/pkg/text/template/</a></p>
+
+                <v-accordion>
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      template.render(
+                      <i class="amber">template</i> <sup style="color: #444444;">str</sup>,
+                      <i class="amber">data</i> <sup style="color: #444444;">obj</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Applies <i class="green">data</i> to the templates specified in <i class="green">template</i>, returning the final result of the render.
+                      <p>EG: </p>
+                      <pre ng-non-bindable>
+                      log(template.render('Hi, {{.name}}', {'name': 'barry'}));
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+                </v-accordion>
+
+              </v-pane-content>
+            </v-pane>
+
                 </v-accordion>
         </md-content>
       </div>

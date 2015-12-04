@@ -33,13 +33,16 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   pl.Set("ready", func(in otto.FunctionCall)otto.Value{return function_plugin_ready(plugin, in)})
   plugin.VM.Set("plugin", pl)
 
-
   //data
   d, _ := plugin.VM.Object(`data = {}`)
   d.Set("get", func(in otto.FunctionCall)otto.Value{return function_data_get(plugin, in)})
   d.Set("set", func(in otto.FunctionCall)otto.Value{return function_data_set(plugin, in)})
   plugin.VM.Set("data", d)
 
+  //template
+  template, _ := plugin.VM.Object(`template = {}`)
+  template.Set("render", func(in otto.FunctionCall)otto.Value{return function_template_render(plugin, in)})
+  plugin.VM.Set("template", template)
 
   //gmail
   gmail, _ := plugin.VM.Object(`gmail = {}`)
@@ -54,17 +57,16 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   http.Set("postValues", func(in otto.FunctionCall)otto.Value{return function_http_postValues(plugin, in)})
   plugin.VM.Set("http", http)
 
-
   //cron
   cr, _ := plugin.VM.Object(`cron = {}`)
   cr.Set("schedule", func(in otto.FunctionCall)otto.Value{return function_cron_schedule(plugin, in)})
   plugin.VM.Set("cron", cr)
 
-
   //twilio (SMS)
   twilio, _ := plugin.VM.Object(`twilio = {}`)
   twilio.Set("sendSMS", func(in otto.FunctionCall)otto.Value{return function_twilio_sendSMS(plugin, in)})
   plugin.VM.Set("twilio", twilio)
+
   //aux
   plugin.VM.Set("testendpoint_good", func(in otto.FunctionCall)otto.Value{return function_onTestEndpointGood(plugin, in)})
   plugin.VM.Set("onTestDispatchTriggered", func(in otto.FunctionCall)otto.Value{return function_onTestDispatchTriggered(plugin, in)})
