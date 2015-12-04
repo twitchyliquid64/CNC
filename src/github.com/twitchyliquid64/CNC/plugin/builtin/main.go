@@ -30,6 +30,7 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   pl, _ := plugin.VM.Object(`plugin = {}`)
   pl.Set("getResources", func(in otto.FunctionCall)otto.Value{return function_plugin_getResources(plugin, in)})
   pl.Set("getResource", func(in otto.FunctionCall)otto.Value{return function_plugin_getResource(plugin, in)})
+  pl.Set("ready", func(in otto.FunctionCall)otto.Value{return function_plugin_ready(plugin, in)})
   plugin.VM.Set("plugin", pl)
 
 

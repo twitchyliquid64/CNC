@@ -246,7 +246,7 @@
               </v-pane-header>
 
               <v-pane-content>
-                <p>This feature allows you to access information / control paramters directly associated with the life of the plugin.</p>
+                <p>This feature allows you to access information / control parameters directly associated with the life of the plugin.</p>
 
                 <v-accordion>
                   <v-pane>
@@ -291,6 +291,27 @@
                           log(resource.isJs);
                           log(resource.isTemplate);
                         }
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      plugin.ready(
+                      <i class="amber">method name</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Queues a method to be called by the system, once all resources are loaded and pending events handled.
+                      <p>EG: </p>
+                      <pre>
+                        function kek(){
+                          log('hi');
+                        }
+
+                        plugin.ready('kek');
                       </pre>
                     </v-pane-content>
                   </v-pane>

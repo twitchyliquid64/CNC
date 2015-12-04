@@ -45,11 +45,6 @@
               </md-button>
           </md-list-item>
           <md-list-item>
-              <md-button ng-click="main.activate('data')">
-                <md-icon md-font-library="material-icons">storage</md-icon> Data
-              </md-button>
-          </md-list-item>
-          <md-list-item>
               <md-button ng-click="main.activateRouted('/admin/plugins', 'plugins');">
                 <md-icon md-font-library="material-icons">memory</md-icon> Plugins
               </md-button>
@@ -84,11 +79,6 @@
         {!{template "usercreateeditpage"}!}
 
         {!{template "userpermissions"}!}
-
-        <md-content class="content" flex ng-show="main.focus == 'data'">
-          <h2>Data</h2>
-          <p>all custom datasets and active streams will go here.</p>
-        </md-content>
         {!{end}!}
 
         <md-content flex ng-show="main.isRoutingMode" layout-fill>

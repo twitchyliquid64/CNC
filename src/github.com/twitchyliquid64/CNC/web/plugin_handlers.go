@@ -153,7 +153,6 @@ func newResourceHandlerAPI(ctx *web.Context) {
   }
   res.Data = []byte(res.JSONData) //hack so that we can pass the data in as a string on clientside.
   res.JSONData = ""
-  logging.Info("web-plugin", res)
 
   err = data.DB.Create(&res).Error
   if err == nil {

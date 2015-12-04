@@ -9,6 +9,23 @@ import (
 
 
 
+// Called when JS code executes plugin.ready(<methodname>)
+//
+//
+func function_plugin_ready(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+  methodName := call.Argument(0).String()
+
+  go func(){
+    plugin.PendingInvocations <- &exec.JSInvocation{MethodName: methodName, Data: &otto.Object{}}
+  }()
+
+  return otto.Value{}
+}
+
+
+
+
+
 // Called when JS code executes plugin.getResources()
 //
 //
