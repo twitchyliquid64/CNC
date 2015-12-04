@@ -238,7 +238,66 @@
 
 
 
+            <!-- PLUGIN FUNCTIONS -->
+            <v-pane>
+              <v-pane-header>
+                <md-icon md-font-library="material-icons">whatshot</md-icon>
+                Self Aware
+              </v-pane-header>
 
+              <v-pane-content>
+                <p>This feature allows you to access information / control paramters directly associated with the life of the plugin.</p>
+
+                <v-accordion>
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      plugin.getResources()
+                    </v-pane-header>
+                    <v-pane-content>
+                      Returns a list of the resources associated with the plugin.
+                      <p>EG: </p>
+                      <pre>
+                        var resources = plugin.getResources();
+                        for (var i = 0; i < resources.length ; i++) {
+                          log(resources[i].name);
+                          log(resources[i].data);
+                          log(resources[i].isJs);
+                          log(resources[i].isTemplate);
+                        }
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      plugin.getResource(
+                      <i class="amber">resource name</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Returns an object representing a single resource.
+                      <p>EG: </p>
+                      <pre>
+                        //assumes a resource called 'main' exists.
+                        var resource = plugin.getResource('main');
+
+                        if (resource == undefined) {
+                          log("resource does not exist!");
+                        } else {
+                          log(resource.name);
+                          log(resource.data);
+                          log(resource.isJs);
+                          log(resource.isTemplate);
+                        }
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+                </v-accordion>
+
+              </v-pane-content>
+            </v-pane>
 
 
 

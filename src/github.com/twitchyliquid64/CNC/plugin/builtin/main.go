@@ -26,6 +26,12 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   web.Set("handle", func(in otto.FunctionCall)otto.Value{return function_web_handle(plugin, in)})
   plugin.VM.Set("web", web)
 
+  //plugin
+  pl, _ := plugin.VM.Object(`plugin = {}`)
+  pl.Set("getResources", func(in otto.FunctionCall)otto.Value{return function_plugin_getResources(plugin, in)})
+  pl.Set("getResource", func(in otto.FunctionCall)otto.Value{return function_plugin_getResource(plugin, in)})
+  plugin.VM.Set("plugin", pl)
+
   //gmail
   gmail, _ := plugin.VM.Object(`gmail = {}`)
   gmail.Set("setup", func(in otto.FunctionCall)otto.Value{return function_gmail_setup(plugin, in)})
