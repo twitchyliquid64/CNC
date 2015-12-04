@@ -300,6 +300,65 @@
             </v-pane>
 
 
+            <!-- DATA FUNCTIONS -->
+            <v-pane>
+              <v-pane-header>
+                <md-icon md-font-library="material-icons">storage</md-icon>
+                Data
+              </v-pane-header>
+
+              <v-pane-content>
+                <p>This feature allows you to persistantly store information (persistant across plugin restarts) in a key value store. Keys and values are both strings.</p>
+
+                <v-accordion>
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      data.get(
+                      <i class="amber">key</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Returns undefined if the entry does not exist, otherwise returns an object representing the data entry.
+                      <p>EG: </p>
+                      <pre>
+                        var a = data.get('lolz');
+                        if (a === undefined) {
+                          log('data does not exist');
+                        } else {
+                          log(a.Content); //the contents
+                          log(a.Name);    //the key
+                        }
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      data.set(
+                      <i class="amber">key</i> <sup style="color: #444444;">str</sup>,
+                      <i class="amber">data</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Sets a value in the keystore. Make sure that <i>data</i> is a string.
+                      <p>EG: </p>
+                      <pre>
+                        var a = data.set('lolz', 'kek');
+                        if (a === true) {
+                          log('Save successful')
+                        } else {
+                          log('Error saving: ' + a.error);
+                        }
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+                </v-accordion>
+
+              </v-pane-content>
+            </v-pane>
+
 
 
 

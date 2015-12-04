@@ -1,6 +1,7 @@
 package data
 
 import (
+  "github.com/twitchyliquid64/CNC/data/stmdata"
   "github.com/twitchyliquid64/CNC/data/session"
   "github.com/twitchyliquid64/CNC/data/entity"
   "github.com/twitchyliquid64/CNC/data/plugin"
@@ -92,4 +93,6 @@ func checkStructures() {
   DB.AutoMigrate(&plugin.Plugin{})
   logging.Info("data", "Checking structure: Resource")
   DB.AutoMigrate(&plugin.Resource{})
+  logging.Info("data", "Checking structure: Stmdata")
+  DB.AutoMigrate(&stmdata.Stmdata{})
 }
