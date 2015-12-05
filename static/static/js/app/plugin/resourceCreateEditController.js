@@ -7,6 +7,7 @@
         var self = this;
         $scope.showLoading = true;
         $scope.resourceSelected = [];
+        $scope.mode = 'js';
 
         if($location.path().indexOf("newresource", 0) !== -1){
           $scope.isCreateMode = true;
@@ -113,6 +114,15 @@
 
         $scope.showReference = function() {
           window.open("/ref/api");
+        }
+        $scope.toggleMode = function(){
+          if ($scope.mode == 'js'){
+            $scope.mode = 'html';
+            self.editor.session.setMode("ace/mode/html");
+          }else if ($scope.mode == 'html'){
+            $scope.mode = 'js';
+            self.editor.session.setMode("ace/mode/javascript");
+          }
         }
     }
 })();

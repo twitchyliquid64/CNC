@@ -1,6 +1,10 @@
 <md-content class="content" flex ng-show="main.focus == 'user-permissions'" ng-controller="userpermissionControlller as userC">
   <md-data-table-toolbar>
-    <h2 class="md-title">Users <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> Edit <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> Permissions</h2>
+    <h2 class="md-title" ng-click="userC.editUser(user.Username);main.activate('user-edit')">
+      <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
+      Users <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
+      Edit <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
+      Permissions</h2>
   </md-data-table-toolbar>
 
   <div layout="row" layout-sm="column" layout-align="space-around" ng-show="showLoading">

@@ -1,6 +1,8 @@
 <md-content class="content" flex ng-show="main.focus == 'entity-view'">
   <md-data-table-toolbar>
-    <h2 class="md-title" flex="50">Entities <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> {{entity.Name}}</h2>
+    <h2 class="md-title" flex="50" ng-click="main.activateRouted('/admin/entities', 'entities')">
+      <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
+      Entities <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> {{entity.Name}}</h2>
     <div class="md-toolbar-tools">
       <span flex></span>
       <md-icon flex class="md-avatar" md-font-library="material-icons">more_horiz</md-icon>

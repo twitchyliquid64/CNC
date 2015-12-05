@@ -1,6 +1,10 @@
 <md-content class="content" flex ng-show="main.focus == 'user-edit'" ng-controller="usereditController as userC">
   <md-data-table-toolbar>
-    <h2 class="md-title" flex="50">Users <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> <span ng-show="isNewUserMode">New</span><span ng-hide="isNewUserMode">Edit</span></h2>
+    <h2 class="md-title" flex="50" ng-click="main.activateRouted('/admin/users', 'users')">
+      <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
+      Users <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
+      <span ng-show="isNewUserMode">New</span>
+      <span ng-hide="isNewUserMode">Edit</span></h2>
 
     <div class="md-toolbar-tools">
       <span flex></span>

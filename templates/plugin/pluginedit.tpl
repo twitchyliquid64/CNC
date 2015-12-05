@@ -1,6 +1,8 @@
 <md-content class="content" flex ng-show="main.focus == 'plugin-edit'">
   <md-data-table-toolbar>
-    <h2 class="md-title" flex="50">Plugins <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> Edit</h2>
+    <h2 class="md-title" flex="50" ng-click="main.activateRouted('/admin/plugins', 'plugins');">
+      <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
+      Plugins <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> Edit</h2>
 
     <div class="md-toolbar-tools" md-hide="showLoading" >
         <md-progress-linear md-mode="{{loadingMode()}}"></md-progress-linear>

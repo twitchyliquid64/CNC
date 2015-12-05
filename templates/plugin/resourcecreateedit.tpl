@@ -1,6 +1,8 @@
 <md-content class="content" flex ng-show="main.focus == 'resource-form'">
   <md-data-table-toolbar>
-    <h2 class="md-title" flex="50">Plugins <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
+    <h2 class="md-title" ng-click="main.activateRouted('/admin/plugin/'+resource.PluginID, 'plugin-edit')" flex="50">
+                                  <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
+                                  Plugins <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
                                   Resources <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
                                   <span ng-show="isCreateMode">New</span>
                                   <span ng-hide="isCreateMode">Edit</span></h2>
@@ -46,6 +48,15 @@
   aria-label="View API Reference" tabindex="0" aria-disabled="true">
    <i class="material-icons" style="vertical-align: middle;">code</i>
    <span style="vertical-align: middle;"> API Reference</span>
+  </button>
+
+  <button flex=""
+  class="md-primary md-button md-scope"
+  ng-click="toggleMode()"
+  aria-label="Toggle editor mode" tabindex="0" aria-disabled="true">
+  <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'js'">code</i>
+  <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'html'">web</i>
+   <span style="vertical-align: middle;"> Toggle Editor mode</span>
   </button>
 
 
