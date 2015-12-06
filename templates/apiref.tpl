@@ -431,6 +431,9 @@
                         <i class="amber">data</i> <sup style="color: #444444;">str</sup> ,
                         <i class="green">done()</i> <sup style="color: #444444;">method</sup> ,
                         <i class="green">write( <i class="amber">data</i> <sup style="color: #444444;">str</sup> )</i><sup style="color: #444444;">method</sup>
+                        <i class="green">isLoggedIn()</i> <sup style="color: #444444;">method</sup> ,
+                        <i class="green">user()</i> <sup style="color: #444444;">method</sup> ,
+                        <i class="green">session()</i> <sup style="color: #444444;">method</sup> ,
 
                       ) { }
                     </v-pane-header>
@@ -443,6 +446,9 @@
                         <li><i class="green">param1.url</i> is the full request URL.</li>
                         <li><i class="green">param1.data</i> contains the POST data of the request, if any.</li>
                         <li><i class="green">param1.parameter(paramname<sup style="color: #444444;">str</sup>)</i> returns the value of the GET/POST parameter, if any.</li>
+                        <li><i class="green">param1.isLoggedIn()</i> returns true if the browser that issued the request has a valid cookie, which corresponds with a web session for a user on CNC.</li>
+                        <li><i class="green">param1.user()</i> returns the user object of the logged in user, if any. Format as described in data/user/model.go.</li>
+                        <li><i class="green">param1.session()</i> returns the session object of the logged in user, if any. Format as described in data/session/model.go.</li>
                       </ul>
 
                       <p>EG: </p>
@@ -450,7 +456,14 @@
                         function handleHi(web) {
                             log(web.url);
                             log(web.data);
-                            web.write("Hi " + web.parameter("name"));
+                            web.write(web.parameter("name") + "&lt;br&gt;&lt;br&gt;");
+
+                            if (web.isLoggedIn()) {
+                                web.write("Hello " + web.user().Firstname + " " + web.user().Lastname + "(" + web.user().Username + ")!");
+                                web.write("&lt;br&gt;Your session was created at " + JSON.stringify(web.session().CreatedAt));
+                            } else {
+                                web.write("You are not logged in");
+                            }
                             web.done();
                         }
 

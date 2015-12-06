@@ -1,6 +1,8 @@
 package pluginhandler
 
 import (
+  "github.com/twitchyliquid64/CNC/data/session"
+  "github.com/twitchyliquid64/CNC/data/user"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/registry"
 	"net/http"
@@ -17,6 +19,11 @@ type Request struct {
   W http.ResponseWriter
   Req *http.Request
   Finish chan bool
+
+  hasCheckedSession bool //set if Session, isLoggedIn, and User are populated
+  isLoggedIn bool
+  user *user.User
+  session *session.Session
 }
 
 func (r *Request)Write(d string){
@@ -36,6 +43,31 @@ func (r *Request)PostBody()string{
   return r.Body
 }
 
+func (r *Request)LoggedIn()bool{
+  if !r.hasCheckedSession{
+    r.loadSessionData()
+  }
+  return r.isLoggedIn
+}
+func (r *Request)User()*user.User{
+  if !r.hasCheckedSession{
+    r.loadSessionData()
+  }
+  return r.user
+}
+func (r *Request)Session()*session.Session{
+  if !r.hasCheckedSession{
+    r.loadSessionData()
+  }
+  return r.session
+}
+
+func (r *Request)loadSessionData(){
+  r.hasCheckedSession = true
+  r.isLoggedIn, r.user, r.session = getSessionByCookie(r.Req)
+}
+
+
 
 func newReqStruct(w http.ResponseWriter, req *http.Request)*Request {
   buf := new(bytes.Buffer)
@@ -47,6 +79,8 @@ func newReqStruct(w http.ResponseWriter, req *http.Request)*Request {
     W: w,
     Req: req,
     Finish: make(chan bool, 1),
+    hasCheckedSession: false,
+    isLoggedIn: false,
   }
 }
 

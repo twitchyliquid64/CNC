@@ -3,6 +3,8 @@ package builtin
 import (
   "github.com/twitchyliquid64/CNC/web/pluginhandler"
   "github.com/twitchyliquid64/CNC/plugin/exec"
+  "github.com/twitchyliquid64/CNC/data/session"
+  "github.com/twitchyliquid64/CNC/data/user"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/util"
   "github.com/robertkrimen/otto"
@@ -37,6 +39,9 @@ type Req interface{
   URL()string
   Parameter(string)string
   PostBody()string
+  LoggedIn()bool
+  User()*user.User
+  Session()*session.Session
 }
 
 type WebHook struct {
@@ -80,6 +85,25 @@ func (h *WebHook)Dispatch(data interface{}){
   obj.Set("data", rObj.PostBody())
   obj.Set("parameter", func(in otto.FunctionCall)otto.Value{
     ret, _ := otto.ToValue(rObj.Parameter(in.Argument(0).String()))
+    return ret
+  })
+
+  obj.Set("isLoggedIn", func(in otto.FunctionCall)otto.Value{
+    if rObj.LoggedIn() {
+      return otto.TrueValue()
+    } else {
+      return otto.FalseValue()
+    }
+  })
+  obj.Set("user", func(in otto.FunctionCall)otto.Value{
+    ret, err := h.P.VM.ToValue(rObj.User())
+    if err != nil {
+      logging.Error("builtin-web", err.Error())
+    }
+    return ret
+  })
+  obj.Set("session", func(in otto.FunctionCall)otto.Value{
+    ret, _ := h.P.VM.ToValue(rObj.Session())
     return ret
   })
 

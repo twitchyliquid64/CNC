@@ -17,7 +17,7 @@
   #editor {
     width: 95%;
     height: 80%;
-    min-height: 270px;
+    min-height: 420px;
   }
 
   </style>
