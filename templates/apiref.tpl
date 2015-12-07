@@ -296,6 +296,60 @@
                   </v-pane>
 
 
+
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      plugin.disable()
+                    </v-pane-header>
+                    <v-pane-content>
+                      Halts current execution, releases all resources and kills/disables the plugin.
+                      <p>EG: </p>
+                      <pre>
+                        console.log("starting");
+                        plugin.disable();
+                        console.log("after (should not be run)");
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+
+
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      plugin.getIcon()
+                    </v-pane-header>
+                    <v-pane-content>
+                      Returns the string resource describing the icon associated with the plugin. (EG: 'wifi')
+                      <p>EG: </p>
+                      <pre>
+                        log("Icon: " + plugin.getIcon());
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      plugin.setIcon(
+                        <i class="amber">icon resource name</i> <sup style="color: #444444;">str</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Sets the icon to the new material-icons resource. See <a href="https://www.google.com/design/icons/">here</a> for a list of icons.
+                      <p>EG: </p>
+                      <pre>
+                        log("Icon: " + plugin.getIcon());
+                        plugin.setIcon("error");
+                        log("Icon: " + plugin.getIcon());
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+
                   <v-pane>
                     <v-pane-header class="green">
                       <md-icon md-font-library="material-icons">code</md-icon>

@@ -31,6 +31,9 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   pl.Set("getResources", func(in otto.FunctionCall)otto.Value{return function_plugin_getResources(plugin, in)})
   pl.Set("getResource", func(in otto.FunctionCall)otto.Value{return function_plugin_getResource(plugin, in)})
   pl.Set("ready", func(in otto.FunctionCall)otto.Value{return function_plugin_ready(plugin, in)})
+  pl.Set("disable", func(in otto.FunctionCall)otto.Value{return function_plugin_disable(plugin, in)})
+  pl.Set("getIcon", func(in otto.FunctionCall)otto.Value{return function_plugin_geticon(plugin, in)})
+  pl.Set("setIcon", func(in otto.FunctionCall)otto.Value{return function_plugin_seticon(plugin, in)})
   plugin.VM.Set("plugin", pl)
 
   //data

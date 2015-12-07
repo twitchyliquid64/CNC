@@ -22,6 +22,7 @@ func Initialise(loadFromDatabase bool){
   defer structureLock.Unlock()
 
   registry.SetupDispatchMethod(Dispatch)
+  registry.SetupDeregisterMethod(DeregisterPlugin)
 
   pluginByName = map[string]*exec.Plugin{}
   hooksByType = map[string]map[string]exec.Hook{}

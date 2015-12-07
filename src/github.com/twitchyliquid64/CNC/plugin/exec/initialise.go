@@ -13,13 +13,20 @@ func initialise(plugin *Plugin) {
   go func(){
     defer func() {
         if caught := recover(); caught != nil {
-          logging.Error("plugin-mainloop", "Panic: ", caught)
+          if caught != "plugin.exit()" {
+            logging.Error("plugin-mainloop", "Panic: ", caught)
+          }
           plugin.IsCurrentlyInExecution = false
           plugin.State = STATE_STOPPED
           if plugin.Model.ID != 0 {
-            plugin.Model.ErrorStr = "Mainloop Panic"
-            plugin.Model.HasCrashed = true
+            if caught == "plugin.exit()" {
+              plugin.Model.Enabled = false
+            } else {
+              plugin.Model.ErrorStr = "Mainloop Panic"
+              plugin.Model.HasCrashed = true
+            }
             plugin.Model.Resources = nil
+
             data.DB.Save(&(plugin.Model))
           }
           return

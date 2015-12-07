@@ -4,6 +4,8 @@ import (
   "github.com/twitchyliquid64/CNC/plugin/exec"
   pluginModel "github.com/twitchyliquid64/CNC/data/plugin"
   "github.com/twitchyliquid64/CNC/logging"
+  "github.com/twitchyliquid64/CNC/registry"
+  "github.com/twitchyliquid64/CNC/data"
   "github.com/robertkrimen/otto"
 )
 
@@ -23,6 +25,37 @@ func function_plugin_ready(plugin *exec.Plugin, call otto.FunctionCall)otto.Valu
 }
 
 
+
+// Called when JS code executes plugin.disable()
+//
+//
+func function_plugin_disable(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+  registry.DeregisterPluginMethod(plugin)
+  go func(){
+    plugin.Stop()
+  }()
+
+  panic("plugin.exit()")
+  return otto.Value{}
+}
+
+// Called when JS code executes plugin.getIcon()
+//
+//
+func function_plugin_geticon(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+  res, _ := plugin.VM.ToValue(plugin.Model.Icon)
+  return res
+}
+
+// Called when JS code executes plugin.setIcon()
+//
+//
+func function_plugin_seticon(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+  i := call.Argument(0).String()
+  data.DB.Save(&pluginModel.Plugin{ID: plugin.Model.ID, Icon: i})
+  plugin.Model.Icon = i
+  return otto.Value{}
+}
 
 
 
