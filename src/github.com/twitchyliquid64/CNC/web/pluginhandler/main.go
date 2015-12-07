@@ -11,13 +11,16 @@ import (
 )
 
 
-const PLUGIN_TIMEOUT = 5 * time.Second
+const PLUGIN_TIMEOUT = 8 * time.Second
 
 type Request struct {
   Body string
   IsFinished bool
+  Params map[string]string
+
   W http.ResponseWriter
   Req *http.Request
+
   Finish chan bool
 
   hasCheckedSession bool //set if Session, isLoggedIn, and User are populated
@@ -37,7 +40,8 @@ func (r *Request)URL()string{
   return r.Req.URL.String()
 }
 func (r *Request)Parameter(key string)string{
-  return r.Req.URL.Query().Get(key)
+  return r.Params[key]
+  //return r.Req.URL.Query().Get(key)
 }
 func (r *Request)PostBody()string{
   return r.Body
@@ -73,11 +77,21 @@ func newReqStruct(w http.ResponseWriter, req *http.Request)*Request {
   buf := new(bytes.Buffer)
   buf.ReadFrom(req.Body)
 
+  params := map[string]string{}
+  //ignore errors from ParseForm because it's usually harmless.
+  req.ParseMultipartForm(1024 * 64)
+  if len(req.Form) > 0 {
+    for k, v := range req.Form {
+      params[k] = v[0]
+    }
+  }
+
   return &Request{
     Body: buf.String(),
     IsFinished: false,
     W: w,
     Req: req,
+    Params: params,
     Finish: make(chan bool, 1),
     hasCheckedSession: false,
     isLoggedIn: false,
