@@ -10,12 +10,12 @@ func TelegramMessageHandler() {
   u := tgbotapi.NewUpdate(0)
   u.Timeout = 60
 
-  err := gTelegramConnection.UpdatesChan(u)
+  updates, err := gTelegramConnection.GetUpdatesChan(u)
   if err != nil {
       logging.Error("messenger", err)
 			tracking_notifyFault(err)
   } else {
-    for update := range gTelegramConnection.Updates {
+    for update := range updates {
 
       if (update.Message.NewChatParticipant.UserName == gTelegramBotUsername) {
         onChatJoined(update.Message)
@@ -45,11 +45,11 @@ func onChatLeft(msg tgbotapi.Message) {
 
 func SendSimpleMessage(chatID int, text string) {
   reply := tgbotapi.NewMessage(chatID, text)
-  gTelegramConnection.SendMessage(reply)
+  gTelegramConnection.Send(reply)
 }
 
 func sendReply(msg tgbotapi.Message, text string) {
   reply := tgbotapi.NewMessage(msg.Chat.ID, text)
   reply.ReplyToMessageID = msg.MessageID
-  gTelegramConnection.SendMessage(reply)
+  gTelegramConnection.Send(reply)
 }
