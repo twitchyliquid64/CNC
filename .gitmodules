@@ -1,0 +1,18 @@
+[submodule "src/github.com/SlyMarbo/gmail"]
+	path = src/github.com/SlyMarbo/gmail
+	url = https://github.com/SlyMarbo/gmail
+[submodule "src/github.com/Syfaro/telegram-bot-api"]
+	path = src/github.com/Syfaro/telegram-bot-api
+	url = https://github.com/Syfaro/telegram-bot-api
+[submodule "src/github.com/robertkrimen/otto"]
+	path = src/github.com/robertkrimen/otto
+	url = https://github.com/robertkrimen/otto
+[submodule "src/github.com/robfig/cron"]
+	path = src/github.com/robfig/cron
+	url = https://github.com/robfig/cron
+[submodule "src/github.com/technoweenie/multipartstreamer"]
+	path = src/github.com/technoweenie/multipartstreamer
+	url = https://github.com/technoweenie/multipartstreamer
+[submodule "src/github.com/twitchyliquid64/twiliocore"]
+	path = src/github.com/twitchyliquid64/twiliocore
+	url = https://github.com/twitchyliquid64/twiliocore
