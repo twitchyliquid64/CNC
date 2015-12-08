@@ -45,6 +45,7 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   //template
   template, _ := plugin.VM.Object(`template = {}`)
   template.Set("render", func(in otto.FunctionCall)otto.Value{return function_template_render(plugin, in)})
+  template.Set("renderWeb", func(in otto.FunctionCall)otto.Value{return function_template_renderWeb(plugin, in)})
   plugin.VM.Set("template", template)
 
   //gmail

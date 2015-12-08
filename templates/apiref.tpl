@@ -778,6 +778,44 @@
                       </pre>
                     </v-pane-content>
                   </v-pane>
+
+
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      template.renderWeb(
+                      <i class="amber">data</i> <sup style="color: #444444;">str</sup>,
+                      <i class="amber">options</i> <sup style="color: #444444;">obj</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      <p>Wraps the HTML specified in <i class="green">data</i> in a consistent and pretty looking webpage. Options can be passed to change the appearance of the page.</p>
+                      <p>Available options are:</p>
+                      <ul>
+                        <li>Title - Sets the banner and page title of the page.</li>
+                        <li>Icon - Sets the banner icon.</li>
+                        <li>PrimaryColour - Sets the primary colour of widgets.</li>
+                        <li>AccentColour - Sets the accent colour of material design controls.</li>
+                      </ul>
+                      <p>EG: </p>
+                      <pre ng-non-bindable>
+                        function handleHi(web) {
+                            log(web.url);
+                            log(web.data);
+                            web.write(template.renderWeb("LOLZ", {
+                                                                    Title: "Test thingy",
+                                                                    Icon: "close",
+                                                                    AccentColour: "grey"
+                                                                }));
+                            web.done();
+                        }
+
+                        var didBind = web.handle("/p/hi", "handleHi");
+                        log("Bound to /p/hi: " + didBind);
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
                 </v-accordion>
 
               </v-pane-content>
