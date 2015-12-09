@@ -26,6 +26,12 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   web.Set("handle", func(in otto.FunctionCall)otto.Value{return function_web_handle(plugin, in)})
   plugin.VM.Set("web", web)
 
+
+  //websockets
+  ws, _ := plugin.VM.Object(`websockets = {}`)
+  ws.Set("register", func(in otto.FunctionCall)otto.Value{return function_websockets_register(plugin, in)})
+  plugin.VM.Set("websockets", ws)
+
   //plugin
   pl, _ := plugin.VM.Object(`plugin = {}`)
   pl.Set("getResources", func(in otto.FunctionCall)otto.Value{return function_plugin_getResources(plugin, in)})

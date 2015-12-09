@@ -1,6 +1,7 @@
 package web
 
 import (
+  "github.com/twitchyliquid64/CNC/web/pluginsockets"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/config"
   "golang.org/x/net/websocket"
@@ -76,7 +77,9 @@ func registerPluginHandlers(){
 func registerWebSockets() {
   web.Get("/ws/echotest", websocket.Handler(ws_EchoServer), config.All().Web.Domain)
   web.Get("/ws/logging", websocket.Handler(ws_LogServer), config.All().Web.Domain)
+  web.Get("/ws/p/(.*)", pluginsockets.Handle, config.All().Web.Domain)
 }
+
 
 func registerTemplateViews() {
   web.Get("/view/users", usersAdminMainPage_view, config.All().Web.Domain)
