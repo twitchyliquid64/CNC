@@ -40,7 +40,7 @@ func (h *DispatchTestHook)Dispatch(data interface{}){
 //
 //
 func function_onTestDispatchTriggered(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  callback := call.Argument(0)
+  callback := util.GetFunc(call.Argument(0), plugin.VM)
   hook := DispatchTestHook{P: plugin, Callback: &callback}
   plugin.RegisterHook(&hook)
   return otto.Value{}

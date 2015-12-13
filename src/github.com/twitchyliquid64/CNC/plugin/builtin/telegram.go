@@ -26,7 +26,7 @@ func function_telegram_onChatJoined(plugin *exec.Plugin, call otto.FunctionCall)
 // format for data returned to javascript can be found at:
 // https://godoc.org/github.com/Syfaro/telegram-bot-api#Message
 func function_telegram_onChatMsg(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  callback := call.Argument(0)
+  callback := util.GetFunc(call.Argument(0), plugin.VM)
   hook := TelegramHook{P: plugin, Callback: &callback, HookType: ON_CHAT_MSG}
   plugin.RegisterHook(&hook)
   return otto.Value{}
@@ -37,7 +37,7 @@ func function_telegram_onChatMsg(plugin *exec.Plugin, call otto.FunctionCall)ott
 // format for data returned to javascript can be found at:
 // https://godoc.org/github.com/Syfaro/telegram-bot-api#Message
 func function_telegram_onChatLeft(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  callback := call.Argument(0)
+  callback := util.GetFunc(call.Argument(0), plugin.VM)
   hook := TelegramHook{P: plugin, Callback: &callback, HookType: ON_CHAT_LEFT}
   plugin.RegisterHook(&hook)
   return otto.Value{}
