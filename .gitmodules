@@ -1,3 +1,9 @@
+[submodule "src/github.com/twitchyliquid64/go-bump"]
+        path = src/github.com/twitchyliquid64/go-bump
+        url = https://github.com/twitchyliquid64/go-bump
+[submodule "src/github.com/tuxychandru/pubsub"]
+        path = src/github.com/tuxychandru/pubsub
+        url = https://github.com/tuxychandru/pubsub
 [submodule "src/github.com/SlyMarbo/gmail"]
 	path = src/github.com/SlyMarbo/gmail
 	url = https://github.com/SlyMarbo/gmail
