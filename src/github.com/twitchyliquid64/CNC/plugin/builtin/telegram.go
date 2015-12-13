@@ -5,6 +5,7 @@ import (
   "github.com/twitchyliquid64/CNC/plugin/exec"
   "github.com/twitchyliquid64/CNC/messenger"
   "github.com/twitchyliquid64/CNC/logging"
+  "github.com/twitchyliquid64/CNC/util"
   "github.com/Syfaro/telegram-bot-api"
   "github.com/robertkrimen/otto"
 )
@@ -14,8 +15,8 @@ import (
 // format for data returned to javascript can be found at:
 // https://godoc.org/github.com/Syfaro/telegram-bot-api#Message
 func function_telegram_onChatJoined(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  methodName := call.Argument(0).String()
-  hook := TelegramHook{P: plugin, MName: methodName, HookType: ON_CHAT_JOINED}
+  callback := util.GetFunc(call.Argument(0), plugin.VM)
+  hook := TelegramHook{P: plugin, Callback: &callback, HookType: ON_CHAT_JOINED}
   plugin.RegisterHook(&hook)
   return otto.Value{}
 }
@@ -25,8 +26,8 @@ func function_telegram_onChatJoined(plugin *exec.Plugin, call otto.FunctionCall)
 // format for data returned to javascript can be found at:
 // https://godoc.org/github.com/Syfaro/telegram-bot-api#Message
 func function_telegram_onChatMsg(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  methodName := call.Argument(0).String()
-  hook := TelegramHook{P: plugin, MName: methodName, HookType: ON_CHAT_MSG}
+  callback := util.GetFunc(call.Argument(0), plugin.VM)
+  hook := TelegramHook{P: plugin, Callback: &callback, HookType: ON_CHAT_MSG}
   plugin.RegisterHook(&hook)
   return otto.Value{}
 }
@@ -36,8 +37,8 @@ func function_telegram_onChatMsg(plugin *exec.Plugin, call otto.FunctionCall)ott
 // format for data returned to javascript can be found at:
 // https://godoc.org/github.com/Syfaro/telegram-bot-api#Message
 func function_telegram_onChatLeft(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  methodName := call.Argument(0).String()
-  hook := TelegramHook{P: plugin, MName: methodName, HookType: ON_CHAT_LEFT}
+  callback := util.GetFunc(call.Argument(0), plugin.VM)
+  hook := TelegramHook{P: plugin, Callback: &callback, HookType: ON_CHAT_LEFT}
   plugin.RegisterHook(&hook)
   return otto.Value{}
 }
@@ -53,7 +54,7 @@ const (
 type TelegramHook struct {
   HookType TelegramHookTypes
   P *exec.Plugin
-  MName string
+  Callback *otto.Value
 }
 
 func (h *TelegramHook)Destroy(){
@@ -79,7 +80,7 @@ func (h *TelegramHook)Dispatch(data interface{}){
     logging.Error("builtin-telegram", err.Error())
   }
   select {
-    case h.P.PendingInvocations <- &exec.JSInvocation{MethodName: h.MName, Data: val.Object()}:
+  case h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.Callback, Parameters: []interface{} {val}}:
     default:
   }
 }

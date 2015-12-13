@@ -6,6 +6,7 @@ import (
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/registry"
   "github.com/twitchyliquid64/CNC/data"
+  "github.com/twitchyliquid64/CNC/util"
   "github.com/robertkrimen/otto"
 )
 
@@ -15,10 +16,10 @@ import (
 //
 //
 func function_plugin_ready(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  methodName := call.Argument(0).String()
+  callback := util.GetFunc(call.Argument(0), plugin.VM)
 
   go func(){
-    plugin.PendingInvocations <- &exec.JSInvocation{MethodName: methodName, Data: &otto.Object{}}
+    plugin.PendingInvocations <- &exec.JSInvocation{Callback: &callback}
   }()
 
   return otto.Value{}

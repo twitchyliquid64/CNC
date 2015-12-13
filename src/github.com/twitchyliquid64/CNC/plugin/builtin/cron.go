@@ -18,32 +18,27 @@ func init() {
   cronObj.Start()
 }
 
-
-
 // Called when JS code executes cron.schedule()
 // cronString format defined @: https://godoc.org/github.com/robfig/cron
 //
 func function_cron_schedule(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
   cronString := call.Argument(0).String()
-  methodName := call.Argument(1).String()
+  method := util.GetFunc(call.Argument(1), plugin.VM)
 
   cronID := util.RandAlphaKey(CRON_ID_LENGTH)
   cronObj.AddFunc(cronString, func(){
     registry.DispatchEvent(CRON_HOOK_PREFIX + cronID, nil)
   })
 
-  hook := CronHook{P: plugin, MName: methodName, CronID: cronID}
+  hook := CronHook{P: plugin, Callback: &method, CronID: cronID}
   plugin.RegisterHook(&hook)
   return otto.Value{}
 }
 
-
-
-
 type CronHook struct {
   CronID string
   P *exec.Plugin
-  MName string
+  Callback *otto.Value
 }
 
 func (h *CronHook)Destroy(){
@@ -59,7 +54,7 @@ func (h *CronHook)Dispatch(data interface{}){
   }
 
   select {
-  case h.P.PendingInvocations <- &exec.JSInvocation{MethodName: h.MName, Data: val.Object()}:
+  case h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.Callback, Parameters: []interface{} { val }}:
     default:
   }
 }
