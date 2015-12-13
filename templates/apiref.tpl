@@ -450,6 +450,7 @@
 
                 <p>You need to 'register' the name of the method which will handle requests, along with a regex that will match paths.</p>
                 <p>Inside the method, you control the response and access request parameters by accessing properties and calling methods on the parameter passed.</p>
+                <p>Please note that if your plugin's dispatch queue is full, requests will be silently dropped and a 'Plugin Timeout' error will be reported to the client.</p>
                 <v-accordion>
                   <v-pane>
                     <v-pane-header class="green">
@@ -457,7 +458,9 @@
                       web.handle(
                       <i class="amber">url path (regex)</i> <sup style="color: #444444;">str</sup>
                       ,
-                      <i class="amber">method name</i> <sup style="color: #444444;">str</sup>
+                      <i class="amber">method</i> <sup style="color: #444444;">callback</sup>
+                      ,
+                      <i class="amber">allow via HTTP</i> <sup style="color: #444444;">boolean</sup>
                       )
                     </v-pane-header>
                     <v-pane-content>
@@ -468,8 +471,9 @@
                             web.done();
                         }
 
-                        var didBind = web.handle("/p/hi", "handleHi");
+                        var didBind = web.handle("/p/hi", "handleHi", false);//a request on HTTP would redirect to HTTPS gateway.
                         log("Bound to /p/hi: " + didBind);
+                        web.handle("/p/insecure/hi", "handleHi", true); //a request on HTTP would be responded without redirection.
                       </pre>
                     </v-pane-content>
                   </v-pane>
@@ -760,6 +764,7 @@
 
               <v-pane-content>
                 <p>This feature allows you to integrate with telegram, a online chat service (like slack or whatsapp).</p>
+                <p>Please note that if the dispatch queue of your plugin is full (due to high loads) a message may be silently blocked.</p>
 
                 <v-accordion>
                   <v-pane>

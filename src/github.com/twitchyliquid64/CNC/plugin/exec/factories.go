@@ -5,7 +5,7 @@ import (
   "github.com/robertkrimen/otto"
 )
 
-const MAX_INVOCATION_QUEUE = 10
+const MAX_INVOCATION_QUEUE = 40
 
 // Simple method to construct a plugin and get it running in the system.
 //

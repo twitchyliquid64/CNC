@@ -53,8 +53,5 @@ func (h *CronHook)Dispatch(data interface{}){
     logging.Error("builtin-cron", err.Error())
   }
 
-  select {
-  case h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.Callback, Parameters: []interface{} { val }}:
-    default:
-  }
+  h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.Callback, Parameters: []interface{} { val }}
 }

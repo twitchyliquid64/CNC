@@ -31,6 +31,8 @@ func RemoveHook(hook string){
   if _, exists := hookMap[hook]; !exists{
     logging.Warning("web-plugin", "Cannot remove hook which does not exist: ", hook, " - ", hookMap)
     return
+  }else {
+    deleteHTTPIfExists(hookMap[hook]) //delete the regex from the HTTP allow rule cache
   }
 
   //logging.Info("web-plugin", "Hook deleted for ", hookMap[hook], " :: ", hook)
@@ -38,7 +40,7 @@ func RemoveHook(hook string){
 }
 
 
-func AddHook(hook, regex string)bool{
+func AddHook(hook, regex string, addHTTPException bool)bool{
   mapLock.Lock()
   defer mapLock.Unlock()
 
@@ -47,5 +49,9 @@ func AddHook(hook, regex string)bool{
   }
   hookMap[hook] = regex
   //logging.Info("web-plugin", "Hook added for ", regex, " :: ", hook)
+  if addHTTPException{
+    addHTTPAllowRuleForRegex(regex)
+  }
+
   return true
 }

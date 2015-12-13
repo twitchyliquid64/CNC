@@ -20,11 +20,12 @@ const HANDLER_ID_LENGTH = 12
 func function_web_handle(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
   patternRegex := call.Argument(0).String()
   callback := util.GetFunc(call.Argument(1), plugin.VM)
+  addHTTPException, _ := call.Argument(2).ToBoolean()
 
   hookID := util.RandAlphaKey(HANDLER_ID_LENGTH)
   hook := WebHook{P: plugin, Callback: &callback, HookID: hookID, Pattern: patternRegex}
   plugin.RegisterHook(&hook)
-  if pluginhandler.AddHook(hook.Name(), patternRegex) {
+  if pluginhandler.AddHook(hook.Name(), patternRegex, addHTTPException) {
     return otto.TrueValue()
   } else {
     return otto.FalseValue()

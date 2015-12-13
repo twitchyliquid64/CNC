@@ -43,7 +43,11 @@ func redir(w http.ResponseWriter, req *http.Request) {
 //
 func (f *BasicHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
   if strings.HasPrefix(req.URL.String(), "/p") {
-    pluginhandler.HandleHTTP(w,req)
+    if pluginhandler.CheckHTTPAllowed(req.URL.String()){
+      pluginhandler.HandleHTTP(w,req)
+    } else {
+      redir(w,req)
+    }
     return
   }
 
