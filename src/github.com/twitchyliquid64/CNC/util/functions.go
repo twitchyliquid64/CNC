@@ -3,7 +3,6 @@ package util
 import (
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/robertkrimen/otto"
-  "fmt"
 )
 
 func GetFunc(argument otto.Value, vm *otto.Otto) otto.Value {
