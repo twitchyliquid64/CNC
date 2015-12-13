@@ -4,6 +4,7 @@ package builtin
 import (
   "github.com/twitchyliquid64/CNC/plugin/exec"
   "github.com/twitchyliquid64/CNC/logging"
+  "github.com/twitchyliquid64/CNC/util"
   "github.com/robertkrimen/otto"
 )
 
