@@ -23,8 +23,21 @@ type Hook interface{
 
 //Represents a pending invocation - typically enqueued
 type JSInvocation struct{
-  Data *otto.Object
-  MethodName string
+  Parameters []interface{}
+  ThisObject *otto.Object
+  Callback *otto.Value
+}
+
+func (self JSInvocation) Call() error {
+  var thisObject otto.Value;
+  if (self.ThisObject != nil) {
+    thisObject = self.ThisObject.Value();
+  } else {
+    thisObject = otto.UndefinedValue();
+  }
+
+  _, err := self.Callback.Call(thisObject, self.Parameters...)
+  return err;
 }
 
 type Plugin struct {

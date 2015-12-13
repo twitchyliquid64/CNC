@@ -12,7 +12,7 @@ func (p *Plugin)run(){ //should be called in initialise() once everything is set
     case invocation, ok := <- p.PendingInvocations:
       if ok && (p.State==STATE_RUNNING){ //channel is open and our state is running
         p.IsCurrentlyInExecution = true
-        _, err := p.VM.Call(invocation.MethodName, nil, invocation.Data)
+        err := invocation.Call();
         if err != nil{
           p.Error = err
           p.State = STATE_RUN_ERROR

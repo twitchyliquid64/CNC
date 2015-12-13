@@ -19,10 +19,10 @@ const HANDLER_ID_LENGTH = 12
 //
 func function_web_handle(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
   patternRegex := call.Argument(0).String()
-  methodName   := call.Argument(1).String()
+  callback := util.GetFunc(call.Argument(1), plugin.VM)
 
   hookID := util.RandAlphaKey(HANDLER_ID_LENGTH)
-  hook := WebHook{P: plugin, MName: methodName, HookID: hookID, Pattern: patternRegex}
+  hook := WebHook{P: plugin, Callback: &callback, HookID: hookID, Pattern: patternRegex}
   plugin.RegisterHook(&hook)
   if pluginhandler.AddHook(hook.Name(), patternRegex) {
     return otto.TrueValue()
@@ -48,7 +48,7 @@ type WebHook struct {
   Pattern string
   HookID string
   P *exec.Plugin
-  MName string
+  Callback *otto.Value
 }
 
 func (h *WebHook)Destroy(){
@@ -109,7 +109,7 @@ func (h *WebHook)Dispatch(data interface{}){
 
 
   select {
-  case h.P.PendingInvocations <- &exec.JSInvocation{MethodName: h.MName, Data: obj}:
+  case h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.Callback, Parameters: []interface{} { obj }}:
     default:
   }
 }

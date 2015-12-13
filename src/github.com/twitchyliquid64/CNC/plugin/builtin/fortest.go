@@ -23,7 +23,7 @@ func function_onTestEndpointGood(plugin *exec.Plugin, call otto.FunctionCall)ott
 
 type DispatchTestHook struct {
   P *exec.Plugin
-  MName string
+  Callback *otto.Value
 }
 
 func (h *DispatchTestHook)Destroy(){
@@ -33,15 +33,15 @@ func (h *DispatchTestHook)Name()string{
   return "dispatchtest"
 }
 func (h *DispatchTestHook)Dispatch(data interface{}){
-  h.P.PendingInvocations <- &exec.JSInvocation{MethodName: h.MName, Data: &otto.Object{}}
+  h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.Callback}
 }
 
 //Called to create a hook which can be run from tests
 //
 //
 func function_onTestDispatchTriggered(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
-  methodName := call.Argument(0).String()
-  hook := DispatchTestHook{P: plugin, MName: methodName}
+  callback := call.Argument(0)
+  hook := DispatchTestHook{P: plugin, Callback: &callback}
   plugin.RegisterHook(&hook)
   return otto.Value{}
 }

@@ -20,15 +20,15 @@ const WSHANDLER_ID_LENGTH = 12
 //
 func function_websockets_register(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
   patternRegex  := call.Argument(0).String()
-  onOpenMethod  := call.Argument(1).String()
-  onCloseMethod := call.Argument(2).String()
-  onMsgMethod   := call.Argument(3).String()
+  onOpenMethod  := util.GetFunc(call.Argument(1), plugin.VM)
+  onCloseMethod := util.GetFunc(call.Argument(2), plugin.VM)
+  onMsgMethod   := util.GetFunc(call.Argument(3), plugin.VM)
 
   hookID := util.RandAlphaKey(WSHANDLER_ID_LENGTH)
   hook := WebsocketHook{P: plugin,
-                        OnOpen: onOpenMethod,
-                        OnClose: onCloseMethod,
-                        OnMsg: onMsgMethod,
+                        OnOpen: &onOpenMethod,
+                        OnClose: &onCloseMethod,
+                        OnMsg: &onMsgMethod,
                         HookID: hookID,
                         Pattern: patternRegex}
   plugin.RegisterHook(&hook)
@@ -45,9 +45,9 @@ type WebsocketHook struct {
   HookID string
   P *exec.Plugin
 
-  OnOpen string
-  OnClose string
-  OnMsg string
+  OnOpen *otto.Value
+  OnClose *otto.Value
+  OnMsg *otto.Value
 }
 
 type WebSock interface{
@@ -90,14 +90,14 @@ func (h *WebsocketHook)Dispatch(data interface{}){
   jsObj := h.genSocketObj(event, sock)
   if event.Event() == "OPEN" {
     logging.Info(h.Name(), "Dispatch() OPEN")
-    h.P.PendingInvocations <- &exec.JSInvocation{MethodName: h.OnOpen, Data: jsObj}
+    h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.OnOpen, Parameters: []interface{} { jsObj }}
   } else if event.Event() == "MSG" {
     logging.Info(h.Name(), "Dispatch() MSG")
     jsObj.Set("data", event.GetData())
-    h.P.PendingInvocations <- &exec.JSInvocation{MethodName: h.OnMsg, Data: jsObj}
+    h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.OnMsg, Parameters: []interface{} { jsObj }}
   } else if event.Event() == "CLOSE" {
     logging.Info(h.Name(), "Dispatch() CLOSE")
-    h.P.PendingInvocations <- &exec.JSInvocation{MethodName: h.OnClose, Data: jsObj}
+    h.P.PendingInvocations <- &exec.JSInvocation{Callback: h.OnClose, Parameters: []interface{} { jsObj }}
   }
 }
 
