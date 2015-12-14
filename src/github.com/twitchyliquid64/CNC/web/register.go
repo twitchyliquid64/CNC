@@ -59,6 +59,8 @@ func registerEntityHandlers(){
   web.Post("/entities/new", newEntityHandlerAPI, config.All().Web.Domain)
   web.Post("/entities/edit", updateEntityHandlerAPI, config.All().Web.Domain)
   web.Get("/entity", getEntityHandlerAPI, config.All().Web.Domain)
+  web.Get("/e/status", apiHandler(updateEntityStatusHandlerAPI), config.All().Web.Domain)
+  web.Post("/e/status", apiHandler(updateEntityStatusHandlerAPI), config.All().Web.Domain)
 }
 
 func registerPluginHandlers(){

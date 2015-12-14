@@ -38,7 +38,7 @@
         <tr ng-repeat="entity in entities">
           <td><i class="material-icons" style="vertical-align: middle;">{{entity.Icon}}</i> {{entity.Name}}</td>
           <td>{{entity.UpdatedAt_time}}</td>
-          <td>{{entity.LastStatString}}</td>
+          <td entity-status></td>
           <td>
             <md-button class="ng-icon-button small-icons" ng-click="" aria-label="Track Entity">
               <md-icon md-font-library="material-icons">location_on</md-icon>

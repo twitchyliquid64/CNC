@@ -18,6 +18,9 @@ type Entity struct {
     Category        string
 
     LastStatString  string
+    LastStatStyle   string //only used if the update web call asserts fancy styling
+    LastStatIcon    string //only used if the update web call asserts fancy styling
+    LastStatMeta    string //only used if the update web call asserts fancy styling
 
     APIKey          string    `sql:"index"`
 }

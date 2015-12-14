@@ -37,8 +37,7 @@
           <md-icon class="md-avatar" md-font-library="material-icons">assessment</md-icon>
           <div class="md-list-item-text">
             <h3>Current Status</h3>
-            <p ng-hide="entity.LastStatString == ''">{{entity.LastStatString}}</p>
-            <p ng-show="entity.LastStatString == ''">No status to show</p>
+            <p entity-status></p>
           </div>
         </md-list-item>
       </md-list>

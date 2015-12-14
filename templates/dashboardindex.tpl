@@ -97,6 +97,7 @@
     <script src="/static/js/app/entity/entityViewerAdminController.js"></script>
     <script src="/static/js/app/entity/entityViewerController.js"></script>
     <script src="/static/js/app/entity/entityFormController.js"></script>
+    <script src="/static/js/app/entity/entityStatusDirective.js"></script>
     <script src="/static/js/app/plugin/pluginListController.js"></script>
     <script src="/static/js/app/plugin/pluginCreateController.js"></script>
     <script src="/static/js/app/plugin/pluginEditController.js"></script>

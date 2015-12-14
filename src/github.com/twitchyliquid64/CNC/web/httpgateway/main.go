@@ -4,6 +4,7 @@ import (
   "github.com/twitchyliquid64/CNC/web/pluginhandler"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/config"
+  "github.com/hoisie/web"
 	"net/http"
   "strings"
 )
@@ -48,6 +49,9 @@ func (f *BasicHTTPHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
     } else {
       redir(w,req)
     }
+    return
+  } else if strings.HasPrefix(req.URL.String(), "/e/") {
+    web.Process(w,req)
     return
   }
 

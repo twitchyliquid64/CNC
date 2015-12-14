@@ -19,6 +19,11 @@ func GetEntityById(id uint, db gorm.DB)(ret Entity,err error) {
   return
 }
 
+func GetEntityByKey(key string, db gorm.DB)(ret Entity,err error) {
+  err = db.Where("api_key = ?", key).First(&ret).Error
+  return
+}
+
 
 func NewEntity(ent *Entity, usrID uint, db gorm.DB)(*Entity,error){
   ent.CreatorUserID = int(usrID)
