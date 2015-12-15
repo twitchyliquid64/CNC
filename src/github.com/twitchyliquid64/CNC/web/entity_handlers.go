@@ -127,15 +127,14 @@ func updateEntityHandlerAPI(ctx *web.Context) {
 // Called by plugins to update their status.
 //
 //
-func updateEntityStatusHandlerAPI(ctx *web.Context)*APIResult {
+func updateEntityStatusHandlerAPI(ctx *web.Context)(output interface{}, code int) {
   apiKey := ctx.Params["key"]
   ent, err := entity.GetEntityByKey(apiKey, data.DB)
   if err != nil || ent.ID == 0{
     logging.Error("entity", err.Error())
-    return &APIResult{Code: 400,Error: err}
+    return err, 400
   }
-  logging.Info("entity", ent)
-
+  
   //update entity data struct - shows the latest status
   ent.LastStatString = ctx.Params["status"]
 
@@ -162,9 +161,9 @@ func updateEntityStatusHandlerAPI(ctx *web.Context)*APIResult {
 
   err = data.DB.Save(&rec).Error
   if err != nil {
-    return &APIResult{Code: 400,Error: err}
+    return err, 400
   } else {
-    return &APIResult{Code: 200,Data: map[string]interface{}{"success": true}}
+    return map[string]interface{}{"success": true}, 200
   }
 }
 

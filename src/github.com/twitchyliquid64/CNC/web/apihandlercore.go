@@ -13,21 +13,22 @@ type APIResult struct {
 }
 
 
-func apiHandler(handlerFunc func(*web.Context)*APIResult)func(ctx *web.Context) {
+func apiHandler(handlerFunc func(*web.Context)(interface{}, int))func(ctx *web.Context) {
   return func(ctx *web.Context){
-    result := handlerFunc(ctx)
-    if result.Error == nil{
-      d, err := json.Marshal(result.Data)
+    result, code := handlerFunc(ctx)
+    err, isError := result.(error)
+    if isError{
+      d, err := json.Marshal(map[string]interface{}{"error": err.Error()})
       if err != nil {
         logging.Error("web-apicore", err)
       }
-      ctx.ResponseWriter.Write(d)
-    }else{//write error
-      d, err := json.Marshal(map[string]interface{}{"error": result.Error.Error(), "success": false})
+      ctx.Abort(code, string(d))
+    }else{
+      d, err := json.Marshal(result)
       if err != nil {
         logging.Error("web-apicore", err)
       }
-      ctx.Abort(result.Code, string(d))
+      ctx.Abort(code, string(d))
     }
   }
 }
