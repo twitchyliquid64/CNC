@@ -150,6 +150,7 @@ func updateEntityStatusHandlerAPI(ctx *web.Context)*APIResult {
     ent.LastStatMeta = ""
   }
   data.DB.Save(&ent)
+  entity.PublishUpdate(ent.ID, ent.LastStatString, ent.LastStatStyle, ent.LastStatMeta, ent.LastStatIcon)
 
   //save the data in a new statusRecord
   rec := entity.EntityStatusRecord{}

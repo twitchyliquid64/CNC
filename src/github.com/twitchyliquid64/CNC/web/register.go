@@ -80,6 +80,7 @@ func registerWebSockets() {
   web.Get("/ws/echotest", websocket.Handler(ws_EchoServer), config.All().Web.Domain)
   web.Get("/ws/logging", websocket.Handler(ws_LogServer), config.All().Web.Domain)
   web.Get("/ws/p/(.*)", pluginsockets.Handle, config.All().Web.Domain)
+  web.Get("/ws/entityUpdates", websocket.Handler(ws_EntityUpdateServer), config.All().Web.Domain)
 }
 
 

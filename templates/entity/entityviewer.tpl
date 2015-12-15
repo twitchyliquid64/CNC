@@ -5,7 +5,9 @@
       Entities <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> {{entity.Name}}</h2>
     <div class="md-toolbar-tools">
       <span flex></span>
-      <md-icon flex class="md-avatar" md-font-library="material-icons">more_horiz</md-icon>
+      <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="connected && !wasConnected">more_horiz</md-icon>
+      <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="!connected && wasConnected">close</md-icon>
+      <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="connected">check</md-icon>
     </div>
   </md-data-table-toolbar>
 
@@ -55,6 +57,9 @@
 
   <md-content layout="column" layout-fill layout-wrap ng-hide="showLoading">
     <h3>Activity Log</h3>
-    <p>Nothing to show.</p>
+
+    <p class="logElement" layout="row" ng-repeat="msg in msgs" style="margin: 0px;">
+      <span class="logComponent">[{{msg.Created | uppercase}}] </span> {{msg.Content}}
+    </p>
   </md-content>
 </md-content>
