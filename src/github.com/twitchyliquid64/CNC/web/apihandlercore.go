@@ -6,13 +6,6 @@ import (
   "encoding/json"
 )
 
-type APIResult struct {
-  Code int
-  Data interface{}
-  Error error
-}
-
-
 func apiHandler(handlerFunc func(*web.Context)(interface{}, int))func(ctx *web.Context) {
   return func(ctx *web.Context){
     result, code := handlerFunc(ctx)
