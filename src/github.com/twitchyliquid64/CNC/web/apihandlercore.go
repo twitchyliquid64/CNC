@@ -16,19 +16,25 @@ type APIResult struct {
 func apiHandler(handlerFunc func(*web.Context)(interface{}, int))func(ctx *web.Context) {
   return func(ctx *web.Context){
     result, code := handlerFunc(ctx)
-    err, isError := result.(error)
-    if isError{
-      d, err := json.Marshal(map[string]interface{}{"error": err.Error()})
-      if err != nil {
-        logging.Error("web-apicore", err)
-      }
-      ctx.Abort(code, string(d))
-    }else{
-      d, err := json.Marshal(result)
-      if err != nil {
-        logging.Error("web-apicore", err)
-      }
-      ctx.Abort(code, string(d))
+    body, err := getJsonBody(result)
+    if err != nil {
+      logging.Error("web-apicore", err)
     }
+
+    ctx.Abort(code, body)
   }
+}
+
+func getJsonBody(body interface{}) (string, error) {
+  if body == nil {
+    return "{}", nil
+  }
+
+  itemToSerialise := body
+  if err, isError:= body.(error); isError {
+    itemToSerialise = map[string]interface{}{"error": err.Error()}
+  }
+
+  d, err := json.Marshal(itemToSerialise)
+  return string(d), err
 }
