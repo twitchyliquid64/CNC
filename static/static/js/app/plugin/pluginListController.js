@@ -28,7 +28,10 @@
         self.switchChanged = function(pluginID, state){
           console.log("pluginListController.switchChanged(): ", pluginID, state);
           $http.get('/plugins/changestate?pluginid=' + pluginID + '&state='+state, {}).then(function (response) {
-            console.log(response);
+            console.log(response); // TODO: Check
+          }, function errorMessage(response){
+            console.log(response)
+            self.createDialog("Could not switch state", "Server Error");
           });
         }
 
