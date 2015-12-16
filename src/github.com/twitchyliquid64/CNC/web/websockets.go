@@ -53,7 +53,7 @@ func ws_EntityUpdateServer(ws *websocket.Conn){
 
   eID, _ := strconv.Atoi(ws.Request().URL.Query().Get("id"))
 
-  updateMsgs := make(chan entity.EntityStatusUpdate, 10)
+  updateMsgs := make(chan entity.EntityUpdate, 10)
   entity.SubscribeUpdates(updateMsgs)
   defer entity.UnsubscribeUpdates(updateMsgs)
 

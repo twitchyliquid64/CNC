@@ -7,35 +7,49 @@ import (
   "sync"
 )
 
-type EntityStatusUpdate struct {
+type UpdateType string
+const (
+  Updatetype_Status UpdateType = "status"
+  Updatetype_Location UpdateType = "location"
+  Updatetype_Log UpdateType = "log"
+)
+
+
+type EntityUpdate struct {
   EntityID uint
+  Type UpdateType
+
+  //used when updateType == "status"
   Content string
   Style string
   StyleMeta string
   Icon string
+
+  //time at which the update occurred in unix seconds
   Created int64
 }
 
-var updateSubscribers  = map[chan EntityStatusUpdate]bool{}
+var updateSubscribers  = map[chan EntityUpdate]bool{}
 var updateSubStructLock sync.Mutex
 
-func SubscribeUpdates(in chan EntityStatusUpdate){ //DO NOT LOG WITHIN THIS MSG - DEADLOCK
+func SubscribeUpdates(in chan EntityUpdate){
   updateSubStructLock.Lock()
   defer updateSubStructLock.Unlock()
 
   updateSubscribers[in] = true
 }
 
-func UnsubscribeUpdates(in chan EntityStatusUpdate){ //DO NOT LOG WITHIN THIS MSG - DEADLOCK
+func UnsubscribeUpdates(in chan EntityUpdate){
   updateSubStructLock.Lock()
   defer updateSubStructLock.Unlock()
 
   delete(updateSubscribers, in)
 }
 
-func PublishUpdate(eID uint, content, style, styleMeta, icon string){ //DO NOT LOG WITHIN THIS MSG - DEADLOCK
-  pkt := EntityStatusUpdate{
+func PublishStatusUpdate(eID uint, content, style, styleMeta, icon string){
+  pkt := EntityUpdate{
     EntityID: eID,
+    Type: Updatetype_Status,
     Content: content,
     Style: style,
     StyleMeta: styleMeta,

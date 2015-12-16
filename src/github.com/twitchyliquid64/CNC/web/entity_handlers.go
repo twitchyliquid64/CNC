@@ -134,7 +134,7 @@ func updateEntityStatusHandlerAPI(ctx *web.Context)(output interface{}, code int
     logging.Error("entity", err.Error())
     return err, 400
   }
-  
+
   //update entity data struct - shows the latest status
   ent.LastStatString = ctx.Params["status"]
 
@@ -149,7 +149,7 @@ func updateEntityStatusHandlerAPI(ctx *web.Context)(output interface{}, code int
     ent.LastStatMeta = ""
   }
   data.DB.Save(&ent)
-  entity.PublishUpdate(ent.ID, ent.LastStatString, ent.LastStatStyle, ent.LastStatMeta, ent.LastStatIcon)
+  entity.PublishStatusUpdate(ent.ID, ent.LastStatString, ent.LastStatStyle, ent.LastStatMeta, ent.LastStatIcon)
 
   //save the data in a new statusRecord
   rec := entity.EntityStatusRecord{}

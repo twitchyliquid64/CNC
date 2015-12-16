@@ -49,9 +49,6 @@
         </span>
         <md-button ng-disabled="plugin.Enabled" ng-click="deletePlugin(plugin.ID, plugin.Name, $event)"><md-icon md-font-library="material-icons">close</md-icon> Delete</md-button>
         <md-button ng-click="main.activateRouted('/admin/plugin/'+plugin.ID, 'plugin-edit')"><md-icon md-font-library="material-icons">edit</md-icon> Edit</md-button>
-
-
-
       </md-card-actions>
     </md-card>
 

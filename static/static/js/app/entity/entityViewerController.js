@@ -9,7 +9,7 @@
         $scope.connected = false;
         $scope.wasConnected = false;
         $scope.msgs = [];
-        
+
         var ws = new WebSocket("wss://" + location.hostname+(location.port ? ':'+location.port: '') + "/ws/entityUpdates");
         $scope.$on('$destroy', function(event) {
           ws.close();
@@ -28,12 +28,15 @@
 
         ws.onmessage = function (evt)
         {
-          var received_msg = evt.data;
           $scope.$apply(function(){
-            $scope.msgs.push(JSON.parse(evt.data));
-            self.processUpdate(JSON.parse(evt.data));
-            if ($scope.msgs.length > 8){
-              $scope.msgs.shift();
+            var d = JSON.parse(evt.data);
+            var msgType = d.Type;
+            if (msgType == "status"){
+              $scope.msgs.push(d);
+              self.processUpdate(d);
+              if ($scope.msgs.length > 8){
+                $scope.msgs.shift();
+              }
             }
           });
         };
