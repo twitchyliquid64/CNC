@@ -64,16 +64,16 @@ func registerEntityHandlers(){
 }
 
 func registerPluginHandlers(){
-  web.Get("/plugins", getAllPluginsHandlerAPI, config.All().Web.Domain)
-  web.Post("/plugins/new", newPluginHandlerAPI, config.All().Web.Domain)
-  web.Post("/plugins/edit", editPluginHandlerAPI, config.All().Web.Domain)
-  web.Get("/plugins/changestate", changePluginStateAPI, config.All().Web.Domain)
-  web.Get("/plugin", getPluginHandlerAPI, config.All().Web.Domain)
-  web.Post("/plugins/newresource", newResourceHandlerAPI, config.All().Web.Domain)
-  web.Post("/plugins/saveresource", editResourceHandlerAPI, config.All().Web.Domain)
-  web.Get("/resource", getResourceHandlerAPI, config.All().Web.Domain)
-  web.Get("/plugins/deleteresource", deleteResourceHandlerAPI, config.All().Web.Domain)
-  web.Get("/plugins/deleteplugin", deletePluginHandlerAPI, config.All().Web.Domain)
+  web.Get("/plugins", apiHandler(getAllPluginsHandlerAPI), config.All().Web.Domain)
+  web.Post("/plugins/new", apiHandler(newPluginHandlerAPI), config.All().Web.Domain)
+  web.Post("/plugins/edit", apiHandler(editPluginHandlerAPI), config.All().Web.Domain)
+  web.Get("/plugins/changestate", apiHandler(changePluginStateAPI), config.All().Web.Domain)
+  web.Get("/plugin", apiHandler(getPluginHandlerAPI), config.All().Web.Domain)
+  web.Post("/plugins/newresource", apiHandler(newResourceHandlerAPI), config.All().Web.Domain)
+  web.Post("/plugins/saveresource", apiHandler(editResourceHandlerAPI), config.All().Web.Domain)
+  web.Get("/resource", apiHandler(getResourceHandlerAPI), config.All().Web.Domain)
+  web.Get("/plugins/deleteresource", apiHandler(deleteResourceHandlerAPI), config.All().Web.Domain)
+  web.Get("/plugins/deleteplugin", apiHandler(deletePluginHandlerAPI), config.All().Web.Domain)
 }
 
 func registerWebSockets() {

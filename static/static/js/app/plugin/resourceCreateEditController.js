@@ -57,14 +57,10 @@
             data: $scope.resource
           }).then(function successCallback(response) {
               console.log(response);
-              if (response.data == "GOOD") {
-                self.createDialog("Resource saved successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
-              } else {
-                self.createDialog("Server responded with error: " + response.data, "Server Error");
-              }
+              self.createDialog("Resource saved successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog(response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data, "Server Error");
           });
         }
 
@@ -75,14 +71,10 @@
             data: $scope.resource
           }).then(function successCallback(response) {
               console.log(response);
-              if (response.data == "GOOD") {
-                self.createDialog("Resource created successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
-              } else {
-                self.createDialog("Server responded with error: " + response.data, "Server Error");
-              }
+              self.createDialog("Resource created successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog(response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data, "Server Error");
           });
         };
 

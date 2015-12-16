@@ -35,14 +35,10 @@
             data: $scope.plugin
           }).then(function successCallback(response) {
               console.log(response);
-              if (response.data == "GOOD") {
-                self.createDialog("New plugin created successfully.", "Plugins");
-              } else {
-                self.createDialog("Server responded with error: " + response.data, "Server Error");
-              }
+              self.createDialog("New plugin created successfully.", "Plugins");
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog(response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data, "Server Error");
           });
         }
 

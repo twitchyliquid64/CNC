@@ -76,19 +76,15 @@
             data: $scope.plugin
           }).then(function successCallback(response) {
               console.log(response);
-              if (response.data == "GOOD") {
-                $mdToast.show(
-                  $mdToast.simple()
-                    .content('Plugin details updated successfully.')
-                    .position('bottom')
-                    .hideDelay(3000)
-                );
-              } else {
-                self.createDialog("Server responded with error: " + response.data, "Server Error");
-              }
+              $mdToast.show(
+                $mdToast.simple()
+                  .content('Plugin details updated successfully.')
+                  .position('bottom')
+                  .hideDelay(3000)
+              );
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog(response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data, "Server Error");
           });
         }
 
