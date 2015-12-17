@@ -61,6 +61,8 @@ func registerEntityHandlers(){
   web.Get("/entity", getEntityHandlerAPI, config.All().Web.Domain)
   web.Get("/e/status", apiHandler(updateEntityStatusHandlerAPI), config.All().Web.Domain)
   web.Post("/e/status", apiHandler(updateEntityStatusHandlerAPI), config.All().Web.Domain)
+  web.Get("/e/loc", apiHandler(updateEntityLocationHandlerAPI), config.All().Web.Domain)
+  web.Post("/e/loc", apiHandler(updateEntityLocationHandlerAPI), config.All().Web.Domain)
 }
 
 func registerPluginHandlers(){

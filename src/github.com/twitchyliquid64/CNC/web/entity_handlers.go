@@ -174,3 +174,44 @@ func atoiOrDefault(input string, defalt int)int{
   }
   return val
 }
+
+func getFloatOrDefault(input string, defalt float64)float64{
+  r, err := strconv.ParseFloat(input, 64)
+  if err != nil {
+    return defalt
+  }
+  return r
+}
+
+
+// Called by plugins to transmit a record of location.
+// HTTP Parameters:
+// required: key==entity API key
+// option: lat, lon, kph (speed), course, acc (accuracy), sat (number of satellites acquired)
+func updateEntityLocationHandlerAPI(ctx *web.Context)(output interface{}, code int) {
+  apiKey := ctx.Params["key"]
+  ent, err := entity.GetEntityByKey(apiKey, data.DB)
+  if err != nil || ent.ID == 0{
+    logging.Error("entity", err.Error())
+    return err, 400
+  }
+
+  rec := entity.EntityLocationRecord{}
+  rec.EntityID = int(ent.ID)
+  rec.Latitude = getFloatOrDefault(ctx.Params["lat"], -100)
+  rec.Longitude = getFloatOrDefault(ctx.Params["lon"], -100)
+  rec.SpeedKph = getFloatOrDefault(ctx.Params["kph"], -100)
+  rec.Course = atoiOrDefault(ctx.Params["course"], -100)
+  rec.Accuracy = atoiOrDefault(ctx.Params["acc"], -100)
+  rec.SatNum = atoiOrDefault(ctx.Params["sat"], -100)
+  if(rec.Course != -100 && rec.SpeedKph != -100) {
+    rec.HasFullInfo = true
+  }
+
+  err = data.DB.Save(&rec).Error
+  if err != nil {
+    return err, 400
+  } else {
+    return map[string]interface{}{"success": true}, 200
+  }
+}
