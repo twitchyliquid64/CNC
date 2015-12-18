@@ -59,7 +59,12 @@
     <h3>Activity Log</h3>
 
     <p class="logElement" layout="row" ng-repeat="msg in msgs" style="margin: 0px;">
-      <span class="logComponent">[{{msg.Created | uppercase}}] </span> {{msg.Content}}
+      <span  ng-if="msg.Type == 'status'">
+        <span class="logComponent">[{{msg.Created | uppercase}}] </span> <span style="color: #000077;">Status update</span> {{msg.Content}}
+      </span>
+      <span  ng-if="msg.Type == 'location'">
+        <span class="logComponent">[{{msg.Created | uppercase}}] </span> <span style="color: #000077;">Location Update</span>{ <span class="amber">lat:</span> {{msg.Latitude}}, <span class="amber">long:</span> {{msg.Longitude}} }
+      </span>
     </p>
   </md-content>
 </md-content>

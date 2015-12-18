@@ -8,9 +8,9 @@ function valueOrDash(input, units){
 (function () {
 
     angular.module('baseApp')
-        .controller('entityMapController', ['$scope', '$rootScope', '$http', '$mdDialog', '$location', '$routeParams', '$mdToast', entityMapController]);
+        .controller('entityMapController', ['$scope', '$rootScope', '$http', '$mdDialog', '$location', '$routeParams', '$mdToast', '$interval', entityMapController]);
 
-    function entityMapController($scope, $rootScope, $http, $mdDialog, $location, $routeParams, $mdToast) {
+    function entityMapController($scope, $rootScope, $http, $mdDialog, $location, $routeParams, $mdToast, $interval) {
         var self = this;
         self.currentMarker = null;
         $scope.showLoading = false;
@@ -18,6 +18,14 @@ function valueOrDash(input, units){
         $scope.wasConnected = false;
         $scope.locs = [{TimeUpdatedString: '---', Latitude: '-', Longitude: '-', SpeedKph: '-', Course: '-', Accuracy: '-'}];
 
+        self.updateUpdatedTime = function(){
+          if ($scope.locs != null && $scope.locs.length > 0)
+          {
+            $scope.locs[0].TimeUpdatedString = $scope.locs[0].TimeUpdated.fromNow();
+          }
+        }
+
+        self.timer = $interval(self.updateUpdatedTime, 5000);
 
 
 
@@ -27,7 +35,7 @@ function valueOrDash(input, units){
         var ws = new WebSocket("wss://" + location.hostname+(location.port ? ':'+location.port: '') + "/ws/entityUpdates?id=" + $routeParams.entityID);
         $scope.$on('$destroy', function(event) {
           ws.close();
-          //$interval.cancel(self.timer);
+          $interval.cancel(self.timer);
         });
 
         ws.onopen = function()
@@ -42,6 +50,7 @@ function valueOrDash(input, units){
         {
           $scope.$apply(function(){
             var d = JSON.parse(evt.data);
+            console.log(d);
             var msgType = d.Type;
             if (msgType == "location"){
               $scope.locs.unshift(self.processRow(d));

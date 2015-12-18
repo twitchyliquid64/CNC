@@ -30,13 +30,16 @@
         {
           $scope.$apply(function(){
             var d = JSON.parse(evt.data);
+            console.log(d);
             var msgType = d.Type;
             if (msgType == "status"){
               $scope.msgs.push(d);
               self.processUpdate(d);
-              if ($scope.msgs.length > 8){
-                $scope.msgs.shift();
-              }
+            }else if (msgType == "location"){
+              $scope.msgs.push(d);
+            }
+            if ($scope.msgs.length > 8){
+              $scope.msgs.shift();
             }
           });
         };
