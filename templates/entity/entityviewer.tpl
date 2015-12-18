@@ -5,8 +5,8 @@
       Entities <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon> {{entity.Name}}</h2>
     <div class="md-toolbar-tools">
       <span flex></span>
-      <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="connected && !wasConnected">more_horiz</md-icon>
-      <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="!connected && wasConnected">close</md-icon>
+      <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="(!connected) && (!wasConnected)">more_horiz</md-icon>
+      <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="(!connected) && wasConnected">close</md-icon>
       <md-icon flex class="md-avatar" md-font-library="material-icons" ng-show="connected">check</md-icon>
     </div>
   </md-data-table-toolbar>

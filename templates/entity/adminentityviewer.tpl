@@ -40,7 +40,7 @@
           <td>{{entity.UpdatedAt_time}}</td>
           <td entity-status></td>
           <td>
-            <md-button class="ng-icon-button small-icons" ng-click="" aria-label="Track Entity">
+            <md-button class="ng-icon-button small-icons" ng-click="main.activateRouted('/entitymap/'+entity.ID, 'entity-map');" aria-label="Track Entity">
               <md-icon md-font-library="material-icons">location_on</md-icon>
             </md-button>
             <md-button class="ng-icon-button small-icons" ng-click="main.activateRouted('/admin/entity/'+entity.ID, 'entity-edit');" aria-label="Edit Entity">

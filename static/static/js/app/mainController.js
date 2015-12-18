@@ -56,6 +56,8 @@
           self.activateRouted(p, 'entity-edit');
         } else if(p.startsWith('/entity/')) {
           self.activateRouted(p, 'entity-view');
+        } else if(p.startsWith('/entitymap/')) {
+          self.activateRouted(p, 'entity-map');
         } else if(p.startsWith('/admin/plugin')) {
           self.activateRouted(p, 'plugin-edit');
         } else if(p.startsWith('/admin/newresource')) {

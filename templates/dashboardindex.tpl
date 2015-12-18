@@ -104,5 +104,9 @@
     <script src="/static/js/app/plugin/resourceCreateEditController.js"></script>
     <script src="/static/js/app/services/loggerService.js"></script>
     <script src="/static/js/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="/static/js/app/entity/entityMapController.js"></script>
+
   </body>
 </html>

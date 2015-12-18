@@ -91,6 +91,7 @@ func registerTemplateViews() {
   web.Get("/view/entities", entityAdminViewerPage_view, config.All().Web.Domain)
   web.Get("/view/entity", entityViewerPage_view, config.All().Web.Domain)
   web.Get("/view/entities/form", entityAdminForm_view, config.All().Web.Domain)
+  web.Get("/view/entitymap", entityMapPage_view, config.All().Web.Domain)
   web.Get("/view/dashboard/summary", dashboardSummary_view, config.All().Web.Domain)
   web.Get("/view/plugins", pluginAdminListPage_view, config.All().Web.Domain)
   web.Get("/view/plugins/newform", pluginAdminNewPage_view, config.All().Web.Domain)
@@ -122,6 +123,7 @@ func registerEntityTemplates(){
   logError(registerTemplate("entity/adminentityviewer.tpl", "adminentityviewer"), "Template load error: ")
   logError(registerTemplate("entity/adminentitycreateedit.tpl", "adminentityform"), "Template load error: ")
   logError(registerTemplate("entity/entityviewer.tpl", "entityviewer"), "Template load error: ")
+  logError(registerTemplate("entity/entitymap.tpl", "entitymap"), "Template load error: ")
 }
 
 func registerPluginTemplates(){

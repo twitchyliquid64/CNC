@@ -77,6 +77,14 @@ func entityAdminForm_view(ctx *web.Context) {
 	t.Execute(ctx.ResponseWriter, nil)
 }
 
+func entityMapPage_view(ctx *web.Context) {
+  t := templates.Lookup("entitymap")
+	if t == nil {
+		logging.Error("web", "No template found.")
+	}
+	t.Execute(ctx.ResponseWriter, nil)
+}
+
 func entityViewerPage_view(ctx *web.Context) {
   t := templates.Lookup("entityviewer")
 	if t == nil {

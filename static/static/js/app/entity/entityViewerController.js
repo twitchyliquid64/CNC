@@ -10,7 +10,7 @@
         $scope.wasConnected = false;
         $scope.msgs = [];
 
-        var ws = new WebSocket("wss://" + location.hostname+(location.port ? ':'+location.port: '') + "/ws/entityUpdates");
+        var ws = new WebSocket("wss://" + location.hostname+(location.port ? ':'+location.port: '') + "/ws/entityUpdates?id=" + $routeParams.entityID);
         $scope.$on('$destroy', function(event) {
           ws.close();
           $interval.cancel(self.timer);
