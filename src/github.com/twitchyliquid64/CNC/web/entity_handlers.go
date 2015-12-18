@@ -212,6 +212,7 @@ func updateEntityLocationHandlerAPI(ctx *web.Context)(output interface{}, code i
   if err != nil {
     return err, 400
   } else {
+    entity.PublishLocationUpdate(uint(rec.EntityID), rec.Latitude, rec.Longitude, rec.SpeedKph, rec.Accuracy, rec.Course, rec.SatNum)
     return map[string]interface{}{"success": true}, 200
   }
 }

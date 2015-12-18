@@ -25,6 +25,14 @@ type EntityUpdate struct {
   StyleMeta string
   Icon string
 
+  //used when updateType == "location"
+  Latitude float64
+  Longitude float64
+  SpeedKph float64
+  Course      int
+  SatNum      int
+  Accuracy    int
+
   //time at which the update occurred in unix seconds
   Created int64
 }
@@ -54,6 +62,31 @@ func PublishStatusUpdate(eID uint, content, style, styleMeta, icon string){
     Style: style,
     StyleMeta: styleMeta,
     Icon: icon,
+    Created: time.Now().Unix(),
+  }
+
+  updateSubStructLock.Lock()
+  defer updateSubStructLock.Unlock()
+  for ch, _ := range updateSubscribers {
+    select { //prevents blocking if a channel is full
+      case ch <- pkt:
+      default:
+    }
+  }
+}
+
+func PublishLocationUpdate(eID uint, lat, lon, speed float64, acc, course, sat int){
+  pkt := EntityUpdate{
+    EntityID: eID,
+    Type: Updatetype_Location,
+    
+    Latitude: lat,
+    Longitude: lon,
+    SpeedKph: speed,
+    Accuracy: acc,
+    Course: course,
+    SatNum: sat,
+
     Created: time.Now().Unix(),
   }
 

@@ -15,21 +15,61 @@
     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
   </div>
 
-  <md-content flex layout="column" layout-fill layout-wrap ng-hide="showLoading">
-
+  <md-content flex layout="column" layout-wrap ng-hide="showLoading">
     <style>
-     @media screen and (min-width: 200px) {
-         #map_canvas {
-             margin: 0 auto;
-             height: 650px;
-             min-width: 150px;
-             max-width: 2250px;
-             float: left;
-             width: 100%;
-         }
-     }
-  </style>
+       @media screen and (min-width: 200px) {
+           #map_canvas {
+               margin: 0 auto;
+               height: 650px;
+               min-width: 150px;
+               max-width: 2250px;
+               float: left;
+               width: 100%;
+           }
+       }
+    </style>
 
-  <div id="map_canvas"></div>
+    <div id="map_canvas"></div>
+
+    <md-content flex layout="row" layout-wrap style="padding: 3px; margin: 14px;">
+      <div flex="50" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Speed</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].SpeedKph}}</div>
+      </div>
+
+
+      <div flex="20" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Latitude</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].Latitude}}</div>
+      </div>
+
+      <div flex="20" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Longitude</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].Longitude}}</div>
+      </div>
+
+      <div flex="10" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Accuracy</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].Accuracy}}</div>
+      </div>
+
+      <div flex="25" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Heading</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].Course}}</div>
+      </div>
+
+      <div flex="25" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Number of Satellites</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].SatNum}}</div>
+      </div>
+
+
+      <div flex="50" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Last location update</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].TimeUpdatedString}}</div>
+      </div>
+
+    </md-content>
+
   </md-content>
 </md-content>
