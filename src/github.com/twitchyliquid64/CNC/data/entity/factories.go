@@ -13,6 +13,11 @@ func GetAll(db gorm.DB)[]Entity{
   return entities
 }
 
+func GetLocations(id, limit int, db gorm.DB)[]EntityLocationRecord{
+  var ret []EntityLocationRecord
+  db.Where(&EntityLocationRecord{EntityID:  id}).Order("created_at desc").Limit(limit).Find(&ret)
+  return ret
+}
 
 func GetEntityById(id uint, db gorm.DB)(ret Entity,err error) {
   err = db.Where(&Entity{ID:  id}).First(&ret).Error

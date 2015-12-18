@@ -215,3 +215,28 @@ func updateEntityLocationHandlerAPI(ctx *web.Context)(output interface{}, code i
     return map[string]interface{}{"success": true}, 200
   }
 }
+
+
+
+
+// Passes back a JSON array of all location updates for a given entity.
+//
+//
+func getEntityLocationsHandlerAPI(ctx *web.Context)(interface{}, int) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-entity", "getEntityLocations() called unauthorized, aborting")
+    return nil, 403
+  }
+
+  eID, err := strconv.Atoi(ctx.Params["id"])
+  if err != nil{
+    logging.Error("web-entity", "getEntityLocations() called without 'id' parameter, aborting")
+    return nil, 400
+  }
+  limit := atoiOrDefault(ctx.Params["limit"], 1)
+
+  records := entity.GetLocations(eID, limit, data.DB)
+  return records, 200
+}
