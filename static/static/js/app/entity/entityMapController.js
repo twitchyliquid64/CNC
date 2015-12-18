@@ -19,6 +19,17 @@
           });
         }
 
+        self.initialDownloadLocationData = function(){
+          $http.get('/entityLocations?id='+$routeParams.entityID, {}).then(function (response) {
+            locs = response.data;
+            $scope.locs = locs;
+            console.log($scope.locs);
+          }, function errorCallback(response) {
+            console.log(response);
+            self.createDialog(response, "Server Error");
+          });
+        }
+
         self.createDialog = function(message, title) {
           $mdDialog.show(
             $mdDialog.alert()
@@ -43,5 +54,6 @@
 
         self.initMap();
         self.downloadEntityData();
+        self.initialDownloadLocationData();
     }
 })();
