@@ -78,6 +78,7 @@ function valueOrDash(input, units){
           if ($scope.locs != null && $scope.locs.length > 0)
           {
 	    if( self.currentMarker != null)self.currentMarker.setMap(null);
+	    if( self.circle != null)self.circle.setMap(null);
 
             self.currentMarker = new google.maps.Marker({
                         title: "Current position",
@@ -94,6 +95,7 @@ function valueOrDash(input, units){
                 fillColor: '#2525AA'
               });
               circle.bindTo('center', self.currentMarker, 'position');
+	      self.circle = circle;
             }
             self.map.panTo(new google.maps.LatLng($scope.locs[0].Latitude, $scope.locs[0].Longitude));
           }
