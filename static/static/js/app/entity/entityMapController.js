@@ -77,6 +77,8 @@ function valueOrDash(input, units){
           console.log($scope.locs);
           if ($scope.locs != null && $scope.locs.length > 0)
           {
+	    if( self.currentMarker != null)self.currentMarker.setMap(null);
+
             self.currentMarker = new google.maps.Marker({
                         title: "Current position",
                         icon: new google.maps.MarkerImage("/static/img/bluecircle.png"),
