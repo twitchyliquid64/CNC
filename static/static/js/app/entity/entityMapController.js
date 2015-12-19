@@ -79,10 +79,20 @@ function valueOrDash(input, units){
           {
             self.currentMarker = new google.maps.Marker({
                         title: "Current position",
-                        icon: new google.maps.MarkerImage("/static/img/cross-hairs.gif"),
+                        icon: new google.maps.MarkerImage("/static/img/bluecircle.png"),
                         position: new google.maps.LatLng($scope.locs[0].Latitude, $scope.locs[0].Longitude)
                     });
             self.currentMarker.setMap(self.map);
+
+            if ($scope.locs[0].Accuracy > 1){
+              // Add circle overlay and bind to marker
+              var circle = new google.maps.Circle({
+                map: self.map,
+                radius: $scope.locs[0].Accuracy,
+                fillColor: '#2525AA'
+              });
+              circle.bindTo('center', self.currentMarker, 'position');
+            }
             self.map.panTo(new google.maps.LatLng($scope.locs[0].Latitude, $scope.locs[0].Longitude));
           }
         }
@@ -130,7 +140,7 @@ function valueOrDash(input, units){
           ret = row;
           ret.SpeedKph = valueOrDash(ret.SpeedKph, "km/h");
           ret.Course = valueOrDash(ret.Course, "");
-          ret.Accuracy = valueOrDash(ret.Accuracy, "m");
+          ret.AccuracyDisplay = valueOrDash(ret.Accuracy, "m");
           ret.SatNum = valueOrDash(ret.SatNum, "");
           ret.TimeUpdated = moment(ret.CreatedAt);
           ret.TimeUpdatedString = ret.TimeUpdated.fromNow();

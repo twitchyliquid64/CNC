@@ -40,17 +40,17 @@
 
       <div flex="20" layout="column">
         <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Latitude</div>
-        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].Latitude}}</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{locs[0].Latitude}}</div>
       </div>
 
       <div flex="20" layout="column">
         <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Longitude</div>
-        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].Longitude}}</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{locs[0].Longitude}}</div>
       </div>
 
       <div flex="10" layout="column">
         <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Accuracy</div>
-        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].Accuracy}}</div>
+        <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].AccuracyDisplay}}</div>
       </div>
 
       <div flex="25" layout="column">
