@@ -1,4 +1,4 @@
-<md-content class="content" flex ng-show="main.focus == 'entity-map'">
+<div class="content" flex ng-show="main.focus == 'entity-map'">
   <md-data-table-toolbar>
     <h2 class="md-title" flex="50" ng-click="main.activateRouted('/admin/entities', 'entities')">
       <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
@@ -11,11 +11,7 @@
     </div>
   </md-data-table-toolbar>
 
-  <div layout="row" layout-align="space-around" ng-show="showLoading">
-    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-  </div>
-
-  <md-content flex layout="column" layout-wrap ng-hide="showLoading">
+  <div flex layout="column" layout-wrap ng-hide="showLoading">
     <style>
        @media screen and (min-width: 200px) {
            #map_canvas {
@@ -31,24 +27,24 @@
 
     <div id="map_canvas"></div>
 
-    <md-content flex layout="row" layout-wrap style="padding: 3px; margin: 14px;">
+    <div flex layout="row" layout-wrap style="padding-left: 3px; margin-left: 14px;">
       <div flex="50" layout="column">
         <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Speed</div>
         <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].SpeedKph}}</div>
       </div>
 
 
-      <div flex="20" layout="column">
+      <div flex="20" flex-sm="50" layout="column">
         <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Latitude</div>
         <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{locs[0].Latitude}}</div>
       </div>
 
-      <div flex="20" layout="column">
+      <div flex="20" flex-sm="50" layout="column">
         <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Longitude</div>
         <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{locs[0].Longitude}}</div>
       </div>
 
-      <div flex="10" layout="column">
+      <div flex="10" flex-sm="100" layout="column">
         <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Accuracy</div>
         <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].AccuracyDisplay}}</div>
       </div>
@@ -69,7 +65,13 @@
         <div style="color: rgba(0, 0, 0, 1.00); font-size: 20px;">{{locs[0].TimeUpdatedString}}</div>
       </div>
 
-    </md-content>
+      <div flex="100" layout="column">
+        <div style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">Historical</div>
+        <md-slider flex min="0" max="800" ng-model="historicalShown" ng-disabled="loadingData" aria-label="historicalShown">
+        </md-slider>
+      </div>
 
-  </md-content>
-</md-content>
+    </div>
+
+  </div>
+</div>
