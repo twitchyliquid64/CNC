@@ -248,7 +248,7 @@ function valueOrDash(input, units){
           '<div id="bodyContent">'+
           '<p><b>Accuracy: </b>' + acc + 'm</p>'+
           '<p><b>Heading: </b>' + cours + ' degrees</p>'+
-          '<p><b>Speed: </b>' + spd + ' km/h</p>'+
+          '<p><b>Speed: </b>' + spd + '</p>'+
           '</div>'+
           '</div>';
     }
