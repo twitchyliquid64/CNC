@@ -1,8 +1,10 @@
 package devclienthandler
 
 import (
+  pluginData "github.com/twitchyliquid64/CNC/data/plugin"
   "github.com/twitchyliquid64/CNC/logging"
   "encoding/json"
+  "time"
 )
 
 type Packet struct {
@@ -62,6 +64,52 @@ func decodeFatalError(data []byte)*FatalError{
 }
 
 
+
+
+
+
+
+
+
+
+
+
+type Plugin struct {
+    ID        uint `gorm:"primary_key"`
+    CreatedAt time.Time
+    UpdatedAt time.Time
+    DeletedAt *time.Time
+
+    Name string `sql:"not null;unique;index"`
+    Icon string
+    Description string
+    Enabled bool
+
+    HasCrashed bool
+    ErrorStr string
+
+    Resources []Resource
+}
+
+
+type Resource struct {
+  ID int      `gorm:"primary_key"`
+  PluginID int `sql:"index"`
+  Name string `sql:"index"`
+  Data []byte
+  IsExecutable bool
+  IsTemplate bool
+  JSONData string `sql:"-"` //only used for JSON deserialisation - not a DB field
+}
+
+
+
+type PluginList struct{
+  Plugins []pluginData.Plugin
+}
+func (m *PluginList)Typ()string{
+  return "plist"
+}
 
 const (
   STATUS_AUTHENTICATED string = "AUTH OK"

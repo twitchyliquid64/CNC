@@ -13,6 +13,11 @@ func GetAllDisabledNoResources(db gorm.DB)[]Plugin{
   return plugins
 }
 
+func GetByName(db gorm.DB, name string)Plugin{
+  var ret Plugin
+  db.Where("name = ?", name).First(&ret)
+  return ret
+}
 
 func GetAllEnabled(db gorm.DB)[]Plugin{
   var plugins = make([]Plugin, 0)
