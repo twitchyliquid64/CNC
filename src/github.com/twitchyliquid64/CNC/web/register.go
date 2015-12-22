@@ -1,6 +1,7 @@
 package web
 
 import (
+  "github.com/twitchyliquid64/CNC/web/devclienthandler"
   "github.com/twitchyliquid64/CNC/web/pluginsockets"
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/config"
@@ -84,6 +85,7 @@ func registerWebSockets() {
   web.Get("/ws/logging", websocket.Handler(ws_LogServer), config.All().Web.Domain)
   web.Get("/ws/p/(.*)", pluginsockets.Handle, config.All().Web.Domain)
   web.Get("/ws/entityUpdates", websocket.Handler(ws_EntityUpdateServer), config.All().Web.Domain)
+  web.Get("/ws/devclient", websocket.Handler(devclienthandler.Main_ws), config.All().Web.Domain)
 }
 
 
