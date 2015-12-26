@@ -64,9 +64,42 @@ func decodeFatalError(data []byte)*FatalError{
 }
 
 
+const (
+  REQUEST_PLUGININFO string = "plugininfo"
+)
+type DataRequest struct{
+  DataType string
+  ID int
+}
+func (m *DataRequest)Typ()string{
+  return "dataRequest"
+}
+func decodeDataRequest(data []byte)*DataRequest{
+  var t DataRequest
+  err := json.Unmarshal(data, &t)
+  if err != nil{
+    return nil
+  }
+  return &t
+}
 
 
 
+
+type PluginInfo struct{
+  P pluginData.Plugin //only on the server, have type Plugin on client
+}
+func (m *PluginInfo)Typ()string{
+  return "plugininfo"
+}
+func decodePluginInfo(data []byte)*PluginInfo{
+  var t PluginInfo
+  err := json.Unmarshal(data, &t)
+  if err != nil{
+    return nil
+  }
+  return &t
+}
 
 
 

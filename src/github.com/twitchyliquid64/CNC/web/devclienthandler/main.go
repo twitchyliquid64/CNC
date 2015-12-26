@@ -7,7 +7,7 @@ import (
   "github.com/twitchyliquid64/CNC/logging"
   "github.com/twitchyliquid64/CNC/data"
   "golang.org/x/net/websocket"
-  "time"
+  "encoding/json"
 )
 
 
@@ -31,7 +31,7 @@ func Main_ws(ws *websocket.Conn){
 
   if pName == ""{//just want a list of plugins
     ws.Write(newPacket(&Status{Status: STATUS_READY}).Serialize())
-    pList := pluginData.GetAllEnabled(data.DB)
+    pList := pluginData.GetAllEnabled_NoResources(data.DB)
     ws.Write(newPacket(&PluginList{Plugins: pList}).Serialize())
     return
   } else {//fetch the plugin details
@@ -40,9 +40,45 @@ func Main_ws(ws *websocket.Conn){
       ws.Write(newPacket(&FatalError{Error: "Could not find plugin '" + pName + "'"}).Serialize())
       return
     }
+    pluginData.LoadResources(&p, data.DB)
     ws.Write(newPacket(&Status{Status: STATUS_READY}).Serialize())
   }
 
+  //at this stage: we are authenticated, and an existing plugin is selected. Lets loop and execute commands.
+  for {
+    var data []byte
+    err := websocket.Message.Receive(ws, &data)
+    if err != nil{
+      return
+    }
+    processMessage(ws, data, p)
+  }
+}
 
-  time.Sleep(20 * time.Second)
+
+
+
+func processRequest(ws *websocket.Conn, data []byte, p pluginData.Plugin){
+  msg := decodeDataRequest(data)
+  switch msg.DataType {
+  case REQUEST_PLUGININFO:
+    ws.Write(newPacket(&PluginInfo{P: p}).Serialize())
+  }
+}
+
+func processMessage(ws *websocket.Conn, data []byte, p pluginData.Plugin){
+  var pkt Packet
+  err := json.Unmarshal(data, &pkt)
+  if err != nil{
+    logging.Info("ws-devclient", "JSON Error: ", err.Error())
+    return
+  }
+
+  switch pkt.Type {
+  case "dataRequest":
+    processRequest(ws, pkt.Subdata, p)
+
+  default:
+    logging.Info("ws-devclient", "Unknown type: ", pkt.Type, " ---- ", string(pkt.Subdata))
+  }
 }

@@ -30,6 +30,14 @@ func GetAllEnabled(db gorm.DB)[]Plugin{
   return plugins
 }
 
+func GetAllEnabled_NoResources(db gorm.DB)[]Plugin{
+  var plugins = make([]Plugin, 0)
+  db.Where("enabled = ?", true).Find(&plugins)
+
+  return plugins
+}
+
+
 func Get(db gorm.DB, pluginID int)Plugin{
   var plugin Plugin
   db.Find(&plugin, pluginID)
