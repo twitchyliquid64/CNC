@@ -66,6 +66,7 @@ func decodeFatalError(data []byte)*FatalError{
 
 const (
   REQUEST_PLUGININFO string = "plugininfo"
+  REQUEST_RESTART string = "pluginRestart"
 )
 type DataRequest struct{
   DataType string
@@ -102,6 +103,37 @@ func decodePluginInfo(data []byte)*PluginInfo{
 }
 
 
+
+type ResourceUpdate struct{
+  R pluginData.Resource
+}
+func (m *ResourceUpdate)Typ()string{
+  return "resourceUpdate"
+}
+func decodeResourceUpdate(data []byte)*ResourceUpdate{
+  var t ResourceUpdate
+  err := json.Unmarshal(data, &t)
+  if err != nil{
+    return nil
+  }
+  return &t
+}
+
+
+type LogMessage struct{
+  Msg logging.LogMessage
+}
+func (m *LogMessage)Typ()string{
+  return "logMessage"
+}
+func decodeLogMessage(data []byte)*LogMessage{
+  var t LogMessage
+  err := json.Unmarshal(data, &t)
+  if err != nil{
+    return nil
+  }
+  return &t
+}
 
 
 
@@ -147,6 +179,7 @@ func (m *PluginList)Typ()string{
 const (
   STATUS_AUTHENTICATED string = "AUTH OK"
   STATUS_READY string = "READY"
+  STATUS_SAVE_SUCCESSFUL string = "SAVE GOOD"
 )
 
 
