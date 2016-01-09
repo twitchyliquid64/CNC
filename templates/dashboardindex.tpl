@@ -27,6 +27,24 @@
                     md-is-locked-open="$mdMedia('gt-sm')">
 
         <md-list><!--Put ng-repeat in the md-list -->
+
+          <md-subheader class="md-no-sticky">Main Menu</md-subheader>
+          <md-list-item>
+              <md-button ng-click="main.activate('messenger')" ng-disabled="true">
+                <md-icon md-font-library="material-icons">message</md-icon> Messenger
+              </md-button>
+          </md-list-item>
+          <md-list-item>
+              <md-button ng-click="main.activate('mail')" ng-disabled="true">
+                <md-icon md-font-library="material-icons">email</md-icon> Mail
+              </md-button>
+          </md-list-item>
+          <md-list-item>
+              <md-button ng-click="main.activate('sonder')">
+                <md-icon md-font-library="material-icons">wallpaper</md-icon> End of Sonder
+              </md-button>
+          </md-list-item>
+
           {!{if .IsAdmin}!}
           <md-subheader class="md-no-sticky">Admin</md-subheader>
           <md-list-item>
@@ -51,18 +69,6 @@
           </md-list-item>
           {!{end}!}
 
-          <md-subheader class="md-no-sticky">Comms</md-subheader>
-          <md-list-item>
-              <md-button ng-click="main.activate('messenger')">
-                <md-icon md-font-library="material-icons">message</md-icon> Messenger
-              </md-button>
-          </md-list-item>
-          <md-list-item>
-              <md-button ng-click="main.activate('mail')">
-                <md-icon md-font-library="material-icons">email</md-icon> Mail
-              </md-button>
-          </md-list-item>
-
           <md-subheader class="md-no-sticky">Other</md-subheader>
           <md-list-item>
               <md-button ng-click="main.activate('assets')">
@@ -81,6 +87,33 @@
         {!{template "userpermissions"}!}
         {!{end}!}
 
+
+        {!{if eq .User.Username  "testadmin"}!}
+        <md-content class="content" flex ng-show="main.focus == 'sonder'" ng-controller="sonderController as sonder">
+          <h2>End of Sonder</h2>
+          <p>This is your contract with yourself. If you have not engaged yourself in the area which your mind revolves around, by the 20th November 2016, you must aggressively pursue personal change to these ends
+          to the detriment of other pursuits. This is not the start of something, it is merely a safety net - to avoid an end.</p>
+
+          <div flex style="text-align: center;" layout-align="center">
+            <h3 flex>{{sonder.getDays()}} days</h3>
+            <p flex>{{sonder.getHours()}} hours, {{sonder.getMinutes()}} minutes</p>
+          </div>
+
+          <md-list>
+            <md-subheader class="md-no-sticky">Motivations
+            </md-subheader>
+            <md-list-item class="md-2-line">
+              <md-icon class="md-avatar" md-font-library="material-icons">cross</md-icon>
+              <div class="md-list-item-text">
+                <h3>Avoidance, Distration</h3>
+                <p>You center your whole life around this one thing, yet you direct all your efforts and thoughts elsewhere, particularly your hobbies (distractions).</p>
+              </div>
+            </md-list-item>
+          </md-list>
+
+        </md-content>
+        {!{end}!}
+
         <md-content flex ng-show="main.isRoutingMode" layout-fill>
           <div ng-view layout-fill></div>
         </md-content>
@@ -91,6 +124,7 @@
     {!{template "tailcontent"}!}
     <script src="/static/js/app/mainController.js"></script>
     <script src="/static/js/app/summaryController.js"></script>
+    <script src="/static/js/app/sonderController.js"></script>
     <script src="/static/js/app/user/userController.js"></script>
     <script src="/static/js/app/user/usereditController.js"></script>
     <script src="/static/js/app/user/userpermissionController.js"></script>

@@ -107,7 +107,7 @@ func Dispatch(hookName string, data interface{})bool{
   if !isInitialised{return false}
 
   var foundSome bool = false
-  logging.Info("plugin", "Dispatch() called")
+  //logging.Info("plugin", "Dispatch() called")
   structureLock.Lock()
   defer structureLock.Unlock()
 
