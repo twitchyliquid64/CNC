@@ -3,6 +3,7 @@ package web
 import (
   "github.com/twitchyliquid64/CNC/data/entity"
   "github.com/twitchyliquid64/CNC/logging"
+  "github.com/twitchyliquid64/CNC/registry"
   "github.com/twitchyliquid64/CNC/data"
   "github.com/hoisie/web"
   "encoding/json"
@@ -149,7 +150,9 @@ func updateEntityStatusHandlerAPI(ctx *web.Context)(output interface{}, code int
     ent.LastStatMeta = ""
   }
   data.DB.Save(&ent)
-  entity.PublishStatusUpdate(ent.ID, ent.LastStatString, ent.LastStatStyle, ent.LastStatMeta, ent.LastStatIcon)
+  updatePkt := entity.PublishStatusUpdate(ent.ID, ent.LastStatString, ent.LastStatStyle, ent.LastStatMeta, ent.LastStatIcon)
+
+  registry.DispatchEvent("entity_ON_UPDATE-"+strconv.Itoa(int(updatePkt.EntityID)), updatePkt)
 
   //save the data in a new statusRecord
   rec := entity.EntityStatusRecord{}

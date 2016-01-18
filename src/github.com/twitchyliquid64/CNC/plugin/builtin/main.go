@@ -21,6 +21,11 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   tgram.Set("sendMsg", func(in otto.FunctionCall)otto.Value{return function_telegram_sendMsg(plugin, in)})
   plugin.VM.Set("telegram", tgram)
 
+  //entities
+  ent, _ := plugin.VM.Object(`entities = {}`)
+  ent.Set("onStatusUpdate", func(in otto.FunctionCall)otto.Value{return function_entities_onStatusUpdate(plugin, in)})
+  plugin.VM.Set("entities", ent)
+
   //web
   web, _ := plugin.VM.Object(`web = {}`)
   web.Set("handle", func(in otto.FunctionCall)otto.Value{return function_web_handle(plugin, in)})

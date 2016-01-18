@@ -238,6 +238,55 @@
 
 
 
+
+
+
+            <!-- ENTITIES FUNCTIONS -->
+            <v-pane>
+              <v-pane-header>
+                <md-icon md-font-library="material-icons">memory</md-icon>
+                Entities
+              </v-pane-header>
+
+              <v-pane-content>
+                <p>This system allows you to query information about entities and recieve updates when information is recieved.</p>
+
+                <v-accordion>
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      entities.onStatusUpdate(
+                      <i class="amber">entitiyID number</i> <sup style="color: #444444;">int</sup>
+                      ,
+                      <i class="amber">callback</i> <sup style="color: #444444;">method</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Registers a method to be called whenever the specified entity updates its status.
+                      Calls a function with a single parameter, data/entity.StatusUpdate
+                      <p>EG: </p>
+                      <pre>
+                        function onUpdate(info) {
+                          console.log(info.Content);
+                        }
+
+                        entities.onStatusUpdate(3, onUpdate);
+
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+                </v-accordion>
+
+              </v-pane-content>
+            </v-pane>
+
+
+
+
+
+
+
+
             <!-- PLUGIN FUNCTIONS -->
             <v-pane>
               <v-pane-header>

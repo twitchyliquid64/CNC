@@ -54,7 +54,7 @@ func UnsubscribeUpdates(in chan EntityUpdate){
   delete(updateSubscribers, in)
 }
 
-func PublishStatusUpdate(eID uint, content, style, styleMeta, icon string){
+func PublishStatusUpdate(eID uint, content, style, styleMeta, icon string)EntityUpdate{
   pkt := EntityUpdate{
     EntityID: eID,
     Type: Updatetype_Status,
@@ -73,13 +73,15 @@ func PublishStatusUpdate(eID uint, content, style, styleMeta, icon string){
       default:
     }
   }
+
+  return pkt
 }
 
 func PublishLocationUpdate(eID uint, lat, lon, speed float64, acc, course, sat int){
   pkt := EntityUpdate{
     EntityID: eID,
     Type: Updatetype_Location,
-    
+
     Latitude: lat,
     Longitude: lon,
     SpeedKph: speed,
