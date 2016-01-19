@@ -9,6 +9,7 @@
         $scope.connected = false;
         $scope.wasConnected = false;
         $scope.msgs = [];
+        $scope.numEventsQueued = " -- ";
 
         var ws = new WebSocket("wss://" + location.hostname+(location.port ? ':'+location.port: '') + "/ws/entityUpdates?id=" + $routeParams.entityID);
         $scope.$on('$destroy', function(event) {
@@ -100,6 +101,18 @@
         self.timer = $interval(self.updateUpdatedTime, 5000);
 
 
+
+        self.updateNumEventsQueued = function(){
+          $http.get('/entity/events/count?entityID='+$routeParams.entityID, {}).then(function (response) {
+            $scope.numEventsQueued = response.data;
+            console.log($scope.entity);
+          }, function errorCallback(response) {
+            console.log(response);
+            self.createDialog(response, "Server Error");
+          });
+        }
+
+
         $scope.entity = self.buildEmptyEntityObject();
 
         $http.get('/entity?entityID='+$routeParams.entityID, {}).then(function (response) {
@@ -112,5 +125,7 @@
           console.log(response);
           self.createDialog(response, "Server Error");
         });
+
+        self.updateNumEventsQueued();
     }
 })();

@@ -94,6 +94,28 @@ func getEntityHandlerAPI(ctx *web.Context) {
 
 
 
+func getNumEntityEventsQueued(ctx *web.Context) {
+  isLoggedIn, u, _ := getSessionByCookie(ctx)
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-entity", "getNumEntityEventsQueued() called unauthorized, aborting")
+    return
+  }
+
+  entID, err := strconv.Atoi(ctx.Params["entityID"])
+  if err != nil {
+      logging.Error("web-entity", err)
+  }
+
+  ent, err := entity.GetNumEntityEventsQueued(int(entID), data.DB)
+  if err != nil {
+      logging.Error("web-entity", err)
+  }
+
+  ctx.ResponseWriter.Write([]byte(strconv.Itoa(ent)))
+}
+
+
 // Called to update the details for a specific entity, recieving all info as JSON.
 //
 //

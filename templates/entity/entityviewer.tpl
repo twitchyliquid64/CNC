@@ -47,8 +47,10 @@
 
     <md-content flex layout="column" layout-fill layout-align="center center" style="color: rgba(0, 0, 0, 0.54);">
       <i class="material-icons" style="vertical-align: middle;font-size: 450%;">{{entity.Icon}}</i>
-      <p><b><md-icon class="md-avatar" md-font-library="material-icons">group_work</md-icon>Category: </b>{{entity.Category}}<br>
-      <b><md-icon class="md-avatar" md-font-library="material-icons">access_time</md-icon>Created: </b>{{entity.CreatedAt_time}}</p>
+      <p style="margin: 0px; padding: 0px;"><b><md-icon class="md-avatar" md-font-library="material-icons">perm_identity</md-icon>Entity ID: </b>{{entity.ID}}<br></p>
+      <p style="margin: 0px; padding: 0px;"><b><md-icon class="md-avatar" md-font-library="material-icons">group_work</md-icon>Category: </b>{{entity.Category}}<br></p>
+      <p style="margin: 0px; padding: 0px;"><b><md-icon class="md-avatar" md-font-library="material-icons">filter_list</md-icon>Pending events: </b>{{numEventsQueued}}</p>
+      <p style="margin: 0px; padding: 0px;"><b><md-icon class="md-avatar" md-font-library="material-icons">access_time</md-icon>Created: </b>{{entity.CreatedAt_time}}</p>
     </md-content>
 
   </md-content>

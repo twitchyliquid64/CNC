@@ -88,6 +88,8 @@ func checkStructures() {
   DB.AutoMigrate(&entity.EntityStatusRecord{})
   logging.Info("data", "Checking structure: EntityLogRecord")
   DB.AutoMigrate(&entity.EntityLogRecord{})
+  logging.Info("data", "Checking structure: EntityEvent")
+  DB.AutoMigrate(&entity.EntityEvent{})
 
   logging.Info("data", "Checking structure: Plugin")
   DB.AutoMigrate(&plugin.Plugin{})

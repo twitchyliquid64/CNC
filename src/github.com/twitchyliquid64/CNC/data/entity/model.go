@@ -74,3 +74,15 @@ type EntityLogRecord struct {
   Component   string
   Message     string
 }
+
+
+
+type EntityEvent struct {
+  ID          int         `gorm:"primary_key"`
+  EntityID    int         `sql:"index"`
+  CreatedAt   time.Time   `sql:"index"`
+
+  Type string
+  Data string
+  IntData int
+}

@@ -29,6 +29,11 @@ func GetEntityByKey(key string, db gorm.DB)(ret Entity,err error) {
   return
 }
 
+func GetNumEntityEventsQueued(id int, db gorm.DB)(ret int,err error) {
+  err = db.Where(&EntityEvent{ID:  id}).Count(&ret).Error
+  return
+}
+
 
 func NewEntity(ent *Entity, usrID uint, db gorm.DB)(*Entity,error){
   ent.CreatorUserID = int(usrID)
