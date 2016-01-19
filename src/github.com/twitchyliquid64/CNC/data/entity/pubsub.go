@@ -77,7 +77,7 @@ func PublishStatusUpdate(eID uint, content, style, styleMeta, icon string)Entity
   return pkt
 }
 
-func PublishLocationUpdate(eID uint, lat, lon, speed float64, acc, course, sat int){
+func PublishLocationUpdate(eID uint, lat, lon, speed float64, acc, course, sat int)EntityUpdate{
   pkt := EntityUpdate{
     EntityID: eID,
     Type: Updatetype_Location,
@@ -100,4 +100,6 @@ func PublishLocationUpdate(eID uint, lat, lon, speed float64, acc, course, sat i
       default:
     }
   }
+
+  return pkt
 }

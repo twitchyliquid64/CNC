@@ -24,6 +24,7 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   //entities
   ent, _ := plugin.VM.Object(`entities = {}`)
   ent.Set("onStatusUpdate", func(in otto.FunctionCall)otto.Value{return function_entities_onStatusUpdate(plugin, in)})
+  ent.Set("onLocationUpdate", func(in otto.FunctionCall)otto.Value{return function_entities_onLocationUpdate(plugin, in)})
   plugin.VM.Set("entities", ent)
 
   //web

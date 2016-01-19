@@ -22,11 +22,23 @@ func function_entities_onStatusUpdate(plugin *exec.Plugin, call otto.FunctionCal
   return otto.Value{}
 }
 
+// Called when JS code executes entities.onLocationUpdate(<entityID>)
+//
+//
+func function_entities_onLocationUpdate(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+  callback := util.GetFunc(call.Argument(1), plugin.VM)
+  entityID, _ := call.Argument(0).ToInteger()
+  hook := EntityHook{EID: entityID, P: plugin, Callback: &callback, HookType: ON_LOCATION_UPDATE}
+  plugin.RegisterHook(&hook)
+  return otto.Value{}
+}
+
 
 
 type EntityHookTypes int
 const (
   ON_STATUS_UPDATE EntityHookTypes = iota
+  ON_LOCATION_UPDATE
 )
 
 type EntityHook struct {
@@ -45,6 +57,8 @@ func (h *EntityHook)Name()string{
   switch h.HookType {
   case ON_STATUS_UPDATE:
       return "entity_ON_UPDATE-" + strconv.Itoa(int(h.EID))
+  case ON_LOCATION_UPDATE:
+      return "entity_ON_LOCATION-" + strconv.Itoa(int(h.EID))
   }
   return "entity_UNKNOWN" //should never happen
 }

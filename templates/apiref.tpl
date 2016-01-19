@@ -263,7 +263,7 @@
                     </v-pane-header>
                     <v-pane-content>
                       Registers a method to be called whenever the specified entity updates its status.
-                      Calls a function with a single parameter, data/entity.StatusUpdate
+                      Calls a function with a single parameter, data/entity.EntityUpdate
                       <p>EG: </p>
                       <pre>
                         function onUpdate(info) {
@@ -275,6 +275,67 @@
                       </pre>
                     </v-pane-content>
                   </v-pane>
+
+                  <v-pane>
+                    <v-pane-header class="green">
+                      <md-icon md-font-library="material-icons">code</md-icon>
+                      entities.onLocationUpdate(
+                      <i class="amber">entitiyID number</i> <sup style="color: #444444;">int</sup>
+                      ,
+                      <i class="amber">callback</i> <sup style="color: #444444;">method</sup>
+                      )
+                    </v-pane-header>
+                    <v-pane-content>
+                      Registers a method to be called whenever the specified entity updates its location.
+                      Calls a function with a single parameter, data/entity.EntityUpdate
+                      <p>EG: </p>
+                      <pre>
+                        function onUpdate(info) {
+                          log(JSON.stringify(info));
+                        }
+
+                        entities.onLocationUpdate(3, onUpdate);
+
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+
+                  <v-pane>
+                    <v-pane-header class="red">
+                      <md-icon md-font-library="material-icons">list</md-icon>
+                      entityUpdate structure
+                    </v-pane-header>
+                    <v-pane-content>
+                      The parameter passed to all entity callbacks.
+                      <pre>
+                        type EntityUpdate struct {
+                          EntityID uint
+                          Type UpdateType
+
+                          //used when updateType == "status"
+                          Content string
+                          Style string
+                          StyleMeta string
+                          Icon string
+
+                          //used when updateType == "location"
+                          Latitude float64
+                          Longitude float64
+                          SpeedKph float64
+                          Course      int
+                          SatNum      int
+                          Accuracy    int
+
+                          //time at which the update occurred in unix seconds
+                          Created int64
+                        }
+
+                      </pre>
+                    </v-pane-content>
+                  </v-pane>
+
+
                 </v-accordion>
 
               </v-pane-content>
