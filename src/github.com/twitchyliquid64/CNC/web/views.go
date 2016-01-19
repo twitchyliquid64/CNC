@@ -21,6 +21,14 @@ func loginMainPage(ctx *web.Context) {
 	t.Execute(ctx.ResponseWriter, nil)
 }
 
+func dataMainPage_view(ctx *web.Context) {
+  t := templates.Lookup("data")
+	if t == nil {
+		logging.Error("web", "No template found.")
+	}
+	t.Execute(ctx.ResponseWriter, nil)
+}
+
 func pluginAdminResourcePage_view(ctx *web.Context) {
   t := templates.Lookup("resourcecreateedit")
 	if t == nil {

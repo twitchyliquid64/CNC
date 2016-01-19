@@ -67,6 +67,11 @@
                 <md-icon md-font-library="material-icons">memory</md-icon> Plugins
               </md-button>
           </md-list-item>
+          <md-list-item>
+              <md-button ng-click="main.activateRouted('/admin/data', 'data');">
+                <md-icon md-font-library="material-icons">dns</md-icon> Database
+              </md-button>
+          </md-list-item>
           {!{end}!}
 
           <md-subheader class="md-no-sticky">Other</md-subheader>
@@ -137,6 +142,7 @@
     <script src="/static/js/app/plugin/pluginEditController.js"></script>
     <script src="/static/js/app/plugin/resourceCreateEditController.js"></script>
     <script src="/static/js/app/services/loggerService.js"></script>
+    <script src="/static/js/app/sqlQueryController.js"></script>
     <script src="/static/js/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>

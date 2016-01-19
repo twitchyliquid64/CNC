@@ -87,6 +87,7 @@ func registerWebSockets() {
   web.Get("/ws/p/(.*)", pluginsockets.Handle, config.All().Web.Domain)
   web.Get("/ws/entityUpdates", websocket.Handler(ws_EntityUpdateServer), config.All().Web.Domain)
   web.Get("/ws/devclient", websocket.Handler(devclienthandler.Main_ws), config.All().Web.Domain)
+  web.Get("/ws/sql", websocket.Handler(ws_SqlQueryServer), config.All().Web.Domain)
 }
 
 
@@ -101,6 +102,7 @@ func registerTemplateViews() {
   web.Get("/view/plugins/newform", pluginAdminNewPage_view, config.All().Web.Domain)
   web.Get("/view/plugins/editform", pluginAdminEditPage_view, config.All().Web.Domain)
   web.Get("/view/plugins/resourceform", pluginAdminResourcePage_view, config.All().Web.Domain)
+  web.Get("/view/data", dataMainPage_view, config.All().Web.Domain)
 }
 
 
@@ -109,6 +111,7 @@ func registerCoreTemplates(){
   logError(registerTemplate("headcontent.tpl", "headcontent"), "Template load error: ")
   logError(registerTemplate("tailcontent.tpl", "tailcontent"), "Template load error: ")
   logError(registerTemplate("apiref.tpl", "apiref"), "Template load error: ")
+  logError(registerTemplate("data.tpl", "data"), "Template load error: ")
 }
 
 func registerUserTemplates(){

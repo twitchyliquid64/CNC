@@ -64,6 +64,8 @@
           self.activateRouted(p, 'resource-form');
         } else if(p.startsWith('/admin/resource')) {
           self.activateRouted(p, 'resource-form');
+        } else if(p.startsWith('/admin/data')) {
+          self.activateRouted(p, 'data');
         } else if(p == "/" || p == ""){ // default TODO: Make it do something else for ppl who are not admins
           self.activateRouted('/admin/dashboard', 'summary');
         }

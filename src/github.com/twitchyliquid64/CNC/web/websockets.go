@@ -3,6 +3,7 @@ package web
 import (
   "github.com/twitchyliquid64/CNC/data/entity"
   "github.com/twitchyliquid64/CNC/logging"
+  "github.com/twitchyliquid64/CNC/data"
   "golang.org/x/net/websocket"
   "github.com/hoisie/web"
   "strconv"
@@ -13,6 +14,18 @@ import (
 func ws_EchoServer(ws *websocket.Conn) {
     io.Copy(ws, ws)
 }
+
+func ws_SqlQueryServer(ws *websocket.Conn){
+  isLoggedIn, u, _ := getSessionByCookie(&web.Context{Request: ws.Request()})
+
+  if (!isLoggedIn) || (!u.IsAdmin()){
+    logging.Warning("web-sockets", "SqlQueryServer() called unauthorized, aborting")
+    return
+  }
+
+  data.SqlQueryServer(ws)
+}
+
 
 func ws_LogServer(ws *websocket.Conn){
   isLoggedIn, u, _ := getSessionByCookie(&web.Context{Request: ws.Request()})

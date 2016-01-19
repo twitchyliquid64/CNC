@@ -17,6 +17,9 @@
         $routeProvider.when('/entity/:entityID', {templateUrl: '/view/entity', controller: 'entityViewerController'});
         $routeProvider.when('/entitymap/:entityID', {templateUrl: '/view/entitymap', controller: 'entityMapController'});
 
+        $routeProvider.when('/admin/data', {templateUrl: '/view/data', controller: 'sqlQueryController'});
+
+
         $routeProvider.when('/admin/plugins', {templateUrl: '/view/plugins', controller: 'pluginListController'});
         $routeProvider.when('/admin/plugins/new', {templateUrl: '/view/plugins/newform', controller: 'pluginCreateController'})
         $routeProvider.when('/admin/plugin/:pluginID', {templateUrl: '/view/plugins/editform', controller: 'pluginEditController'});
