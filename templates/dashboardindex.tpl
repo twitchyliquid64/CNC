@@ -69,7 +69,7 @@
           </md-list-item>
           <md-list-item>
               <md-button ng-click="main.activateRouted('/admin/data', 'data');">
-                <md-icon md-font-library="material-icons">dns</md-icon> Database
+                <md-icon md-font-library="material-icons">list</md-icon> Database
               </md-button>
           </md-list-item>
           {!{end}!}

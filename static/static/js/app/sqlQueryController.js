@@ -1,13 +1,33 @@
 (function () {
 
+    angular.module('baseApp').directive('myEnter', function () {
+        return function (scope, element, attrs) {
+            element.bind("keydown keypress", function (event) {
+                if(event.which === 13) {
+                    scope.$apply(function (){
+                        scope.$eval(attrs.myEnter);
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });
+
+
     angular.module('baseApp')
         .controller('sqlQueryController', ['$scope', '$http', '$mdDialog', '$mdToast', '$interval', sqlQueryController]);
 
     function sqlQueryController($scope, $http, $mdDialog, $mdToast, $interval) {
         var self = this;
-        $scope.showLoading = true;
+        $scope.showLoading = false;
         $scope.connected = false;
         $scope.wasConnected = false;
+        $scope.tableHide = true;
+        $scope.SQL = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE';";
+        $scope.tableCols = [];
+        $scope.tableRows = [];
+        $scope.err = "";
 
         var ws = new WebSocket("wss://" + location.hostname+(location.port ? ':'+location.port: '') + "/ws/sql");
         $scope.$on('$destroy', function(event) {
@@ -32,8 +52,13 @@
             console.log(d);
 
             var msgType = d.Type;
-            if (msgType == "status"){
-
+            if (msgType == "error"){
+              $scope.err = d.Error;
+            } else if (msgType == "columns") {
+              $scope.tableCols = d.Cols;
+            } else if (msgType == "data") {
+              $scope.tableRows = d.Results;
+              $scope.tableHide = false;
             }
           });
         };
@@ -58,6 +83,15 @@
               .ok('OK')
           );
         };
+
+        $scope.do = function(){
+          var sql = $scope.SQL;
+          $scope.tableHide = true;
+          $scope.tableCols = [];
+          $scope.tableRows = [];
+          $scope.err = "";
+          ws.send(JSON.stringify({Type: 'query', Query: sql}));
+        }
 
     }
 })();
