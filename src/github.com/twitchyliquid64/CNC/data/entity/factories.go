@@ -30,7 +30,25 @@ func GetEntityByKey(key string, db gorm.DB)(ret Entity,err error) {
 }
 
 func GetNumEntityEventsQueued(id int, db gorm.DB)(ret int,err error) {
-  err = db.Where(&EntityEvent{ID:  id}).Count(&ret).Error
+  err = db.Model(EntityEvent{}).Where(&EntityEvent{EntityID:  id}).Count(&ret).Error
+  return
+}
+
+func GetPendingEntityEvent(id int, db gorm.DB)(ret EntityEvent, err error){
+  err = db.Where(&EntityEvent{EntityID:  id}).Order("created_at asc").First(&ret).Error
+
+  if err == nil && ret.ID != 0 {
+    db.Where(&EntityEvent{ID: ret.ID}).Delete(&EntityEvent{})
+  }
+  return
+}
+
+func NewEntityEvent(id int, typ, data string, intdata int, db gorm.DB)(ret EntityEvent, err error){
+  ret.Data = data
+  ret.Type = typ
+  ret.IntData = intdata
+  ret.EntityID = id
+  err = db.Create(&ret).Error
   return
 }
 

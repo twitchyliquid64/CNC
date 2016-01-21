@@ -12,6 +12,8 @@ const (
   Updatetype_Status UpdateType = "status"
   Updatetype_Location UpdateType = "location"
   Updatetype_Log UpdateType = "log"
+  Updatetype_EventQueue_Increment UpdateType = "eq_inc"
+  Updatetype_EventQueue_Decrement UpdateType = "eq_dec"
 )
 
 
@@ -89,6 +91,31 @@ func PublishLocationUpdate(eID uint, lat, lon, speed float64, acc, course, sat i
     Course: course,
     SatNum: sat,
 
+    Created: time.Now().Unix(),
+  }
+
+  updateSubStructLock.Lock()
+  defer updateSubStructLock.Unlock()
+  for ch, _ := range updateSubscribers {
+    select { //prevents blocking if a channel is full
+      case ch <- pkt:
+      default:
+    }
+  }
+
+  return pkt
+}
+
+
+func PublishEventQueueUpdate(eID uint, added bool)EntityUpdate{
+  t := Updatetype_EventQueue_Decrement
+  if added {
+    t = Updatetype_EventQueue_Increment
+  }
+
+  pkt := EntityUpdate{
+    EntityID: eID,
+    Type: t,
     Created: time.Now().Unix(),
   }
 

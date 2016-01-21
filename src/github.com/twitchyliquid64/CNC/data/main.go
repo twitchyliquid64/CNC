@@ -31,6 +31,7 @@ func Initialise() {
 	}
 
   DB, err = gorm.Open("postgres", dbConn)
+  DB.LogMode(true)
 
   if err != nil {
     logging.Error("data", "Error launching DB engine")

@@ -38,6 +38,10 @@
               self.processUpdate(d);
             }else if (msgType == "location"){
               $scope.msgs.push(d);
+            }else if (msgType == "eq_inc"){
+              $scope.numEventsQueued++;
+            }else if (msgType == "eq_dec"){
+              $scope.numEventsQueued--;
             }
             if ($scope.msgs.length > 8){
               $scope.msgs.shift();

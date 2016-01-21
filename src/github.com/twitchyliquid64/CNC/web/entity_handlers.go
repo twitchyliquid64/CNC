@@ -147,7 +147,51 @@ func updateEntityHandlerAPI(ctx *web.Context) {
 
 
 
-// Called by plugins to update their status.
+// Called by entities to get an event from the event queue.
+//
+//
+func getEntityQueueAPI(ctx *web.Context)(output interface{}, code int) {
+  apiKey := ctx.Params["key"]
+  ent, err := entity.GetEntityByKey(apiKey, data.DB)
+  if err != nil || ent.ID == 0{
+    logging.Error("entity", err.Error())
+    return err, 400
+  }
+
+  event, err := entity.GetPendingEntityEvent(int(ent.ID), data.DB)
+  if err != nil {
+    return err, 400
+  }
+
+  entity.PublishEventQueueUpdate(ent.ID, false)
+  return event, 200
+}
+
+
+// Called by any entity to insert an event into the queue of any entity.
+//
+//
+func insertEntityEventAPI(ctx *web.Context)(output interface{}, code int) {
+  apiKey := ctx.Params["key"]
+  ent, err := entity.GetEntityByKey(apiKey, data.DB)
+  if err != nil || ent.ID == 0{
+    logging.Error("entity", err.Error())
+    return err, 400
+  }
+
+  id := atoiOrDefault(ctx.Params["id"], 0)
+  typ := ctx.Params["type"]
+  d := ctx.Params["data"]
+  iData := atoiOrDefault(ctx.Params["int"], 0)
+
+  _, err = entity.NewEntityEvent(id, typ, d, iData, data.DB)
+  if err == nil {
+    entity.PublishEventQueueUpdate(uint(id), true)
+  }
+  return err, 200
+}
+
+// Called by entities to update their status.
 //
 //
 func updateEntityStatusHandlerAPI(ctx *web.Context)(output interface{}, code int) {
