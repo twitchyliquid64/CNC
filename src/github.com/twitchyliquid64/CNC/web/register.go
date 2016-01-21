@@ -68,6 +68,7 @@ func registerEntityHandlers(){
   web.Get("/entityLocations", apiHandler(getEntityLocationsHandlerAPI), config.All().Web.Domain)
   web.Get("/e/events", apiHandler(getEntityQueueAPI), config.All().Web.Domain)
   web.Get("/e/newevent", apiHandler(insertEntityEventAPI), config.All().Web.Domain)
+  web.Get("/e/l_events", apiHandler(getEntityQueueAPI_longpoll), config.All().Web.Domain)
 }
 
 func registerPluginHandlers(){

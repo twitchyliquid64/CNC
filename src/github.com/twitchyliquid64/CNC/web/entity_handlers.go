@@ -8,6 +8,7 @@ import (
   "github.com/hoisie/web"
   "encoding/json"
   "strconv"
+  "time"
 )
 
 // Passes back a JSON array of all entities
@@ -167,6 +168,59 @@ func getEntityQueueAPI(ctx *web.Context)(output interface{}, code int) {
   return event, 200
 }
 
+
+// Called by entities to get an event from the event queue, long polling till an event is available.
+//
+//
+func getEntityQueueAPI_longpoll(ctx *web.Context)(output interface{}, code int) {
+  apiKey := ctx.Params["key"]
+  ent, err := entity.GetEntityByKey(apiKey, data.DB)
+  if err != nil || ent.ID == 0{
+    logging.Error("entity", err.Error())
+    return err, 400
+  }
+
+  timeoutSecs := atoiOrDefault(ctx.Params["timeout"], 40)
+
+  //subscribe to the channel for updates from entities
+  updateMsgs := make(chan entity.EntityUpdate, 10)
+  entity.SubscribeUpdates(updateMsgs)
+  defer entity.UnsubscribeUpdates(updateMsgs)
+
+  //wait for message or timeout
+  gotMsg := false
+  exitLoop := false
+
+  //skip the whole loop thing if there are already things in the database
+  numEvents, _ := entity.GetNumEntityEventsQueued(int(ent.ID), data.DB)
+  if numEvents > 0 {
+    gotMsg = true
+    exitLoop = true
+  }
+
+  for !exitLoop{
+    select {
+    case <-time.After(time.Duration(timeoutSecs) * time.Second):
+        exitLoop = true
+      case msg := <-updateMsgs:
+        if msg.EntityID == ent.ID && msg.Type == entity.Updatetype_EventQueue_Increment {
+          gotMsg = true
+          exitLoop = true
+        }
+    }
+  }
+
+  if gotMsg{
+    event, err := entity.GetPendingEntityEvent(int(ent.ID), data.DB)
+    if err != nil {
+      return err, 400
+    }
+
+    entity.PublishEventQueueUpdate(ent.ID, false)
+    return event, 200
+  }
+  return map[string]string{"error": "timeout"}, 400
+}
 
 // Called by any entity to insert an event into the queue of any entity.
 //
