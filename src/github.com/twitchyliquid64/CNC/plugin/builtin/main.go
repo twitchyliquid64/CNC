@@ -73,6 +73,12 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   http.Set("postValues", func(in otto.FunctionCall)otto.Value{return function_http_postValues(plugin, in)})
   plugin.VM.Set("http", http)
 
+  //browser
+  browser, _ := plugin.VM.Object(`browser = {}`)
+  browser.Set("new", func(in otto.FunctionCall)otto.Value{return function_browser_new(plugin, in)})
+  plugin.VM.Set("browser", browser)
+
+
   //cron
   cr, _ := plugin.VM.Object(`cron = {}`)
   cr.Set("schedule", func(in otto.FunctionCall)otto.Value{return function_cron_schedule(plugin, in)})
