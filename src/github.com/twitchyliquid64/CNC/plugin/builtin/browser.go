@@ -6,6 +6,7 @@ import (
   "github.com/headzoo/surf/agent"
   "github.com/robertkrimen/otto"
   "github.com/headzoo/surf"
+  "bytes"
 )
 
 // Called when JS code executes browser.open()
@@ -138,6 +139,12 @@ func function_browser_new(plugin *exec.Plugin, call otto.FunctionCall)otto.Value
   })
   obj.Set("body", func(in otto.FunctionCall)otto.Value{
     ret, _ := otto.ToValue(bow.Body())
+    return ret
+  })
+  obj.Set("bodyRaw", func(in otto.FunctionCall)otto.Value{
+    buf := new(bytes.Buffer)
+    bow.Download(buf)
+    ret, _ := otto.ToValue(buf.String())
     return ret
   })
 
