@@ -8,6 +8,7 @@ import (
   "github.com/twitchyliquid64/CNC/data"
   "github.com/twitchyliquid64/CNC/util"
   "github.com/robertkrimen/otto"
+  "time"
 )
 
 
@@ -24,6 +25,21 @@ func function_plugin_ready(plugin *exec.Plugin, call otto.FunctionCall)otto.Valu
 
   return otto.Value{}
 }
+
+
+// Called when JS code executes plugin.delay(<ms>)
+//
+//
+func function_plugin_delay(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+  ms, _ := call.Argument(0).ToInteger()
+
+  time.Sleep(time.Millisecond * time.Duration(ms))
+
+  return otto.Value{}
+}
+
+
+
 
 
 

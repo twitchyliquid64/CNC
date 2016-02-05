@@ -46,6 +46,7 @@ func LoadBuiltinsToVM(plugin *exec.Plugin)error{
   pl.Set("disable", func(in otto.FunctionCall)otto.Value{return function_plugin_disable(plugin, in)})
   pl.Set("getIcon", func(in otto.FunctionCall)otto.Value{return function_plugin_geticon(plugin, in)})
   pl.Set("setIcon", func(in otto.FunctionCall)otto.Value{return function_plugin_seticon(plugin, in)})
+  pl.Set("delay", func(in otto.FunctionCall)otto.Value{return function_plugin_delay(plugin, in)})
   plugin.VM.Set("plugin", pl)
 
   //data

@@ -119,20 +119,6 @@ func function_browser_new(plugin *exec.Plugin, call otto.FunctionCall)otto.Value
 
 
 
-
-
-
-  obj.Set("getCookies", func(in otto.FunctionCall)otto.Value{
-    c := bow.SiteCookies()
-    ret, e := plugin.VM.ToValue(c)
-    if e != nil {
-      logging.Error("builtin-browser", "getCookies(): " + e.Error())
-    }
-    return ret
-  })
-
-
-
   obj.Set("title", func(in otto.FunctionCall)otto.Value{
     ret, _ := otto.ToValue(bow.Title())
     return ret
