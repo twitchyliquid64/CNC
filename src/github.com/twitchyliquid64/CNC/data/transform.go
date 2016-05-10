@@ -52,9 +52,20 @@ func upgradeDb(db *gorm.DB) {
     //fallthrough
   }
 
+  logging.Info("Setting Current Version")
   setDbVersion(currentDataVersion, db)
 }
 
 func upgrade_v2(db *gorm.DB) {
-  
+  // Remove IsExecutable and IsTemplate from Resource
+  // Add Type column
+
+  logging.Info("Migrating 1 => 2")
+
+  // If something is executable, it stays that way. Otherwise it becomes a template
+  db.Exec("UPDATE resource SET Type = ? WHERE IsExecutable = ?", ResJavascriptCode, true)
+  db.Exec("UPDATE resource SET Type = ? WHERE IsExecutable = ?", ResTemplate, false)
+
+  db.DropColumn("IsExecutable")
+  db.DropColumn("IsTemplate")
 }

@@ -101,8 +101,10 @@ func autoMigrateTables() {
 
 //called during initialisation. Should make sure the schema is intact and up to date.
 func checkStructures() {
-  logging.Info("Auto migrating tables");
-  autoMigrateTables();
-  
+  logging.Info("Auto migrating tables")
+  autoMigrateTables()
+
+  logging.Info("Migrating DB")
+  upgradeDb(&db)
 
 }
