@@ -21,17 +21,29 @@ type Plugin struct {
     Resources []Resource
 }
 
+const (
+  ResJavascriptCode = "JSC"
+  ResTemplate = "TPL"
+  ResGraph = "GRA"
+)
 
 type Resource struct {
   ID int      `gorm:"primary_key"`
   PluginID int `sql:"index"`
   Name string `sql:"index"`
   Data []byte
-  IsExecutable bool
-  IsTemplate bool
+  Type string `sql:"type:char(3);not null"`
   JSONData string `sql:"-"` //only used for JSON deserialisation - not a DB field
 }
 
-func (r Resource)IsJavascriptCode()bool {
-  return r.IsExecutable
+func (r *Resource) IsJavascriptCode() bool {
+  return r.Type == ResJavascriptCode
+}
+
+func (r *Resource) IsExecutable() bool {
+  return r.IsJavascriptCode()
+}
+
+func (r *Resource) IsTemplate() bool {
+  return r.Type == ResTemplate
 }

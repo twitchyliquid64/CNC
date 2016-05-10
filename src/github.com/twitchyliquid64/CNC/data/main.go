@@ -63,8 +63,7 @@ func Initialise() {
   logging.Info("data", "Initialisation finished.")
 }
 
-//called during initialisation. Should make sure the schema is intact and up to date.
-func checkStructures() {
+func autoMigrateTables() {
   logging.Info("data", "Checking structure: Users")
   DB.AutoMigrate(&user.User{})
   logging.Info("data", "Checking structure: Permissions")
@@ -98,4 +97,12 @@ func checkStructures() {
   DB.AutoMigrate(&plugin.Resource{})
   logging.Info("data", "Checking structure: Stmdata")
   DB.AutoMigrate(&stmdata.Stmdata{})
+}
+
+//called during initialisation. Should make sure the schema is intact and up to date.
+func checkStructures() {
+  logging.Info("Auto migrating tables");
+  autoMigrateTables();
+  
+
 }
