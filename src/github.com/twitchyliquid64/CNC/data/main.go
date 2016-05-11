@@ -105,6 +105,7 @@ func checkStructures() {
   autoMigrateTables()
 
   logging.Info("Migrating DB")
-  upgradeDb(&db)
+  upgradeDb(DB)
 
+  logging.Info("Migrations finished")
 }

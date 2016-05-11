@@ -25,9 +25,6 @@ func Set(pluginID int, key, data string, db gorm.DB)error{
 func Get(pluginID int, key string, db gorm.DB)(Stmdata, bool){
   var d Stmdata
   db.Where(&Stmdata{PluginID:  pluginID, Name: key}).First(&d)
-  if d.ID == 0 {
-    return d, false //not found
-  } else {
-    return d, true //ID != 0, must exist
-  }
+
+  return d, d.ID != 0 //ID != 0, must exist
 }
