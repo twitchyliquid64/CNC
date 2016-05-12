@@ -32,12 +32,12 @@ type Resource struct {
   PluginID int `sql:"index"`
   Name string `sql:"index"`
   Data []byte
-  Type string `sql:"type:char(3);not null"`
+  ResType string `sql:"type:char(3);not null;"`
   JSONData string `sql:"-"` //only used for JSON deserialisation - not a DB field
 }
 
 func (r *Resource) IsJavascriptCode() bool {
-  return r.Type == ResJavascriptCode
+  return r.ResType == ResJavascriptCode
 }
 
 func (r *Resource) IsExecutable() bool {
@@ -45,5 +45,5 @@ func (r *Resource) IsExecutable() bool {
 }
 
 func (r *Resource) IsTemplate() bool {
-  return r.Type == ResTemplate
+  return r.ResType == ResTemplate
 }

@@ -20,26 +20,17 @@
     min-height: 420px;
   }
 
-  </style>
-
+</style>
 
   <md-input-container flex layout-fill>
     <label>Name</label>
     <input ng-model="resource.Name" type="text">
   </md-input-container>
 
-
-  <md-input-container flex layout="row" class="md-block">
-    <div flex="50">
-      <md-checkbox ng-model="resource.IsExecutable" aria-label="Checkbox 1">
-        Javascript Code
-      </md-checkbox>
-    </div>
-    <div flex="50">
-      <md-checkbox ng-model="resource.IsTemplate" aria-label="Checkbox 1">
-        Template
-      </md-checkbox>
-    </div>
+  <md-input-container>
+    <md-select ng-model="resource.ResType" aria-label="Resource Type">
+      <md-option ng-value="type.code" ng-repeat="type in resTypes">{{type.name}}</md-option>
+    </md-select>
   </md-input-container>
 
   <button flex=""

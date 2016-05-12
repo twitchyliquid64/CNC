@@ -54,13 +54,13 @@ func upgrade_v2(db gorm.DB) {
 
   logging.Info("Migrating 1 => 2")
 
-  db.Exec(`ALTER TABLE "resources" ADD COLUMN type char(3)`)
+  db.Exec(`ALTER TABLE "resources" ADD COLUMN res_type char(3)`)
 
   // If something is executable, it stays that way. Otherwise it becomes a template
-  db.Exec("UPDATE resources SET Type = ? WHERE is_executable = ?", plugin.ResJavascriptCode, true)
-  db.Exec("UPDATE resources SET Type = ? WHERE is_executable = ?", plugin.ResTemplate, false)
+  db.Exec("UPDATE resources SET res_type = ? WHERE is_executable = ?", plugin.ResJavascriptCode, true)
+  db.Exec("UPDATE resources SET res_type = ? WHERE is_executable = ?", plugin.ResTemplate, false)
 
-  db.Exec(`ALTER TABLE "resources" ALTER COLUMN type SET NOT NULL`)
+  db.Exec(`ALTER TABLE "resources" ALTER COLUMN res_type SET NOT NULL`)
 
   db.Model(&plugin.Resource{}).DropColumn("is_executable")
   db.Model(&plugin.Resource{}).DropColumn("is_template")

@@ -85,8 +85,7 @@ func function_plugin_getResources(plugin *exec.Plugin, call otto.FunctionCall)ot
   for _, resource := range plugin.Resources {
     temp := map[string]interface{}{}
     temp["name"] = resource.Name
-    temp["isJs"] = resource.IsExecutable()
-    temp["isTemplate"] = resource.IsTemplate()
+    temp["resType"] = resource.ResType
     temp["data"] = string(resource.Data)
     output = append(output, temp)
   }
@@ -126,6 +125,7 @@ func function_plugin_getResource(plugin *exec.Plugin, call otto.FunctionCall)ott
   temp["name"] = resource.Name
   temp["isJs"] = resource.IsExecutable()
   temp["isTemplate"] = resource.IsTemplate()
+  temp["resType"] = resource.ResType
   temp["data"] = string(resource.Data)
 
   val, err := plugin.VM.ToValue(temp)

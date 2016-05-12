@@ -162,8 +162,7 @@ type Resource struct {
   PluginID int `sql:"index"`
   Name string `sql:"index"`
   Data []byte
-  IsExecutable bool
-  IsTemplate bool
+  Type string
   JSONData string `sql:"-"` //only used for JSON deserialisation - not a DB field
 }
 
