@@ -8,6 +8,10 @@
         $scope.showLoading = true;
         $scope.resourceSelected = [];
         $scope.mode = 'js';
+        $scope.resTypes = [
+          {'code': 'JSC', 'name': 'Javascript Code'},
+          {'code': 'TPL', 'name': 'Template'}
+        ]
 
         if($location.path().indexOf("newresource", 0) !== -1){
           $scope.isCreateMode = true;
@@ -19,8 +23,7 @@
           return {
             PluginID: parseInt($routeParams.pluginID),
             Name: "",
-            IsExecutable: true,
-            IsTemplate: false,
+            ResType: "JSC",
             Data: ""
           };
         };
@@ -84,7 +87,7 @@
             $scope.resource = resource;
             $scope.showLoading = false;
             self.editor.setValue(atob(resource.Data));
-            console.log($scope.entity);
+            console.log($scope.resource);
           }, function errorCallback(response) {
             console.log(response);
             self.createDialog(response, "Server Error");

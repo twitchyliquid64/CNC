@@ -372,8 +372,7 @@
                         for (var i = 0; i < resources.length ; i++) {
                           log(resources[i].name);
                           log(resources[i].data);
-                          log(resources[i].isJs);
-                          log(resources[i].isTemplate);
+                          log(resources[i].resType);
                         }
                       </pre>
                     </v-pane-content>
@@ -399,7 +398,7 @@
                           log(resource.name);
                           log(resource.data);
                           log(resource.isJs);
-                          log(resource.isTemplate);
+                          log(resource.resType);
                         }
                       </pre>
                     </v-pane-content>
