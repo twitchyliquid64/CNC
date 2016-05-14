@@ -16,20 +16,20 @@
       <input ng-model="plugin.Name" type="text">
     </md-input-container>
 
-    <md-input-container flex>
-      <md-autocomplete flex required
-        md-input-name="autocompleteField"
-        md-no-cache="true"
-        md-items="icon in icons"
-        md-item-text="plugin.Icon"
-        md-search-text="plugin.Icon"
-        md-selected-item="plugin.Icon"
-        md-floating-label="Icon">
+    <!-- TODO: Add icon when https://github.com/angular/material/issues/6150 is finished -->
+    <md-autocomplete flex required
+      md-input-name="autocompleteField"
+      md-items="icon in getIcons()"
+      md-search-text="iconSearchText"
+      md-min-length="0"
+      md-item-text="icon"
+      md-selected-item="plugin.Icon"
+      md-floating-label="Icon">
         <md-item-template>
-          <i class="material-icons" style="vertical-align: middle;">{{icon}}</i> {{icon}}
+          <md-icon md-font-library="material-icons" md-highlight-text="icon">{{icon}}</md-icon>
+          {{icon}}
         </md-item-template>
-      </md-autocomplete>
-    </md-input-container>
+    </md-autocomplete>
 
     <md-input-container class="md-block">
           <label>Description</label>

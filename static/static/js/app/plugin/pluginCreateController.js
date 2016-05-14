@@ -16,7 +16,7 @@
           };
         };
 
-        self.createDialog = function(message, title) {
+        self.createDialog = function(message, title, callback) {
           $mdDialog.show(
             $mdDialog.alert()
               .parent(angular.element(document.querySelector('#popupContainer')))
@@ -25,7 +25,7 @@
               .content(message)
               .ariaLabel(title)
               .ok('OK')
-          );
+          ).then(callback);
         };
 
         self.create = function() {
@@ -35,13 +35,14 @@
             data: $scope.plugin
           }).then(function successCallback(response) {
               console.log(response);
-              self.createDialog("New plugin created successfully.", "Plugins");
+              self.createDialog("New plugin created successfully.", "Plugins", function() {
+                $scope.main.activateRouted('/admin/plugin/'+response.data.ID, 'plugin-edit')
+              });
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog("Server responded with error: " + response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data.error, "Server Error");
           });
         }
-
 
         self.process = function() {
           console.log($scope.plugin);
@@ -49,9 +50,20 @@
         };
 
         //random list of icons to choose from
-        $scope.icons = ["add", "memory", "bug_report", "change_history", "explore", "grade", "favorite", "event",
+        var icons = ["add", "memory", "bug_report", "change_history", "explore", "grade", "favorite", "event",
                         "star_rate", "work", "call", "speaker_phone", "radio", "videocam", "sd_storage", "wifi_tethering",
-                        "computer", "laptop", "router", "scanner", "phone_android", "directions_bus", "directions_car"];
+                        "computer", "laptop", "router", "scanner", "phone_android", "directions_bus", "directions_car"]
+
+        function filterByContains(array, text) {
+          return array.filter(function(item) {
+            return item.indexOf(text) !== -1;
+          })
+        }
+
+        $scope.iconSearchText = null;
+        $scope.getIcons = function() {
+          return $scope.iconSearchText ? filterByContains(icons, $scope.iconSearchText) : icons;
+        }
 
         $scope.process = self.process;
         $scope.plugin = self.buildEmptyPluginObject();
