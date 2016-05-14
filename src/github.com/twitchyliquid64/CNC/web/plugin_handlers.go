@@ -149,7 +149,7 @@ func newResourceHandlerAPI(ctx *web.Context) (interface{}, int){
 
   err = data.DB.Create(&res).Error
   if err == nil {
-      return nil, 201
+      return res, 201
   } else {
       logging.Error("web-plugin", err)
       return err, 500

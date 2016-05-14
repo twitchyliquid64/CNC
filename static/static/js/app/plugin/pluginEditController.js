@@ -35,6 +35,27 @@
           );
         };
 
+        self.createNewResource = function() {
+          var newResource = {
+            'ID': 0,
+            'PluginID': $scope.plugin.ID,
+            'Name':  'New Resource',
+            'ResType': 'JSC',
+            'JSONData': 'console.log("Hello world!")'
+          }
+
+          $http({
+            method: 'POST',
+            url: '/plugins/newresource',
+            data: newResource
+          }).then(function successCallback(response) {
+              $scope.main.activateRouted('/admin/resource/'+response.data.ID, 'resource-form')
+            }, function errorCallback(response) {
+              console.log(response);
+              self.createDialog("Server responded with error: " + response.data.error, "Server Error");
+          });
+        }
+
         self.load = function() {
           $scope.showLoading = true;
           $http.get('/plugin?pluginid='+$routeParams.pluginID, {}).then(function (response) {
@@ -114,6 +135,7 @@
         $scope.process = self.process;
         $scope.deleteResource = self.deleteResource;
         $scope.deletePlugin = self.deletePlugin;
+        $scope.createNewResource = self.createNewResource;
         $scope.plugin = self.buildEmptyPluginObject();
         self.load();
     }
