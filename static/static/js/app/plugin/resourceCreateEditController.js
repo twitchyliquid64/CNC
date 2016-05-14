@@ -7,16 +7,17 @@
         var self = this;
         $scope.showLoading = true;
         $scope.resourceSelected = [];
-        $scope.mode = 'js';
         $scope.resTypes = [
           {'code': 'JSC', 'name': 'Javascript Code'},
           {'code': 'TPL', 'name': 'Template'}
         ]
 
-        if($location.path().indexOf("newresource", 0) !== -1){
-          $scope.isCreateMode = true;
-        } else {
-          $scope.isCreateMode = false;
+        var resourceToAceModes = {'JSC': 'ace/mode/javascript', 'TPL': "ace/mode/html"};
+        function setMode(mode) {
+          $scope.mode = mode;
+          if (mode in resourceToAceModes) {
+            self.editor.session.setMode(resourceToAceModes[mode]);
+          }
         }
 
         self.buildEmptyResourceObject = function() {
@@ -46,11 +47,7 @@
           $scope.resource.Data = "";
           console.log($scope.resource);
 
-            if ($scope.isCreateMode) {
-              self.processCreate();
-            } else {
-              self.processSave();
-            }
+          self.processSave();
         }
 
         self.processSave = function() {
@@ -67,25 +64,13 @@
           });
         }
 
-        self.processCreate = function() {
-          $http({
-            method: 'POST',
-            url: '/plugins/newresource',
-            data: $scope.resource
-          }).then(function successCallback(response) {
-              console.log(response);
-              self.createDialog("Resource created successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
-            }, function errorCallback(response) {
-              console.log(response);
-              self.createDialog("Server responded with error: " + response.data, "Server Error");
-          });
-        };
-
         self.load = function() {
           $http.get('/resource?resourceid='+$routeParams.resourceID, {}).then(function (response) {
             resource = response.data;
             $scope.resource = resource;
             $scope.showLoading = false;
+
+            setMode(resource.ResType);
             self.editor.setValue(atob(resource.Data));
             console.log($scope.resource);
           }, function errorCallback(response) {
@@ -101,23 +86,15 @@
         self.editor.setTheme("ace/theme/github");
         self.editor.session.setMode("ace/mode/javascript");
 
-        if ($scope.isCreateMode) {
-          $scope.showLoading = false;
-        } else {
-          self.load();
-        }
+        setMode('JSC')
+        self.load();
 
         $scope.showReference = function() {
           window.open("/ref/api");
         }
+
         $scope.toggleMode = function(){
-          if ($scope.mode == 'js'){
-            $scope.mode = 'html';
-            self.editor.session.setMode("ace/mode/html");
-          }else if ($scope.mode == 'html'){
-            $scope.mode = 'js';
-            self.editor.session.setMode("ace/mode/javascript");
-          }
+          setMode($scope.mode == 'JSC' ? 'TPL' : 'JSC');
         }
     }
 })();

@@ -14,5 +14,17 @@
 	"Web": {
 		"Domain": "localhost",
 		"Listener": "0.0.0.0:4132"
+	},
+	"Database": {
+		"Username": "postgres",
+		"Password": "postgres",
+		"Name": "CNC",
+		"Address": "localhost"
+	},
+	"BaseObjects": {
+		"AdminUsers": [{
+			"Username": "jableader",
+			"Password": "password"
+		}]
 	}
 }

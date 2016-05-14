@@ -4,8 +4,7 @@
                                   <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
                                   Plugins <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
                                   Resources <md-icon md-font-library="material-icons">keyboard_arrow_right</md-icon>
-                                  <span ng-show="isCreateMode">New</span>
-                                  <span ng-hide="isCreateMode">Edit</span></h2>
+                                  Edit</h2>
 
     <div class="md-toolbar-tools">
       <span flex></span>
@@ -61,8 +60,7 @@
   ng-click="process()"
   aria-label="Save Plugin" tabindex="0" aria-disabled="true">
    <i class="material-icons" style="vertical-align: middle;">save</i>
-   <span ng-show="isCreateMode" style="vertical-align: middle;"> Create</span>
-   <span ng-hide="isCreateMode" style="vertical-align: middle;"> Save Changes</span>
+   <span style="vertical-align: middle;"> Save Changes</span>
   </button>
 
 </md-content>
