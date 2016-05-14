@@ -40,6 +40,7 @@
           $http.get('/plugin?pluginid='+$routeParams.pluginID, {}).then(function (response) {
             plugin = response.data;
             $scope.plugin = plugin;
+            $scope.iconSearchText = plugin.Icon;
             $scope.showLoading = false;
             console.log($scope.plugin);
           }, function errorCallback(response) {
@@ -93,11 +94,23 @@
           self.update();
         };
 
-        //random list of icons to choose from
-        $scope.icons = ["add", "memory", "bug_report", "change_history", "explore", "grade", "favorite", "event",
+        var icons = ["add", "memory", "bug_report", "change_history", "explore", "grade", "favorite", "event",
                         "star_rate", "work", "call", "speaker_phone", "radio", "videocam", "sd_storage", "wifi_tethering",
-                        "computer", "laptop", "router", "scanner", "phone_android", "directions_bus", "directions_car"];
+                        "computer", "laptop", "router", "scanner", "phone_android", "directions_bus", "directions_car"]
 
+        function filterByContains(array, text) {
+          return array.filter(function(item) {
+            return item.indexOf(text) !== -1;
+          })
+        }
+
+        $scope.iconSearchText = null;
+        $scope.getIcons = function() {
+          console.log($scope.iconSearchText)
+          return $scope.iconSearchText ? filterByContains(icons, $scope.iconSearchText) : icons;
+        }
+
+        //random list of icons to choose from
         $scope.process = self.process;
         $scope.deleteResource = self.deleteResource;
         $scope.deletePlugin = self.deletePlugin;
