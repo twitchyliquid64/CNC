@@ -49,8 +49,8 @@ func LoadResources(p *Plugin, db gorm.DB){
   db.Model(&p).Related(&p.Resources)
 }
 
-func Create(p Plugin, db gorm.DB)error{
-  return db.Create(&p).Error
+func Create(p *Plugin, db gorm.DB)error{
+  return db.Create(p).Error
 }
 
 func GetResource(db gorm.DB, resourceID int)Resource{

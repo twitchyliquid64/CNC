@@ -6,7 +6,9 @@ import (
   "encoding/json"
 )
 
-func apiHandler(handlerFunc func(*web.Context)(interface{}, int))func(ctx *web.Context) {
+type apiHandlerFunc func(*web.Context)(interface{}, int)
+
+func apiHandler(handlerFunc apiHandlerFunc)func(ctx *web.Context) {
   return func(ctx *web.Context){
     result, code := handlerFunc(ctx)
     body, err := getJsonBody(result)

@@ -16,7 +16,7 @@
           };
         };
 
-        self.createDialog = function(message, title) {
+        self.createDialog = function(message, title, callback) {
           $mdDialog.show(
             $mdDialog.alert()
               .parent(angular.element(document.querySelector('#popupContainer')))
@@ -25,7 +25,7 @@
               .content(message)
               .ariaLabel(title)
               .ok('OK')
-          );
+          ).then(callback);
         };
 
         self.create = function() {
@@ -35,10 +35,12 @@
             data: $scope.plugin
           }).then(function successCallback(response) {
               console.log(response);
-              self.createDialog("New plugin created successfully.", "Plugins");
+              self.createDialog("New plugin created successfully.", "Plugins", function() {
+                $scope.main.activateRouted('/admin/plugin/'+response.data.ID, 'plugin-edit')
+              });
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog("Server responded with error: " + response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data.error, "Server Error");
           });
         }
 
@@ -60,7 +62,6 @@
 
         $scope.iconSearchText = null;
         $scope.getIcons = function() {
-          console.log($scope.iconSearchText)
           return $scope.iconSearchText ? filterByContains(icons, $scope.iconSearchText) : icons;
         }
 

@@ -114,9 +114,9 @@ func newPluginHandlerAPI(ctx *web.Context) (interface{}, int){
       return err, 400
   }
 
-  err = pluginData.Create(pl, data.DB)
+  err = pluginData.Create(&pl, data.DB)
   if err == nil {
-      return nil, 201
+      return pl, 201
   } else {
       logging.Error("web-plugin", err)
       return err, 500
