@@ -56,7 +56,7 @@
 
     <md-content md-margin md-padding flex="42" flex-sm="100" layout="column">
       <p style="color: rgba(0, 0, 0, 0.54);">Resources
-        <md-button class="ng-icon-button" ng-click="main.activateRouted('/admin/newresource/'+plugin.ID, 'resource-form')" aria-label="Add Resource">
+        <md-button class="ng-icon-button" ng-click="createNewResource()" aria-label="Add Resource">
           <md-icon md-font-library="material-icons">add</md-icon>
         </md-button>
       </p>
