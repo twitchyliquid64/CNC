@@ -1,5 +1,6 @@
 package messenger
 
+
 // This subsystem is responsible for all realtime user chat. That could be anything
 // from connecting to IRC servers or integrating with telegram.org.
 
@@ -16,18 +17,24 @@ var gTelegramBotUsername string
 func Initialise()error{
 	logging.Info("messenger", "Initialise()")
 
-  gTelegramBotUsername = config.All().Messenger.TelegramIntegration.BotUsername
-  logging.Info("messenger", "Now connecting to telegram.org 'BotFather' using ", gTelegramBotUsername)
-	trackingSetup(false) //enabled
+	mconfig := config.All().Messenger;
+	if mconfig.Enable {
+	  gTelegramBotUsername = mconfig.TelegramIntegration.BotUsername
+	  logging.Info("messenger", "Now connecting to telegram.org 'BotFather' using ", gTelegramBotUsername)
+		trackingSetup(false) //enabled
 
-  var err error
-  gTelegramConnection, err = tgbotapi.NewBotAPI(config.All().Messenger.TelegramIntegration.Token)
-  if err != nil {
-      logging.Error("messenger", err.Error())
-			tracking_notifyFault(err)
-  }else {
-    go TelegramMessageHandler()
-  }
+	  var err error
+	  gTelegramConnection, err = tgbotapi.NewBotAPI(config.All().Messenger.TelegramIntegration.Token)
+	  if err != nil {
+	      logging.Error("messenger", err.Error())
+				tracking_notifyFault(err)
+	  }else {
+	    go TelegramMessageHandler()
+	  }
 
-	return err
+		return err
+	} else {
+		logging.Info("messenger", "Messenger not enabled")
+		return nil
+	}
 }

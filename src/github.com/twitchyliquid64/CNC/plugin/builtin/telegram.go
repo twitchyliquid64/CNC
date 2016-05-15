@@ -10,11 +10,11 @@ import (
   "github.com/robertkrimen/otto"
 )
 
-
 // Called when JS code executes telegram.onChatJoined()
 // format for data returned to javascript can be found at:
 // https://godoc.org/github.com/Syfaro/telegram-bot-api#Message
 func function_telegram_onChatJoined(plugin *exec.Plugin, call otto.FunctionCall)otto.Value{
+
   callback := util.GetFunc(call.Argument(0), plugin.VM)
   hook := TelegramHook{P: plugin, Callback: &callback, HookType: ON_CHAT_JOINED}
   plugin.RegisterHook(&hook)

@@ -1,0 +1,30 @@
+{
+	"name": "TestCNC",
+	"TLS": {
+		"privateKey": "testkey.pem",
+		"cert": "testcert.pem"
+	},
+	"Signaller": {
+		"SockAddr": [
+			"localhost:4132",
+			"localhost:4133"
+		],
+		"MOTD": "Authorized use only. Any unauthorised use is strictly prohibited by international law and treaties."
+	},
+	"Web": {
+		"Domain": "localhost",
+		"Listener": "0.0.0.0:4132"
+	},
+	"Database": {
+		"Username": "postgres",
+		"Password": "postgres",
+		"Name": "CNC",
+		"Address": "localhost"
+	},
+	"BaseObjects": {
+		"AdminUsers": [{
+			"Username": "admin",
+			"Password": "password"
+		}]
+	}
+}
