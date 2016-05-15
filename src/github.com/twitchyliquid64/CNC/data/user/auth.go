@@ -34,11 +34,11 @@ func CheckAuthByPassword(username, password string, db gorm.DB)(bool,User) {
 }
 
 const HASH_COST = 10
-func HashPassword(password string) string {
+func HashPassword(password string) (string, error) {
   bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
   if err != nil {
     logging.Error("auth", "Error hashing password", err)
-    return err
+    return "", err
   }
 
   return b64.StdEncoding.EncodeToString(bytes), nil
