@@ -9,6 +9,7 @@ import (
 const PERM_ADMIN = "ADMIN"
 
 const AUTH_PASSWD = "PASSWD"
+const AUTH_HASHPW = "HASHPW"
 
 type User struct {
     ID        uint `gorm:"primary_key"`

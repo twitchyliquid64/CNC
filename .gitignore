@@ -3,11 +3,15 @@
 *.a
 *.so
 main
-testconfig.json
+/CNC
+
+# Config files - We shouldnt be automerging or exposing this data
+config.json
 
 # Folders
 _obj
 _test
+src/golang.org/x
 
 # Architecture specific extensions/prefixes
 *.[568vq]

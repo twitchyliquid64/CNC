@@ -33,6 +33,7 @@ type Config struct {
 		}
 	}
 	Messenger struct{
+		Enable bool
 		TelegramIntegration struct{
 			Token string
 			BotUsername string

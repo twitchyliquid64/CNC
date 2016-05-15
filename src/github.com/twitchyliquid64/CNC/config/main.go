@@ -3,12 +3,18 @@ package config
 import (
 	"github.com/twitchyliquid64/CNC/logging"
 	"crypto/tls"
+	"os"
 )
 
 var gConfig *Config = nil
 var gTls *tls.Config = nil
 
 func Load(fpath string)error{
+	if _, err := os.Stat(fpath); os.IsNotExist(err) {
+	  logging.Error("config", "Configuration file not found. If you need an example, use example-config.json (cp example-config.json config.json)")
+		return err
+	}
+
 	conf, err := readConfig(fpath)
 	if err == nil{
 		gConfig = conf
