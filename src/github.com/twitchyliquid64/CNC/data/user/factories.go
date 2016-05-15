@@ -6,6 +6,18 @@ import (
 )
 
 
+func HashedPasswordAuth(password string) (AuthenticationMethod, error) {
+  hashedPassword, err := HashPassword(password)
+  if (err != nil) {
+      return AuthenticationMethod{} , err
+  }
+
+  return AuthenticationMethod {
+    MethodType: AUTH_HASHPW,
+    Value: hashedPassword,
+  }, nil;
+}
+
 func GetAll(db gorm.DB)[]User{
   var users = make([]User, 0)
   db.Find(&users)

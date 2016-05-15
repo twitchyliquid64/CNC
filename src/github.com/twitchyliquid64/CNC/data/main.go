@@ -46,12 +46,15 @@ func Initialise() {
 
     if tmp.Username != usr.Username{ //if the user was not found
       logging.Info("data", "Creating admin user: " + usr.Username)
+
+      authMethod, err := user.HashedPasswordAuth(usr.Password)
+      if err == nil {
+        logging.Error("data", "Could not create admin. ", err)
+      }
+
       DB.Create(&user.User{Username: usr.Username,
                         Permissions: []user.Permission{ user.Permission{Name: user.PERM_ADMIN},},
-                        AuthMethods: []user.AuthenticationMethod{ user.AuthenticationMethod{
-                            MethodType: user.AUTH_PASSWD,
-                            Value: usr.Password,
-                          }},
+                        AuthMethods: []user.AuthenticationMethod{ authMethod },
                       })
     }
   }

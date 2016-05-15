@@ -13,7 +13,7 @@ import (
   "fmt"
 )
 
-const currentDataVersion = 2
+const currentDataVersion = 3
 const dataVersionKey = "DataVersion"
 
 //called during initialisation. Should make sure the schema is intact and up to date.
@@ -64,9 +64,9 @@ func upgradeDb(db gorm.DB) {
   switch originalVersion := getDbVersion(db); {
   case originalVersion <= 1:
     upgrade_v2(db)
-    //fallthrough
-  //case originalVersion <= 2:
-    //upgrade_v3(db)
+    fallthrough
+  case originalVersion <= 2:
+    upgrade_v3(db)
     //fallthrough
   }
 }
@@ -86,6 +86,26 @@ func upgrade_v2(db gorm.DB) {
 
   db.Model(&plugin.Resource{}).DropColumn("is_executable")
   db.Model(&plugin.Resource{}).DropColumn("is_template")
+}
+
+func upgrade_v3(db gorm.DB) {
+  // Hash the passwords
+  logging.Info("Migrating 2 => 3")
+
+  var unhashed []user.AuthenticationMethod;
+  db.Where("method_type = ?", user.AUTH_PASSWD).Find(&unhashed)
+
+  for i := 0; i < len(unhashed); i++ {
+    hashed, err := user.HashedPasswordAuth(unhashed[i].Value)
+    if err != nil {
+      logging.Error("data", "Could not transform password. ID ", unhashed[i].ID)
+    } else {
+      hashed.UserID = unhashed[i].UserID
+
+      db.Create(&hashed)
+      db.Delete(&unhashed[i])
+    }
+  }
 }
 
 func autoMigrateTables() {

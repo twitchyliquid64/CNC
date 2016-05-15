@@ -117,9 +117,16 @@ func resetPasswordHandlerAPI(ctx *web.Context) {
   }
 
   //get the first authentication method of type password, and set its value
+  newPassword, err := user.HashPassword(ctx.Params["pass"])
+  if err != nil {
+    logging.Error("web-user", "Error generating hashed password")
+    ctx.Abort(500, "Could not generate hash for password")
+    return
+  }
+
   var authMethod user.AuthenticationMethod
-  data.DB.Where(user.USERID_AND_THEN_METHODTYPE_FILTER, usr.ID, user.AUTH_PASSWD).First(&authMethod)
-  authMethod.Value = ctx.Params["pass"]
+  data.DB.Where(user.USERID_AND_THEN_METHODTYPE_FILTER, usr.ID, user.AUTH_HASHPW).First(&authMethod)
+  authMethod.Value = newPassword
   data.DB.Save(&authMethod)
 }
 
