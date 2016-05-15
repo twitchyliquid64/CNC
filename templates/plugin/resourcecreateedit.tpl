@@ -49,11 +49,11 @@
    <span style="vertical-align: middle;"> Toggle Editor mode</span>
   </button>
 
-
-  <md-input-container class="md-block">
+  <md-input-container id="editor-window" class="md-block">
     <pre id="editor">console.log("Hello world!");</pre>
   </md-input-container>
 
+  <div id="graph-window"></div>
 
   <button flex="" layout-fill=""
   class="md-raised md-primary md-button md-scope"

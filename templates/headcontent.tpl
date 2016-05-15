@@ -9,3 +9,11 @@
   <link rel="stylesheet" href="/static/css/angular-material.css">
   <link rel="stylesheet" href="/static/css/md-data-table.min.css">
   <script src="/static/js/angular/angular.min.js"></script>
+
+  <!-- For jointjs. Would like to load dynamically... -->
+  <link rel="stylesheet" type="text/css" href="/static/css/joint.min.css" />
+  <script src="/static/js/jointjs/jquery.min.js"></script>
+  <script src="/static/js/jointjs/lodash.min.js"></script>
+  <script src="/static/js/jointjs/backbone-min.js"></script>
+  <script src="/static/js/jointjs/joint.min.js"></script>
+  <script src="/static/js/app/plugin/graphing.js"></script>
