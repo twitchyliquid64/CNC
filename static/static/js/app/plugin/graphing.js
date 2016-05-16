@@ -4,8 +4,8 @@ var CodeGraph = (function(undefined, $) {
     this.graph = new joint.dia.Graph;
     this.paper = new joint.dia.Paper({
       el: element,
-      width: 500,
-      height: 200,
+      width: element.width(),
+      height: element.height(),
       model: this.graph,
       gridSize: 1
     });

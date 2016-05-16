@@ -13,7 +13,8 @@
   </md-data-table-toolbar>
 
   <style>
-  #editor {
+
+  .editor {
     width: 95%;
     height: 80%;
     min-height: 420px;
@@ -21,39 +22,44 @@
 
 </style>
 
-  <md-input-container flex layout-fill>
-    <label>Name</label>
-    <input ng-model="resource.Name" type="text">
-  </md-input-container>
+  <div layout="row" flex layout-fill>
+    <md-input-container flex>
+      <label>Name</label>
+      <input ng-model="resource.Name" type="text">
+    </md-input-container>
 
-  <md-input-container>
-    <md-select ng-model="resource.ResType" aria-label="Resource Type">
-      <md-option ng-value="type.code" ng-repeat="type in resTypes">{{type.name}}</md-option>
-    </md-select>
-  </md-input-container>
+    <md-input-container style="margin-top: 13px">
+      <md-select ng-model="resource.ResType" ng-change="setMode(resource.ResType)">
+        <md-option ng-value="type.code" ng-repeat="type in resTypes">{{type.name}}</md-option>
+      </md-select>
+    </md-input-container>
+  </div>
 
-  <button flex=""
-  class="md-primary md-button md-scope"
-  ng-click="showReference()"
-  aria-label="View API Reference" tabindex="0" aria-disabled="true">
-   <i class="material-icons" style="vertical-align: middle;">code</i>
-   <span style="vertical-align: middle;"> API Reference</span>
-  </button>
+  <div id="editor-window">
+    <button flex=""
+    class="md-primary md-button md-scope"
+    ng-click="showReference()"
+    aria-label="View API Reference" tabindex="0" aria-disabled="true">
+     <i class="material-icons" style="vertical-align: middle;">code</i>
+     <span style="vertical-align: middle;"> API Reference</span>
+    </button>
 
-  <button flex=""
-  class="md-primary md-button md-scope"
-  ng-click="toggleMode()"
-  aria-label="Toggle editor mode" tabindex="0" aria-disabled="true">
-  <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'js'">code</i>
-  <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'html'">web</i>
-   <span style="vertical-align: middle;"> Toggle Editor mode</span>
-  </button>
+    <button flex=""
+    class="md-primary md-button md-scope"
+    ng-click="toggleMode()"
+    aria-label="Toggle editor mode" tabindex="0" aria-disabled="true">
+    <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'js'">code</i>
+    <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'html'">web</i>
+     <span style="vertical-align: middle;"> Toggle Editor mode</span>
+    </button>
 
-  <md-input-container id="editor-window" class="md-block">
-    <pre id="editor">console.log("Hello world!");</pre>
-  </md-input-container>
-
-  <div id="graph-window"></div>
+    <md-input-container class="md-block">
+      <pre class="editor" id="editor">console.log("Hello world!");</pre>
+    </md-input-container>
+  </div>
+  
+  <div id="codegraph-window" class="editor" flex>
+  </div>
 
   <button flex="" layout-fill=""
   class="md-raised md-primary md-button md-scope"

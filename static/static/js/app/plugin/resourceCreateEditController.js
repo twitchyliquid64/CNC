@@ -9,14 +9,37 @@
         $scope.resourceSelected = [];
         $scope.resTypes = [
           {'code': 'JSC', 'name': 'Javascript Code'},
-          {'code': 'TPL', 'name': 'Template'}
+          {'code': 'TPL', 'name': 'Template'},
+          {'code': 'GRA', 'name': 'Code Graph'}
         ]
 
         var resourceToAceModes = {'JSC': 'ace/mode/javascript', 'TPL': "ace/mode/html"};
         function setMode(mode) {
           $scope.mode = mode;
           if (mode in resourceToAceModes) {
-            self.editor.session.setMode(resourceToAceModes[mode]);
+            $('#codegraph-window').hide();
+            $('#editor-window').show();
+            setEditorMode(resourceToAceModes[mode]);
+          } else if (mode == 'GRA') {
+            $('#editor-window').hide()
+            $('#codegraph-window').show();
+            setGraphMode();
+          }
+        }
+
+        function setEditorMode(aceMode) {
+          if (self.editor === undefined) {
+            self.editor = ace.edit("editor");
+            self.editor.setTheme("ace/theme/github");
+            self.editor.setValue(atob(resource.Data));
+          }
+
+          self.editor.session.setMode(aceMode);
+        }
+
+        function setGraphMode() {
+          if (self.codeGraph === undefined) {
+            self.codeGraph = new CodeGraph($('#codegraph-window'));
           }
         }
 
@@ -71,7 +94,6 @@
             $scope.showLoading = false;
 
             setMode(resource.ResType);
-            self.editor.setValue(atob(resource.Data));
             console.log($scope.resource);
           }, function errorCallback(response) {
             console.log(response);
@@ -79,14 +101,11 @@
           });
         }
 
+        $scope.showGraph = false;
         $scope.process = self.process;
         $scope.resource = self.buildEmptyResourceObject();
+        $scope.setMode = setMode;
 
-        self.editor = ace.edit("editor");
-        self.editor.setTheme("ace/theme/github");
-        self.editor.session.setMode("ace/mode/javascript");
-
-        setMode('JSC')
         self.load();
 
         $scope.showReference = function() {
