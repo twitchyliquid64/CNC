@@ -39,7 +39,10 @@
 
         function setGraphMode() {
           if (self.codeGraph === undefined) {
-            self.codeGraph = new CodeGraph($('#codegraph-window'));
+            codeGraph = self.codeGraph = new graphing.CodeGraph($('#codegraph-window'));
+
+            for (var i = 0; i < graphing.blocks.length; i++)
+              codeGraph.addCode(graphing.blocks[i]);
           }
         }
 

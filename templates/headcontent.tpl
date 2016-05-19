@@ -16,4 +16,5 @@
   <script src="/static/js/jointjs/lodash.min.js"></script>
   <script src="/static/js/jointjs/backbone-min.js"></script>
   <script src="/static/js/jointjs/joint.min.js"></script>
+  <script src="/static/js/jointjs/joint.shapes.devs.min.js"></script>
   <script src="/static/js/app/plugin/graphing.js"></script>

@@ -1,5 +1,9 @@
-var CodeGraph = (function(undefined, $) {
-  var CodeGraph = function(element) {
+graphing = (function(undefined, $) {
+  exports = {}
+
+  var CodeGraph = exports.CodeGraph = function(element) {
+    var self = this;
+
     this.parent = element;
     this.graph = new joint.dia.Graph;
     this.paper = new joint.dia.Paper({
@@ -7,25 +11,104 @@ var CodeGraph = (function(undefined, $) {
       width: element.width(),
       height: element.height(),
       model: this.graph,
-      gridSize: 1
+      gridSize: 1,
+      linkPinning: false, //Dont allow links without a target
+      defaultLink: new joint.dia.Link({
+        router: { name: 'manhattan' }, // Clean up the paths between links
+        connector: { name: 'rounded', args: { radius: 5 }},
+        attrs: { '.marker-target': { d: 'M 10 0 L 0 5 L 10 10 z' } } // Little arrow head on link endpoints
+      }),
+      validateConnection: function() { return self.validateConnection.apply(self, arguments); },
+      snapLinks: { radius: 20 }
     });
-
-    var rect = new joint.shapes.basic.Rect({
-      position: {x: 100, y: 30},
-      size: {width: 100, height: 30},
-      attrs: { rect: { fill: 'blue' }, text: { text: 'my box', fill: 'white' } }
-    });
-
-    var rect2 = rect.clone();
-    rect2.translate(300);
-
-    var link = new joint.dia.Link({
-      source: { id: rect.id },
-      target: { id: rect2.id }
-    });
-
-    this.graph.addCells([rect, rect2, link]);
   }
 
-  return CodeGraph;
+  CodeGraph.prototype.validateConnection = function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+        lastArgs = arguments;
+        // Prevent linking from input ports.
+        if (magnetS && magnetS.getAttribute('type') === 'input') return false;
+        // Prevent linking from output ports to input ports within one element.
+        if (cellViewS === cellViewT) return false;
+        // Prevent linking to input ports.
+        if (!(magnetT && magnetT.getAttribute('type') === 'input')) return false;
+        // Input ports cant accept more than one link
+        return !alreadyHasLinks(this.graph, cellViewT, magnetT);
+  }
+
+  function alreadyHasLinks(graph, cellView, magnet) {
+    var port = magnet.getAttribute('port');
+    var links = graph.getConnectedLinks(cellView.model, { inbound: false });
+
+    for (var i = 0; i < links.length; i++)
+      if (links[i].get('target') == port)
+        return true;
+
+    return false;
+  }
+
+  CodeGraph.prototype.addCode = function(block) {
+    this.graph.addCell(block.getModel());
+  }
+
+  var CodeBlock = exports.CodeBlock = function(options) {
+    this.name = options.name;
+    this.args = options.args ? options.args : [];
+    this.returns = options.returns ? options.returns : [];
+  }
+
+  var portHeight = 30;
+  CodeBlock.prototype.getModelOptions = function() {
+    return {
+      size: {width: 100, height: portHeight * Math.max(this.args.length, this.returns.length)},
+      inPorts: this.args,
+      outPorts: this.returns,
+      attrs: {
+        '.label': { text: this.name },
+        '.inPorts circle': { fill: '#16A085', magnet: 'passive', type: 'input' },
+        '.outPorts circle': { fill: '#E74C3C', type: 'output' },
+      },
+    };
+  }
+
+  CodeBlock.prototype.getModel = function() {
+    return new joint.shapes.devs.Model(this.getModelOptions());
+  }
+
+  //====================
+  //===  Text blocks ===
+  //====================
+
+  var TextCodeBlock = exports.TextCodeBlock = function(options) {
+    CodeBlock.call(this, options);
+  }
+  TextCodeBlock.prototype = CodeBlock.prototype
+
+  exports.blocks = [
+    new CodeBlock({name: 'log', args: ['message']}),
+    new CodeBlock({name: 'alert', args: ['message']}),
+    new CodeBlock({name: 'prompt', returns: ['response']}),
+    new TextCodeBlock({name: 'string', returns: ['value']})
+  ]
+  joint.shapes.custom = {};
+  // The following custom shape creates a link out of the whole element.
+  joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
+      markup: [
+          '<g class="rotatable">',
+            '<g class="scalable">',
+              '<rect />',
+            '</g>',
+            '<foreignObject width="150" height="100">',
+              '<p xmlns="http://www.w3.org/1999/xhtml">',
+                '<input type="text" value="Text"></input>',
+              '</p>',
+            '</foreignObject>',
+          '<text/>',
+          '</g>'].join(''),
+
+      defaults: joint.util.deepSupplement({
+          type: 'custom.ElementLink'
+      }, joint.shapes.basic.Rect.prototype.defaults)
+  });
+
+  return exports;
 })(void(0), $);
