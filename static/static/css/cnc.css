@@ -32,3 +32,18 @@
 .amber {
   color: orange !important;
 }
+
+/* Graphing */
+foreignObject {
+  width: 135px;
+  padding: 5px 10px 5px 10px;
+  Y: 100px;
+}
+
+foreignObject > p {
+  position: fixed;
+}
+
+foreignObject input {
+  width: 100%;
+}

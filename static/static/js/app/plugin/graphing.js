@@ -59,7 +59,7 @@ graphing = (function(undefined, $) {
   var portHeight = 30;
   CodeBlock.prototype.getModelOptions = function() {
     return {
-      size: {width: 100, height: portHeight * Math.max(this.args.length, this.returns.length)},
+      size: {width: 120, height: portHeight * Math.max(this.args.length, this.returns.length)},
       inPorts: this.args,
       outPorts: this.returns,
       attrs: {
@@ -78,37 +78,63 @@ graphing = (function(undefined, $) {
   //===  Text blocks ===
   //====================
 
+  joint.shapes.custom = {};
+  // The following custom shape creates a link out of the whole element.
+  joint.shapes.custom.TextElement = joint.shapes.devs.Model.extend({
+      markup: [
+          '<g class="rotatable">',
+            '<g class="scalable">',
+              '<rect class="body"/>',
+              '<foreignObject>',
+                '<p xmlns="http://www.w3.org/1999/xhtml">',
+                  '<input type="text" value="Text"></input>',
+                '</p>',
+              '</foreignObject>',
+            '</g>',
+            '<text class="label"/>',
+            '<g class="inPorts"/>',
+            '<g class="outPorts"/>',
+          '</g>'].join(''),
+      defaults: joint.util.deepSupplement({
+          type: 'custom.TextElement'
+      }, joint.shapes.devs.Model.prototype.defaults)
+  });
+
+  joint.shapes.custom.TextElementView = joint.shapes.devs.ModelView.extend({
+    initialize: function() {
+      joint.shapes.devs.ModelView.prototype.initialize.apply(this, arguments);
+    },
+    render: function() {
+      joint.shapes.devs.ModelView.prototype.render.apply(this, arguments);
+
+      $(this.el)
+        .find('input')
+        .on('mousedown click', function(evt) { evt.stopPropagation(); }) // Allow the textbox to be selected
+        .on('change', _.bind(function(evt) {
+            this.model.set('value', $(evt.target).val());
+        }, this));
+    }
+  });
+
   var TextCodeBlock = exports.TextCodeBlock = function(options) {
     CodeBlock.call(this, options);
   }
-  TextCodeBlock.prototype = CodeBlock.prototype
+  TextCodeBlock.prototype = new CodeBlock({})
+
+  TextCodeBlock.prototype.getModel = function() {
+    var options = this.getModelOptions();
+    options.size.height += 30;
+    options.size.width = 150;
+
+    return new joint.shapes.custom.TextElement(options);
+  }
 
   exports.blocks = [
     new CodeBlock({name: 'log', args: ['message']}),
     new CodeBlock({name: 'alert', args: ['message']}),
-    new CodeBlock({name: 'prompt', returns: ['response']}),
+    new CodeBlock({name: 'prompt', args: ['query'], returns: ['response']}),
     new TextCodeBlock({name: 'string', returns: ['value']})
   ]
-  joint.shapes.custom = {};
-  // The following custom shape creates a link out of the whole element.
-  joint.shapes.custom.ElementLink = joint.shapes.devs.Model.extend({
-      markup: [
-          '<g class="rotatable">',
-            '<g class="scalable">',
-              '<rect />',
-            '</g>',
-            '<foreignObject width="150" height="100">',
-              '<p xmlns="http://www.w3.org/1999/xhtml">',
-                '<input type="text" value="Text"></input>',
-              '</p>',
-            '</foreignObject>',
-          '<text/>',
-          '</g>'].join(''),
-
-      defaults: joint.util.deepSupplement({
-          type: 'custom.ElementLink'
-      }, joint.shapes.basic.Rect.prototype.defaults)
-  });
 
   return exports;
 })(void(0), $);
