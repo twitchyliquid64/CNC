@@ -1,11 +1,11 @@
 graphing = (function(undefined, $) {
   exports = {}
 
-  var CodeGraph = exports.CodeGraph = function(element) {
+  var CodeGraph = exports.CodeGraph = function(element, jsonString) {
     var self = this;
 
     this.parent = element;
-    this.graph = new joint.dia.Graph;
+    this.graph = new joint.dia.Graph();
     this.paper = new joint.dia.Paper({
       el: element,
       width: element.width(),
@@ -21,6 +21,15 @@ graphing = (function(undefined, $) {
       validateConnection: function() { return self.validateConnection.apply(self, arguments); },
       snapLinks: { radius: 20 }
     });
+
+    if (jsonString) {
+      var json = JSON.parse(jsonString);
+      this.graph.fromJSON(json);
+    }
+  }
+
+  CodeGraph.prototype.toJsonString = function() {
+    return JSON.stringify(this.graph);
   }
 
   CodeGraph.prototype.validateConnection = function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
@@ -60,6 +69,9 @@ graphing = (function(undefined, $) {
   CodeBlock.prototype.getModelOptions = function() {
     return {
       size: {width: 120, height: portHeight * Math.max(this.args.length, this.returns.length)},
+      code: {
+        blockname: this.name
+      },
       inPorts: this.args,
       outPorts: this.returns,
       attrs: {

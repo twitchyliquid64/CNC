@@ -39,10 +39,11 @@
 
         function setGraphMode() {
           if (self.codeGraph === undefined) {
-            codeGraph = self.codeGraph = new graphing.CodeGraph($('#codegraph-window'));
+            var content = $scope.resource.Data ?
+              atob($scope.resource.Data) :
+              undefined;
 
-            for (var i = 0; i < graphing.blocks.length; i++)
-              codeGraph.addCode(graphing.blocks[i]);
+            codeGraph = self.codeGraph = new graphing.CodeGraph($('#codegraph-window'), content);
           }
         }
 
@@ -68,10 +69,12 @@
         };
 
         self.process = function() {
-          var content = self.editor.getValue();
+          var content = $scope.mode === 'GRA' ?
+            self.codeGraph.toJsonString() :
+            self.editor.getValue();
+
           $scope.resource.JSONData = content;
           $scope.resource.Data = "";
-          console.log($scope.resource);
 
           self.processSave();
         }
@@ -82,11 +85,10 @@
             url: '/plugins/saveresource',
             data: $scope.resource
           }).then(function successCallback(response) {
-              console.log(response);
               self.createDialog("Resource saved successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog("Server responded with error: " + response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data.error, "Server Error");
           });
         }
 
@@ -97,7 +99,6 @@
             $scope.showLoading = false;
 
             setMode(resource.ResType);
-            console.log($scope.resource);
           }, function errorCallback(response) {
             console.log(response);
             self.createDialog(response, "Server Error");
