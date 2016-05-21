@@ -22,9 +22,15 @@
   .repeated-item {
     border-right: 1px solid #ddd;
     box-sizing: border-box;
-    display: inline-block;
+    display: table-cell;
     height: 50px;
     text-align: center;
+  }
+
+  #horizontal-container {
+    display: block;
+    height: 60px;
+    overflow-x: scroll;
   }
 
 </style>
