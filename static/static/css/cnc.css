@@ -34,10 +34,17 @@
 }
 
 /* Graphing */
+#codegraph-window {
+}
+
+#codegraph-window > svg {
+  border: solid thin #AAAAAA;
+}
+
 foreignObject {
   width: 135px;
   padding: 5px 10px 5px 10px;
-  Y: 100px;
+  Y: 1.5ex;
 }
 
 foreignObject > p {
@@ -46,4 +53,22 @@ foreignObject > p {
 
 foreignObject input {
   width: 100%;
+}
+
+.kill-button rect {
+  X: 15px;
+  Y: 7.5px;
+  width: 15px;
+  height: 15px;
+
+  cursor: pointer;
+  fill: red;
+  stroke: gray;
+}
+
+.kill-button text {
+  fill: white;
+  font-weight: bolder;
+  alignment-baseline: middle;
+  text-anchor: middle;
 }

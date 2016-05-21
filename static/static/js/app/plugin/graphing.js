@@ -26,6 +26,10 @@ graphing = (function(undefined, $) {
       var json = JSON.parse(jsonString);
       this.graph.fromJSON(json);
     }
+
+    $(window).resize(function() {
+      self.paper.setDimensions(element.innerWidth(), self.paper.getArea().height);
+    })
   }
 
   CodeGraph.prototype.toJsonString = function() {
@@ -68,7 +72,7 @@ graphing = (function(undefined, $) {
   var portHeight = 30;
   CodeBlock.prototype.getModelOptions = function() {
     return {
-      size: {width: 120, height: portHeight * Math.max(this.args.length, this.returns.length)},
+      size: { width: 120, height: portHeight * Math.max(this.args.length, this.returns.length)},
       code: {
         blockname: this.name
       },
@@ -83,41 +87,80 @@ graphing = (function(undefined, $) {
   }
 
   CodeBlock.prototype.getModel = function() {
-    return new joint.shapes.devs.Model(this.getModelOptions());
+    return new joint.shapes.code.CodeElement(this.getModelOptions());
   }
 
   //====================
   //===  Text blocks ===
   //====================
 
-  joint.shapes.custom = {};
-  // The following custom shape creates a link out of the whole element.
-  joint.shapes.custom.TextElement = joint.shapes.devs.Model.extend({
+  joint.shapes.devs.Model.prototype.initialize = function() {
+      this.updatePortsAttrs();
+      this.on('change:inPorts change:outPorts', this.updatePortsAttrs, this);
+      this._parent = (this._parent || this).constructor.__super__;
+      this._parent.initialize.apply(this, arguments);
+  }
+
+  joint.shapes.code = {};
+  joint.shapes.code.CodeElement = joint.shapes.devs.Model.extend({
       markup: [
           '<g class="rotatable">',
             '<g class="scalable">',
               '<rect class="body"/>',
-              '<foreignObject>',
-                '<p xmlns="http://www.w3.org/1999/xhtml">',
-                  '<input type="text" value="Text"></input>',
-                '</p>',
-              '</foreignObject>',
+            '</g>',
+            '<g class="kill-button">',
+              '<rect/>',
+              '<text y="16" x="22.5">X</text>',
             '</g>',
             '<text class="label"/>',
             '<g class="inPorts"/>',
             '<g class="outPorts"/>',
           '</g>'].join(''),
       defaults: joint.util.deepSupplement({
-          type: 'custom.TextElement'
+          type: 'code.CodeElement'
       }, joint.shapes.devs.Model.prototype.defaults)
   });
 
-  joint.shapes.custom.TextElementView = joint.shapes.devs.ModelView.extend({
-    initialize: function() {
-      joint.shapes.devs.ModelView.prototype.initialize.apply(this, arguments);
-    },
+  joint.shapes.code.CodeElementView = joint.shapes.devs.ModelView.extend({
     render: function() {
       joint.shapes.devs.ModelView.prototype.render.apply(this, arguments);
+
+      $(this.el)
+        .find('.kill-button')
+        .on('mouseup click', _.bind(function(evt) {
+          this.model.remove();
+        }, this));
+    }
+  });
+
+  // The following custom shape creates a link out of the whole element.
+  joint.shapes.code.TextElement = joint.shapes.code.CodeElement.extend({
+      markup: [
+          '<g class="rotatable">',
+            '<g class="scalable">',
+              '<rect class="body"/>',
+            '</g>',
+            '<foreignObject>',
+              '<p xmlns="http://www.w3.org/1999/xhtml">',
+                '<input type="text" value="Text"></input>',
+              '</p>',
+            '</foreignObject>',
+            '<g class="kill-button">',
+              '<rect/>',
+              '<text y="16" x="22.5">X</text>',
+            '</g>',
+            '<text class="label"/>',
+            '<g class="inPorts"/>',
+            '<g class="outPorts"/>',
+          '</g>'].join(''),
+      defaults: joint.util.deepSupplement({
+          type: 'code.TextElement'
+      }, joint.shapes.code.CodeElement.prototype.defaults)
+  });
+
+  joint.shapes.code.TextElementView = joint.shapes.code.CodeElementView.extend({
+    render: function() {
+      joint.shapes.code.CodeElementView.prototype.render.apply(this, arguments);
 
       $(this.el)
         .find('input')
@@ -138,7 +181,7 @@ graphing = (function(undefined, $) {
     options.size.height += 30;
     options.size.width = 150;
 
-    return new joint.shapes.custom.TextElement(options);
+    return new joint.shapes.code.TextElement(options);
   }
 
   exports.blocks = [
