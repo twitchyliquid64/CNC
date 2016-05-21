@@ -34,10 +34,8 @@
 }
 
 /* Graphing */
-#codegraph-window {
-}
 
-#codegraph-window > svg {
+#graph-editor > svg {
   border: solid thin #AAAAAA;
 }
 
@@ -56,19 +54,17 @@ foreignObject input {
 }
 
 .kill-button rect {
-  X: 15px;
-  Y: 7.5px;
+  X: 0px;
+  Y: -15px;
   width: 15px;
   height: 15px;
 
   cursor: pointer;
   fill: red;
-  stroke: gray;
+  stroke: #000000;
 }
 
 .kill-button text {
   fill: white;
   font-weight: bolder;
-  alignment-baseline: middle;
-  text-anchor: middle;
 }

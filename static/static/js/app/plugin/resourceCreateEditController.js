@@ -17,19 +17,19 @@
         function setMode(mode) {
           $scope.mode = mode;
           if (mode in resourceToAceModes) {
-            $('#codegraph-window').hide();
-            $('#editor-window').show();
+            $('#graph-window').hide();
+            $('#text-window').show();
             setEditorMode(resourceToAceModes[mode]);
           } else if (mode == 'GRA') {
-            $('#editor-window').hide()
-            $('#codegraph-window').show();
+            $('#text-window').hide()
+            $('#graph-window').show();
             setGraphMode();
           }
         }
 
         function setEditorMode(aceMode) {
           if (self.editor === undefined) {
-            self.editor = ace.edit("editor");
+            self.editor = ace.edit("code-editor");
             self.editor.setTheme("ace/theme/github");
             self.editor.setValue(atob(resource.Data));
           }
@@ -43,7 +43,7 @@
               atob($scope.resource.Data) :
               undefined;
 
-            codeGraph = self.codeGraph = new graphing.CodeGraph($('#codegraph-window'), content);
+            codeGraph = self.codeGraph = $scope.codeGraph = new graphing.CodeGraph($('#graph-editor'), content);
           }
         }
 
@@ -109,6 +109,7 @@
         $scope.process = self.process;
         $scope.resource = self.buildEmptyResourceObject();
         $scope.setMode = setMode;
+        $scope.blocks = graphing.blocks;
 
         self.load();
 

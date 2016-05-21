@@ -15,9 +15,16 @@
   <style>
 
   .editor {
-    width: 95%;
     height: 80%;
     min-height: 420px;
+  }
+
+  .repeated-item {
+    border-right: 1px solid #ddd;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 50px;
+    text-align: center;
   }
 
 </style>
@@ -35,33 +42,42 @@
     </md-input-container>
   </div>
 
-  <div id="editor-window">
-    <button flex=""
-    class="md-primary md-button md-scope"
-    ng-click="showReference()"
-    aria-label="View API Reference" tabindex="0" aria-disabled="true">
-     <i class="material-icons" style="vertical-align: middle;">code</i>
-     <span style="vertical-align: middle;"> API Reference</span>
-    </button>
+  <div id="text-window">
+    <div layout="row" flex>
+      <button flex=""
+      class="md-primary md-button md-scope"
+      ng-click="showReference()"
+      aria-label="View API Reference" tabindex="0" aria-disabled="true">
+       <i class="material-icons" style="vertical-align: middle;">code</i>
+       <span style="vertical-align: middle;"> API Reference</span>
+      </button>
 
-    <button flex=""
-    class="md-primary md-button md-scope"
-    ng-click="toggleMode()"
-    aria-label="Toggle editor mode" tabindex="0" aria-disabled="true">
-    <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'js'">code</i>
-    <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'html'">web</i>
-     <span style="vertical-align: middle;"> Toggle Editor mode</span>
-    </button>
+      <button flex=""
+      class="md-primary md-button md-scope"
+      ng-click="toggleMode()"
+      aria-label="Toggle editor mode" tabindex="0" aria-disabled="true">
+      <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'js'">code</i>
+      <i class="material-icons" style="vertical-align: middle;" ng-show="mode == 'html'">web</i>
+       <span style="vertical-align: middle;"> Toggle Editor mode</span>
+      </button>
+    </div>
 
-    <md-input-container class="md-block">
-      <pre class="editor" id="editor">console.log("Hello world!");</pre>
+    <md-input-container layout="row" flex>
+      <pre id="code-editor" class="editor" flex>console.log("Hello world!");</pre>
     </md-input-container>
   </div>
 
-  <div id="codegraph-window" class="editor" flex>
+  <div id="graph-window">
+    <div id="graph-editor" class="editor" layout="row" flex layout-fill>
+    </div>
+    <md-virtual-repeat-container id="horizontal-container" md-orient-horizontal>
+      <div ng-repeat="block in blocks" class="repeated-item" flex>
+        <md-button ng-click="codeGraph.addCode(block)" class="md-raised">{{block.name}}</md-button>
+      </div>
+    </md-virtual-repeat-container>
   </div>
 
-  <button flex="" layout-fill=""
+  <button flex layout-fill layout="row"
   class="md-raised md-primary md-button md-scope"
   ng-click="process()"
   aria-label="Save Plugin" tabindex="0" aria-disabled="true">

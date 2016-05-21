@@ -91,9 +91,10 @@ graphing = (function(undefined, $) {
   }
 
   //====================
-  //===  Text blocks ===
+  //===  Block Types ===
   //====================
 
+  // To fix defect. Source = https://groups.google.com/forum/#!topic/jointjs/md5s_fKPl_M
   joint.shapes.devs.Model.prototype.initialize = function() {
       this.updatePortsAttrs();
       this.on('change:inPorts change:outPorts', this.updatePortsAttrs, this);
@@ -110,7 +111,7 @@ graphing = (function(undefined, $) {
             '</g>',
             '<g class="kill-button">',
               '<rect/>',
-              '<text y="16" x="22.5">X</text>',
+              '<text y="-2" x="3">X</text>',
             '</g>',
             '<text class="label"/>',
             '<g class="inPorts"/>',
@@ -147,7 +148,7 @@ graphing = (function(undefined, $) {
             '</foreignObject>',
             '<g class="kill-button">',
               '<rect/>',
-              '<text y="16" x="22.5">X</text>',
+              '<text y="-2" x="3">X</text>',
             '</g>',
             '<text class="label"/>',
             '<g class="inPorts"/>',
@@ -180,6 +181,8 @@ graphing = (function(undefined, $) {
     var options = this.getModelOptions();
     options.size.height += 30;
     options.size.width = 150;
+    options['attrs']['.inPorts circle']['ref-y'] = '0.2';
+    options['attrs']['.outPorts circle']['ref-y'] = '0.2';
 
     return new joint.shapes.code.TextElement(options);
   }
@@ -188,7 +191,10 @@ graphing = (function(undefined, $) {
     new CodeBlock({name: 'log', args: ['message']}),
     new CodeBlock({name: 'alert', args: ['message']}),
     new CodeBlock({name: 'prompt', args: ['query'], returns: ['response']}),
-    new TextCodeBlock({name: 'string', returns: ['value']})
+    new TextCodeBlock({name: 'string', returns: [''], args: ['']}),
+    new TextCodeBlock({name: 'web request', returns: ['request']}),
+    new CodeBlock({name: 'web write', args: ['text']}),
+    new CodeBlock({name: 'email recieved', returns: ['from', 'subject', 'body']}),
   ]
 
   return exports;
