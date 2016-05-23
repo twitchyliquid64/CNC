@@ -9,14 +9,41 @@
         $scope.resourceSelected = [];
         $scope.resTypes = [
           {'code': 'JSC', 'name': 'Javascript Code'},
-          {'code': 'TPL', 'name': 'Template'}
+          {'code': 'TPL', 'name': 'Template'},
+          {'code': 'GRA', 'name': 'Code Graph'}
         ]
 
         var resourceToAceModes = {'JSC': 'ace/mode/javascript', 'TPL': "ace/mode/html"};
         function setMode(mode) {
           $scope.mode = mode;
           if (mode in resourceToAceModes) {
-            self.editor.session.setMode(resourceToAceModes[mode]);
+            $('#graph-window').hide();
+            $('#text-window').show();
+            setEditorMode(resourceToAceModes[mode]);
+          } else if (mode == 'GRA') {
+            $('#text-window').hide()
+            $('#graph-window').show();
+            setGraphMode();
+          }
+        }
+
+        function setEditorMode(aceMode) {
+          if (self.editor === undefined) {
+            self.editor = ace.edit("code-editor");
+            self.editor.setTheme("ace/theme/github");
+            self.editor.setValue(atob(resource.Data));
+          }
+
+          self.editor.session.setMode(aceMode);
+        }
+
+        function setGraphMode() {
+          if (self.codeGraph === undefined) {
+            var content = $scope.resource.Data ?
+              atob($scope.resource.Data) :
+              undefined;
+
+            codeGraph = self.codeGraph = $scope.codeGraph = new graphing.CodeGraph($('#graph-editor'), content);
           }
         }
 
@@ -42,10 +69,12 @@
         };
 
         self.process = function() {
-          var content = self.editor.getValue();
+          var content = $scope.mode === 'GRA' ?
+            self.codeGraph.toJsonString() :
+            self.editor.getValue();
+
           $scope.resource.JSONData = content;
           $scope.resource.Data = "";
-          console.log($scope.resource);
 
           self.processSave();
         }
@@ -56,11 +85,10 @@
             url: '/plugins/saveresource',
             data: $scope.resource
           }).then(function successCallback(response) {
-              console.log(response);
               self.createDialog("Resource saved successfully. To apply your changes, please restart the plugin.", "Plugin Resources");
             }, function errorCallback(response) {
               console.log(response);
-              self.createDialog("Server responded with error: " + response.data, "Server Error");
+              self.createDialog("Server responded with error: " + response.data.error, "Server Error");
           });
         }
 
@@ -71,22 +99,18 @@
             $scope.showLoading = false;
 
             setMode(resource.ResType);
-            self.editor.setValue(atob(resource.Data));
-            console.log($scope.resource);
           }, function errorCallback(response) {
             console.log(response);
             self.createDialog(response, "Server Error");
           });
         }
 
+        $scope.showGraph = false;
         $scope.process = self.process;
         $scope.resource = self.buildEmptyResourceObject();
+        $scope.setMode = setMode;
+        $scope.blocks = graphing.blocks;
 
-        self.editor = ace.edit("editor");
-        self.editor.setTheme("ace/theme/github");
-        self.editor.session.setMode("ace/mode/javascript");
-
-        setMode('JSC')
         self.load();
 
         $scope.showReference = function() {

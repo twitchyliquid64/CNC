@@ -32,3 +32,39 @@
 .amber {
   color: orange !important;
 }
+
+/* Graphing */
+
+#graph-editor > svg {
+  border: solid thin #AAAAAA;
+}
+
+foreignObject {
+  width: 135px;
+  padding: 5px 10px 5px 10px;
+  Y: 1.5ex;
+}
+
+foreignObject > p {
+  position: fixed;
+}
+
+foreignObject input {
+  width: 100%;
+}
+
+.kill-button rect {
+  X: 0px;
+  Y: -15px;
+  width: 15px;
+  height: 15px;
+
+  cursor: pointer;
+  fill: red;
+  stroke: #000000;
+}
+
+.kill-button text {
+  fill: white;
+  font-weight: bolder;
+}
